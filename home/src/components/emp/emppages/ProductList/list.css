@@ -1,0 +1,98 @@
+.container {
+  display: flex;
+}
+.user-list{
+  display: grid;
+  grid-template-columns: 6fr 6fr 6fr ;
+  /* grid-template-columns: auto auto auto ; */
+  grid-gap: 25px;
+  padding: 1rem 0;
+}
+
+.box {
+  width: calc(100% );
+  background: rgb(237, 245, 247);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 30px;
+  padding-bottom: 30px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 11px -1px #d1d1d1;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+ 
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 0.25s ease-out;
+  
+}
+
+
+
+.box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 4px 2px rgba(199, 16, 16, 0.05);
+}
+
+.image {
+  margin: 10px 0;
+  height: 150px;
+  width: 150px;
+  padding: 3px;
+  border-radius: 50%;
+}
+
+.image img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+p {
+  text-align: justify;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.available {
+  color: #b4b4b4;
+}
+
+.name_job {
+  margin: 10px 0 0px 0;
+  color: #2e0acf;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.btns {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+/* button{
+    background: #140b44;
+    margin-right: 5px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+  } 
+   */
