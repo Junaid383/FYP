@@ -129,7 +129,8 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
         }
 
     } catch (err) {
-        console.log("err");
+        // console.log("err");
+        console.log(error);
     }
 
 
