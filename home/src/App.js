@@ -26,19 +26,25 @@ const App = () => {
             <Login />
           </Route>
 
+          <Route path="/admlogin">
+            <Login />
+          </Route>
+
           <Route path="/signup" >
             <Signup />
           </Route>
-         
+
           <Route path="/admin">
             <AdminDashboard />
           </Route>
-          
+
+
+
           <Route path="/employee" >
             <EmpDashboard />
           </Route>
 
-         
+
         </Switch>
 
       </Router>

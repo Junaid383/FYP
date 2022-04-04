@@ -14,7 +14,7 @@ require('./database/conn');
 
 app.use(express.json());  //this convert json data according to browser format
 
-
+// app.use(require('./img saver/imgSaver'));
 //get Routers to make APP.JS Clean
 app.use(require('./router/newEmp'));
 app.use('/uploads' , express.static('uploads')); 

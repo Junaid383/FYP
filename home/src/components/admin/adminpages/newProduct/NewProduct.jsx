@@ -1,6 +1,6 @@
 import "./newProduct.css";
 import React, { useState } from 'react'
-
+import styles from "./newProduct.module.css";
 import { NavLink, useHistory } from 'react-router-dom';
 
 
@@ -43,7 +43,7 @@ export default function NewProduct() {
     const data = await res.json();
     console.log(data);
 
-    if (data.status === 422 || !data.image || !data.name || !data.stock || !data.price) {
+    if (res.status === 422 || !data) {
         console.log(data.image);
       window.alert("Invalid Registration");
 
@@ -63,11 +63,11 @@ export default function NewProduct() {
 
   return (
 
-    <div className="newProduct">
+    <div className={styles.newProduct}>
 
-      <h1 className="addProductTitle">New Product</h1>
-      <form method='POST' className="addProductForm">
-        <div className="addProductItem">
+      <h1 className={styles.addProductTitle}>New Product</h1>
+      <form method='POST' className={styles.addProductForm}>
+        <div className={styles.addProductItem}>
           <label>Image</label>
           <input name="image"
             autoComplete="off"
@@ -75,7 +75,7 @@ export default function NewProduct() {
             onChange={handleInputs}
             type="file" id="file" />
         </div>
-        <div className="addProductItem">
+        <div className={styles.addProductItem}>
           <label>Name</label>
           <input name="name"
             autoComplete="off"
@@ -83,7 +83,7 @@ export default function NewProduct() {
             onChange={handleInputs}
             type="text" placeholder="Oranges" />
         </div>
-        <div className="addProductItem">
+        <div className={styles.addProductItem}>
           <label>Stock</label>
           <input name="stock"
             autoComplete="off"
@@ -91,7 +91,7 @@ export default function NewProduct() {
             onChange={handleInputs}
             type="number" placeholder="Quantity" />
         </div>
-        <div className="addProductItem">
+        <div className={styles.addProductItem}>
           <label>Price</label>
           <input name="price"
             autoComplete="off"
@@ -100,7 +100,7 @@ export default function NewProduct() {
             type="number" placeholder="Price" />
         </div>
 
-        {/* <div className="addProductItem">
+        {/* <div className={styles.addProductItem}>
           <label>Active</label>
           <select name="active" id="active">
             <option value="yes">Yes</option>
@@ -110,8 +110,9 @@ export default function NewProduct() {
         <button
           type='submit' name='signup' value="register"
           onClick={PostData}
-          className="addProductButton">Create</button>
+          className={styles.addProductButton}>Create</button>
       </form>
     </div>
   );
 }
+

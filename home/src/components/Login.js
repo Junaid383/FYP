@@ -5,6 +5,8 @@ import "./Signin/styles.css";
 // import signinBoy from '../Images/Signin/signinBoy.png'
 // import googleIcon from '../Images/Signin/google.png'
 import { NavLink, useHistory, userHistroy } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -19,6 +21,8 @@ function Login() {
 
   const loginUser = async (e) => {
     e.preventDefault();
+    
+   const  toastEx = () => toast("Wow so easy !");
 
     const res = await fetch('/signin', {  //this signin from 'newEMP.js'
       method: "POST",
@@ -35,13 +39,14 @@ function Login() {
     // console.log(data);
 
     if (res.status === 400 || !data) {
-      window.alert("Invalid");
+      
+      window.alert("Error");
 
 
     }
     else {
       window.alert('Logged IN');
-      histroy.push("/admin/home");
+      histroy.push("/employee/home");
 
     }
 
