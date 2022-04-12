@@ -10,13 +10,9 @@
     margin:0 auto;
 }
 
-body{
-    margin:0;
-    background-color: #F0F0F7;
-}
 
  /* error Block */
- .error-notify-block {
+ .error_notify_block {
     display: none;
     position: absolute;
     background-color: white;
@@ -30,7 +26,7 @@ body{
 
 
 
-.dropdown-content {
+.dropdown_content {
     display: none;
     position: relative;
   
@@ -55,7 +51,7 @@ body{
       width: 150px;
       font-size: larger;
   }
-  .dropdown-content a {
+  .dropdown_content a {
     /* float: none; */
     color: #4D4F5C;
     padding: 5px;
@@ -64,15 +60,15 @@ body{
     
     text-align: center;
   }
-  .dropdown:hover .dropdown-content {
+  .dropdown:hover .dropdown_content {
     display: block;
   }
-  .dropdown-content a:hover{
+  .dropdown_content a:hover{
       background-color:#c5c4c4 ;
   }
 
 
-.account-options{
+.account_options{
     position: absolute;
     right:300px;
 }
@@ -99,7 +95,7 @@ table {
     color: #F5F6FA;
     font-weight: bold;
   }
-tr:nth-child(even){background-color: #f2f2f2;}
+tr:nth_child(even){background-color: #f2f2f2;}
 
 tr:hover {background-color: rgb(221, 221, 221);}
   .scrollableDiv{
@@ -111,32 +107,32 @@ tr:hover {background-color: rgb(221, 221, 221);}
     height: 600px;
   }
   
-  .h-page{
+  .h_page{
     height: 640px;
   }
   .scrollableDiv thead th{
     position: sticky; top: 0 ;
   }
         /* tables  END*/
-.last-transactions-container{
+.last_transactions_container{
     width:300px;
 
 }
-.search-area-emp{
+.search_area_emp{
     width:800px;
     margin-left: 20px;
 }
-.search-area-emp span{
+.search_area_emp span{
     font-size: large;
 }
-.search-area-emp input{
+.search_area_emp input{
     width:85%;
     height:40px;
     font-size: large;
     border:none;
     outline: none;
 }
-.search-bar-selling{
+.search_bar_selling{
     /* background-color: brown; */
     /* border:1px solid black;
      */
@@ -145,23 +141,23 @@ tr:hover {background-color: rgb(221, 221, 221);}
      border-radius: 3px;
      box-shadow: 0px 2px 3px 1px rgba(173, 171, 173, 0.57);
 }
-.search-bar-selling i{
+.search_bar_selling i{
     size:2px;
     margin:0px 4px;
     color:#BCBCCB;
 }
-.search-bar-selling input::placeholder{
+.search_bar_selling input::placeholder{
     color:#4D4F5C;
     opacity: 65%;
     font-size: small;
     
 }
-.current-order-box{
+.current_order_box{
     width:400px;
     margin-left: 20px;
 }
 
-.nothing-search-item{
+.nothing_search_item{
     /* display: none; */
     display: inline-block;
     text-align: center;
@@ -169,7 +165,7 @@ tr:hover {background-color: rgb(221, 221, 221);}
     top:170px;
     left:25%;
 }
-.nothing-cart-item{
+.nothing_cart_item{
    /* position: absolute; */
    height:300px;
    position: relative;
@@ -177,13 +173,13 @@ tr:hover {background-color: rgb(221, 221, 221);}
    text-align: center;
    
 }
-.last-receipts-container table{
+.last_receipts_container table{
     width:100%;
     
 }
 
  
- .select-input{
+ .select_input{
     
         font-size: 16px;
         color: #444;
@@ -198,12 +194,12 @@ tr:hover {background-color: rgb(221, 221, 221);}
         outline: none;
  }
  /* f150 */
- .select-wrap{
+ .select_wrap{
      background-color: white;
      box-shadow: 0px 7px 4px 0px rgba(173, 171, 173, 0.57); 
      border-radius: 10px;
  }
- .select-customer-div{
+ .select_customer_div{
      
      /* background-color: cadetblue; */
      display: inline-block;
@@ -211,16 +207,16 @@ tr:hover {background-color: rgb(221, 221, 221);}
      padding:10px;
  }
 
- .add-discount-div input {
+ .add_discount_div input {
      width:80px;
      text-align: right;
      position: relative;
      top:-5px;
  }
- .total-div{
+ .total_div{
      /* background-color: darkgray;s */
  }
- .status-of-payment-div{
+ .status_of_payment_div{
      /* background-color: darkgreen; */
  }
  .calculationDivs{
@@ -237,20 +233,20 @@ tr:hover {background-color: rgb(221, 221, 221);}
   .calculationDivs > div{
      margin-top: 15px;
  }
- .save-btn{
+ .save_btn{
      background-color: #3B86FF;
      width: 100%;
      font-weight: bold;
      font-size: larger;
      position: relative;
-     bottom:10px;
+     bottom:-20px;
  }
- .order-status-btn{
+ .order_status_btn{
      width:150px;
      height:40px;
      background-color: green;
  }
- .save-btn:hover{
+ .save_btn:hover{
     background-color: #155dd1;
  }
 /* .paid-status-text{
@@ -264,24 +260,24 @@ tr:hover {background-color: rgb(221, 221, 221);}
      left:-20px;
      /* bottom:5px; 
  }*/
- .paid-status-text h2{
+ .paid_status_text h2{
     text-align: center;
     position: relative;
     top:8px;
  } 
- .to-right{
+ .to_right{
     position: relative;
     left:-20px;
     top:5px;
  }
- .section-wraper{
+ .section_wraper{
      margin-top: 20px;
  }
-#recentTable{
+.recentTable{
     /* border-collapse:separate; */
     padding:20px;
 }
-#recentTable th{
+.recentTable th{
     padding-top: 3px;
     padding-bottom: 3px;
     text-align: left;
@@ -299,10 +295,10 @@ tr:hover {background-color: rgb(221, 221, 221);}
     background-color: yellow;
     border-radius: 20px;
 } */
-.section-title-bkg{
+.section_title_bkg{
     color:#A3A6B4;
-    background-color: #A3A0FB;
-    background-color: #F5F6FA;
+    background-color: #0d07ac;
+    background-color: #122676;
     height:130px;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -312,11 +308,11 @@ tr:hover {background-color: rgb(221, 221, 221);}
     z-index: -9;
     
 }
-.section-title-bkg > h1{
+.section_title_bkg > h1{
     position: relative;
     top:9px;
 }
-.section-wraper{
+.section_wraper{
     padding:25px;
     background-color: white;
     border-radius: 20px;
@@ -343,11 +339,11 @@ tr:hover {background-color: rgb(221, 221, 221);}
 
   /* Important */
 
-.d-flex{
+.d_flex{
     display: flex;
     justify-content: center;
   }
-  .d-flex-sp{
+  .d_flex_sp{
     display: flex;
     justify-content: space-between;
   }
@@ -365,6 +361,6 @@ tr:hover {background-color: rgb(221, 221, 221);}
         box-shadow: 0px 8px 7px 0px rgba(173, 171, 173, 0.57);
   }
 
-  .b-s-none{
+  .b_s_none{
     box-shadow:none;
   }

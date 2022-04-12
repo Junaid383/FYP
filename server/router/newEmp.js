@@ -9,12 +9,12 @@ const multer = require('multer');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads')
+        cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname)
+        cb(null, file.originalname)
     }
-  })
+})
 const upload = multer({ storage: storage });
 
 
@@ -184,9 +184,9 @@ router.post('/signin', async (req, res) => {
 //...................................................ADMIN................................//
 
 router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
-    
-    
-    req.body.image = req.file.path;
+
+
+    // req.body.image = req.file.path;
     // console.log( req.body);
     const { image, name, stock, price, active } = req.body;
     console.log(req.body);
@@ -202,7 +202,7 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
             return (res.status(422).json({ error: "Product  exist" }));
         } else {
 
-            const prd = new PRD({ image , name, stock, price, active });
+            const prd = new PRD({ image, name, stock, price, active });
             const prdReg = await prd.save();
             res.status(201).json({ message: "Product Entered" });
         }
@@ -215,6 +215,45 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
 
 
 });
+
+
+// ==============================================PRODUCTLIST Data GET method ==================================
+
+// router.get('/admin/products', (req, res) => {
+   
+//     console.log('Welcome to productlist ');
+//   let product;
+//     const prodData = PRD.find({}, (err, prod) => {
+//         if (err) {
+//             console.log(err);
+//         }
+//         else {
+//             console.log("Product Found");
+//             product = prod;
+           
+//         }
+        
+//     }
+//     );
+//     if (!prodData) {
+//         throw new Error('Product Not FOund');
+//     }
+   
+//     res.send(product);
+
+//     PRD.find()
+        
+//         .then(prod => res.json(prod))
+        
+//         .catch(err => res.status(400).json('Error : $(err)'));
+       
+// });
+
+
+
+
+
+
 
 
 router.get('/admin', authenticate, (res, req) => {

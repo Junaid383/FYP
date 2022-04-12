@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Signup from './components/Signup';
+import Signin from './components/Views/Signin';
+import AdminSignIn from './components/AdminSignIn'
+
 import Login from './components/Login';
 import EmpDashboard from "./components/empDashboard";
 import AdminDashboard from './components/AdminDashboard';
-
 
 const App = () => {
   return (
@@ -19,6 +21,7 @@ const App = () => {
 
         <Switch>
           <Route exact path="/">
+
             <Home />
           </Route>
 
@@ -26,8 +29,8 @@ const App = () => {
             <Login />
           </Route>
 
-          <Route path="/admlogin">
-            <Login />
+          <Route path="/adminlogin">
+            <AdminSignIn />
           </Route>
 
           <Route path="/signup" >

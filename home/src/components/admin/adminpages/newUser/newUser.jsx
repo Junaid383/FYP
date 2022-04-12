@@ -1,4 +1,4 @@
-import styles from './newuser.module.css';
+import styles from './newuser.css';
 import './newuser.css'
 
 export default function newUser() {

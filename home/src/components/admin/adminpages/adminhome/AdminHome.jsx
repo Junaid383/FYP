@@ -1,6 +1,6 @@
 
 import FeaturedInfo from "../../featuredinfo/Featuredinfo";
-import styles from "./home.module.css";
+import styles from "./home.css";
 import {userData} from "../../dummyData"
 import Chart from "../../../admin/chart/Chart"
 
@@ -9,10 +9,10 @@ import WidgetSm from "../../widgetSm/WidgetSm";
 
 
 function Home() {
-  return <div className={styles.home}>
+  return <div className = 'home'>
       <FeaturedInfo/>
       <Chart data= {userData} name = "Sales Analytics" />
-      <div className={styles.homeWidgets}>        
+      <div className='homeWidgets'>        
         <WidgetSm />
         <WidgetLg/>
       </div>

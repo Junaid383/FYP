@@ -1,22 +1,23 @@
 
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const User = require("../models/schema");
+const PRD = require('../models/newProduct')
 
 
 const authenticate = async (req, res, next) => {
 
     try {
-        const token = req.cookies.jwtoken;
-        console.log(token);
-        const verrifyToken = jwt.verify(token, process.env.SECRCET_KEY);
-        const rootUser = await User.findOne({ _id: verrifyToken._id, "tokens.token": token });
+        // const token = req.cookies.jwtoken;
+        // console.log(token);
+        // const verrifyToken = jwt.verify(token, process.env.SECRCET_KEY);
+        // const rootUser = await User.findOne({ _id: verrifyToken._id, "tokens.token": token });
 
-        if (!rootUser) {
-            throw new Error('User Not FOund');
-        }
-        req.token = token;
-        req.rootUser = rootUser;
-        req.userID = rootUser._id;
+        // if (!rootUser) {
+        //     throw new Error('User Not FOund');
+        // }
+        // req.token = token;
+        // req.rootUser = rootUser;
+        // req.userID = rootUser._id;
 
         next();
 
@@ -25,6 +26,7 @@ const authenticate = async (req, res, next) => {
         console.log(err);
     }
 }
+
 
 
 module.exports = authenticate;

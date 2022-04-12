@@ -1,4 +1,3 @@
-import "./newProduct.css";
 import React, { useState } from 'react'
 import styles from "./newProduct.module.css";
 import { NavLink, useHistory } from 'react-router-dom';
@@ -115,4 +114,3 @@ export default function NewProduct() {
     </div>
   );
 }
-
