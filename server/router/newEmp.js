@@ -6,6 +6,10 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const authenticate = require('../middleware/authenticate');
 const multer = require('multer');
+const { OAuth2Client } = require('google-auth-library');
+
+
+
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -23,7 +27,13 @@ require("../database/conn");
 //  console.log("DB linked");
 const ADMIN = require('../models/adminSchema');
 const EMP = require('../models/schema');
-const PRD = require('../models/newProduct')
+const PRD = require('../models/newProduct');
+const { response } = require('express');
+
+//===========================================googleLogins
+const client = new OAuth2Client('742464243410-jjfqh4gq2ab47i7psqlubh1afvcfaaco.apps.googleusercontent.com');
+
+
 
 
 router.get('/', (req, res) => {
@@ -220,7 +230,7 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
 // ==============================================PRODUCTLIST Data GET method ==================================
 
 // router.get('/admin/products', (req, res) => {
-   
+
 //     console.log('Welcome to productlist ');
 //   let product;
 //     const prodData = PRD.find({}, (err, prod) => {
@@ -230,23 +240,23 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
 //         else {
 //             console.log("Product Found");
 //             product = prod;
-           
+
 //         }
-        
+
 //     }
 //     );
 //     if (!prodData) {
 //         throw new Error('Product Not FOund');
 //     }
-   
+
 //     res.send(product);
 
 //     PRD.find()
-        
+
 //         .then(prod => res.json(prod))
-        
+
 //         .catch(err => res.status(400).json('Error : $(err)'));
-       
+
 // });
 
 
@@ -261,6 +271,54 @@ router.get('/admin', authenticate, (res, req) => {
     res.send(req.rootUser);
 })
 
+
+router.post('/googlelogin', (req, res) => {
+    const { tokenId } = req.body;
+    console.log("Loged in");
+    client.verifyIdToken({ idToken: tokenId, audience: "742464243410-jjfqh4gq2ab47i7psqlubh1afvcfaaco.apps.googleusercontent.com" })
+        .then(response => {
+            const { email_verified, name, email, family_name } = response.payload;
+            // console.log(response.payload);
+            if (email_verified) {
+                EMP.findOne({ email }).exec((err, user) => {
+                    if (err) {
+                        return res.status(400).json({
+                            error: "Someething went wrong..."
+                        })
+                    } else {
+                        if (user) {
+                            const token = user.generateAuthToken();
+                            
+                            res.cookie("jwtoken", token, {
+                                expires: new Date(Date.now() + 258920000),
+                                httpOnly: true
+                            });
+                            res.status(201).json({ message: "Email already exis" });
+
+                        }
+                        else {
+                            let username = family_name;
+                            let password = 12345678;
+                            let cpassword = 12345678;
+                            let phone = '00000000000';
+                            let address = "";
+                            let emp = new EMP({ username, name, email, password, cpassword, phone, address });
+                            const empReg = emp.save();
+                            console.log(emp);
+                            res.status(201).json({ message: "EMP registered" });
+
+                        }
+
+                    }
+                })
+            }
+        })
+
+
+
+
+
+});
 
 
 module.exports = router; 
