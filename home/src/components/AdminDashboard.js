@@ -13,6 +13,7 @@ import NewUser from "./admin/adminpages/newUser/newUser";
 import ProductList from "./admin/adminpages/ProductList/ProductList";
 import Product from "./admin/adminpages/Product/Product";
 import NewProduct from "./admin/adminpages/newProduct/NewProduct";
+import Recipts from "./admin/adminpages/recipts/Recipts";
 
 
 function AdminDashboard() {
@@ -51,6 +52,13 @@ function AdminDashboard() {
                     <Route path="/admin/newemp">
                         <NewProduct />
                     </Route>
+
+
+                    {/* recipts */}
+                    <Route path="/admin/recipts">
+                        <Recipts/>
+                    </Route>
+
                 </Switch>
 
 

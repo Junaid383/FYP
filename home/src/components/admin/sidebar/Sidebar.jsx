@@ -13,7 +13,7 @@ import {
   WorkOutline,
   Report,
 } from "@material-ui/icons";
-import { Link , NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 
 export default function Sidebar() {
@@ -58,12 +58,17 @@ export default function Sidebar() {
               <AttachMoney className="sidebarIcon" />
               Transactions
             </li>
-            <li className="sidebarListItem">
-              <BarChart className="sidebarIcon" />
-              Reports
-            </li>
+
+            <NavLink to="/admin/recipts" className='link'>
+              <li className="sidebarListItem">
+                <BarChart className="sidebarIcon" />
+                Recipts
+              </li>
+            </NavLink>
           </ul>
+
         </div>
+
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Notifications</h3>
           <ul className="sidebarList">
@@ -92,10 +97,13 @@ export default function Sidebar() {
               <Timeline className="sidebarIcon" />
               Analytics
             </li>
-            <li className="sidebarListItem">
-              <Report className="sidebarIcon" />
-              Reports
-            </li>
+            
+            <NavLink to="/admin/reports" className='link'>
+              <li className="sidebarListItem">
+                <Report className="sidebarIcon" />
+                Reports
+              </li>
+            </NavLink>
           </ul>
         </div>
       </div>
