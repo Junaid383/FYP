@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 const empSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true
+        // required: true
     },
     name: {
         type: String,
@@ -19,7 +19,7 @@ const empSchema = new mongoose.Schema({
     },
     phone: {
         type: Number,
-        required: true
+        // required: true
     },
     password: {
         type: String,
@@ -27,11 +27,11 @@ const empSchema = new mongoose.Schema({
     },
     cpassword: {
         type: String,
-        required: true
+        // required: true
     },
     address: {
         type: String,
-        required: true
+        // required: true
     },
     tokens: [
         {

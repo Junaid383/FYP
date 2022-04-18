@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import "./Signin/styles.css";
-// import MailOutlineIcon from "@material-ui/icons/MailOutline";
-// import LockOutlined from "@material-ui/icons/LockOutlined";
-// import signinBoy from '../Images/Signin/signinBoy.png'
-// import googleIcon from '../Images/Signin/google.png'
+
 import { NavLink, useHistory, userHistroy } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GoogleButton from './googleButton/GoogleLoginButton'
+
+// import toast, { Toaster } from 'react-hot-toast';
 
 
 
-
+toast.configure()
 function Login() {
 
 
@@ -21,8 +21,7 @@ function Login() {
 
   const loginUser = async (e) => {
     e.preventDefault();
-    
-   const  toastEx = () => toast("Wow so easy !");
+
 
     const res = await fetch('/signin', {  //this signin from 'newEMP.js'
       method: "POST",
@@ -39,19 +38,28 @@ function Login() {
     // console.log(data);
 
     if (res.status === 400 || !data) {
-      
-      window.alert("Error");
-
+      toast.error("Login Failed.", {
+        position: "top-center",
+        reverseOrder: false,
+        autoClose: 1500,
+      })
 
     }
     else {
-      window.alert('Logged IN');
-      histroy.push("/employee/home");
+      toast.success('Login Successful', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      }); histroy.push("/employee/home");
 
     }
 
   }
-  
+
 
 
   return (
@@ -76,19 +84,20 @@ function Login() {
 
 
             <button type='submit' id="signUpBut" onClick={loginUser}  >Login</button>
-            <a href="/googleLogin" id="googleLogin"><i class="fab fa-google"></i>Sign In With Google</a>
+            <GoogleButton/>
+
+            <a href= "" id="googleLogin"><i class="fab fa-google"></i>Sign In With Google</a>
 
           </form>
           <a id="dontHave" href="/signUp">Don't have an Account?</a><br></br>
         </div>
         <div id="rightSide">
           <h1>Inventroy Solutions</h1>
-          {/* <img className="picture" src={signinBoy} /> */}
-          {/* <p >Inventry Solutions</p> */}
           <p>We provide the most affordable and comfortable prices in pakistan</p>
         </div>
       </div>
 
+{/* <Toaster /> */}
     </div>
 
 

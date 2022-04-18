@@ -4,12 +4,16 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Signup from './components/Signup';
-import Signin from './components/Views/Signin';
+// import Signin from './components/Views/Signin';
 import AdminSignIn from './components/AdminSignIn'
 
 import Login from './components/Login';
 import EmpDashboard from "./components/empDashboard";
 import AdminDashboard from './components/AdminDashboard';
+
+import Test from './components/test/Toasttest'
+
+
 
 const App = () => {
   return (
@@ -45,6 +49,10 @@ const App = () => {
 
           <Route path="/employee" >
             <EmpDashboard />
+          </Route>
+
+          <Route path="/test" >
+            <Test />
           </Route>
 
 

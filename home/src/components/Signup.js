@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-// import "./Signin/styles.css";
-// import MailOutlineIcon from "@material-ui/icons/MailOutline";
-// import LockOutlined from "@material-ui/icons/LockOutlined";
-// import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import { NavLink, useHistory } from 'react-router-dom';
-// import signinBoy from '../Images/Signin/signinBoy.png'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import GoogleButton from './googleButton/GoogleLoginButton'
 
 
+
+toast.configure()
 function Signup() {
 
   const history = useHistory();
@@ -45,17 +45,29 @@ function Signup() {
 
     if (res.status === 422 || !data) {
 
-      window.alert("Invalid Registration");
+      toast.error("Registration Failed.", {
+        position: "top-center",
+        reverseOrder: false,
+        autoClose: 1500,
+      });
       console.log("Unsuccessfull");
 
     } else {
-      window.alert(" Registration Successfull");
-      console.log("Successfull");
-
+      toast.success('Registration Successful', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
       history.push('/login');
     }
 
   }
+
+
 
 
   return (
@@ -101,6 +113,7 @@ function Signup() {
 
 
           </div>
+
           <div className="form-group">
             <label className="left_card_grey">Phone</label>
             {/* <LockOutlined className="card_input_icon" /> */}
@@ -145,8 +158,13 @@ function Signup() {
             <button type='submit' name='signup' value="register" id="signUpBut"
               onClick={PostData}>Create Account</button>
           </div>
-          {/* <button type="submit" name="submitBtn" id="signUpBut">Create Account</button> */}
-          <a href="/googleLogin" id="googleLogin"><i class="fab fa-google"></i>Sign Up With Google</a>
+
+          <GoogleButton />
+
+          {/* <a href="/googleLogin" id="googleLogin"><i class="fab fa-google"></i>
+          Sign Up With Google
+          
+          </a> */}
           <a id="dontHave" href="/login">Already an Account?</a><br></br>
 
 
