@@ -1,3 +1,4 @@
+import React from 'react';
 
 import "./chart.css";
 import { BarChart, Bar, XAxis, YAxis, Legend, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';

@@ -1,4 +1,5 @@
 
+import React from 'react';
 
 // import Chart from "../../components/chart/Chart";
 import FeaturedInfo from "../../featuredinfo/Featuredinfo";

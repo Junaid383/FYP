@@ -1,4 +1,4 @@
-
+import React from 'react'
 import FeaturedInfo from "../../featuredinfo/Featuredinfo";
 import styles from "./home.css";
 import {userData} from "../../dummyData"

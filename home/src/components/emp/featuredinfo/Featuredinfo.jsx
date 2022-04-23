@@ -1,4 +1,6 @@
 import "./featuredinfo.css"
+import React from 'react';
+
 import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
 
 

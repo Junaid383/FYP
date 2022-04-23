@@ -1,4 +1,6 @@
 import Sidebar from "./admin/sidebar/Sidebar";
+import React from 'react';
+
 // import Topbar from "./admin/topbar/Topbar";
 import AdminHome from './admin/adminpages/adminhome/AdminHome'
 import {
@@ -14,6 +16,7 @@ import ProductList from "./admin/adminpages/ProductList/ProductList";
 import Product from "./admin/adminpages/Product/Product";
 import NewProduct from "./admin/adminpages/newProduct/NewProduct";
 import Recipts from "./admin/adminpages/recipts/Recipts";
+import Reports from "./admin/adminpages/reports/Reports";
 
 
 function AdminDashboard() {
@@ -57,6 +60,12 @@ function AdminDashboard() {
                     {/* recipts */}
                     <Route path="/admin/recipts">
                         <Recipts/>
+                    </Route>
+
+
+                    {/* reports */}
+                    <Route path="/admin/reports">
+                        <Reports />
                     </Route>
 
                 </Switch>

@@ -1,4 +1,6 @@
 import "./widgetSm.css"
+import React from 'react';
+
 import {Visibility} from '@material-ui/icons'
 
 export default function WidgetSm() {
