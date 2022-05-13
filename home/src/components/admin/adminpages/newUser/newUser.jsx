@@ -1,45 +1,45 @@
 import React from 'react'
 
-import styles from './newuser.css';
+// import"from"'./newuser.css';
 import './newuser.css'
 
 export default function newUser() {
     return (
-        <div className={styles.newUser}>
-            <h1 className={styles.newUserTitle}>New Employee</h1>
-            <form action="" className={styles.newUserForm}>
-                <div className={styles.newUserItem}>
+        <div className="newUser">
+            <h1 className="newUserTitle">New Employee</h1>
+            <form action="" className="newUserForm">
+                <div className="newUserItem">
                     <label  htmlFor="">Username</label>
-                    <input  id="field" type="text" placeholder='Ali' />
-                </div>
+                    <input className='ipfield'  type="text" placeholder='Ali' />
+                </div> 
 
-                <div className={styles.newUserItem}>
+                <div className="newUserItem">
                     <label htmlFor="">Full Name</label>
-                    <input id="field" type="text" placeholder='Ali Asad' />
+                    <input  className='ipfield' type="text" placeholder='Ali Asad' />
                 </div>
 
-                <div className={styles.newUserItem}>
+                <div className="newUserItem">
                     <label htmlFor="">Email</label>
-                    <input id="field" type="email" placeholder='ali@gmail.com' />
+                    <input  className='ipfield' type="email" placeholder='ali@gmail.com' />
                 </div>
 
-                <div className={styles.newUserItem}>
+                <div className="newUserItem">
                     <label htmlFor="">Password</label>
-                    <input id="field" type="password" placeholder='password' />
+                    <input  className='ipfield' type="password" placeholder='password' />
                 </div>
 
-                <div className={styles.newUserItem}>
+                <div className="newUserItem">
                     <label htmlFor="">Phone</label>
-                    <input id="field" type="text" placeholder='+92 316 6201209' />
+                    <input  className='ipfield' type="text" placeholder='+92 316 6201209' />
                 </div>
 
-                <div className={styles.newUserItem}>
+                <div className="newUserItem">
                     <label htmlFor="">Address</label>
-                    <input id="field" type="text" placeholder='Lahore | Pakistan' />
+                    <input  className='ipfield' type="text" placeholder='Lahore | Pakistan' />
                 </div>
 
-                {/* <div className={styles.newUserItem}>
-                    <div className={styles.newUserGender}>
+                {/* <div className="newUserItem">
+                    <div className="newUserGender">
                         <label htmlFor="">Gender</label>
                         <input type="radio" name="gender" id="male" value="male" />
                         <label for="male">Male</label>
@@ -49,9 +49,9 @@ export default function newUser() {
                         <label for="other">Other</label>
                     </div>
                 </div> */}
-                <div className={styles.newUserItem}>
+                <div className="newUserItem">
                     <label htmlFor="">Active</label>
-                    <select className={styles.newUserSelect} name="active" id="active">
+                    <select className="newUserSelect" name="active" id="active">
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
