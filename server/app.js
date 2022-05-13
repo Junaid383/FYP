@@ -1,6 +1,6 @@
 
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const cors = require("cors");
 const express = require('express');
 const app = express();
 
@@ -13,7 +13,7 @@ dotenv.config({ path: './config.env' });
 require('./database/conn');
 
 app.use(express.json());  //this convert json data according to browser format
-
+app.use(cors());
 // app.use(require('./img saver/imgSaver'));
 //get Routers to make APP.JS Clean
 app.use(require('./router/newEmp'));

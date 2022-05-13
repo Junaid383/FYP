@@ -229,35 +229,33 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
 
 // ==============================================PRODUCTLIST Data GET method ==================================
 
-// router.get('/admin/products', (req, res) => {
+router.get('/admin/products', (req, res) => {
 
-//     console.log('Welcome to productlist ');
-//   let product;
-//     const prodData = PRD.find({}, (err, prod) => {
-//         if (err) {
-//             console.log(err);
-//         }
-//         else {
-//             console.log("Product Found");
-//             product = prod;
+    // console.log('Welcome to productlist ');
+    // let product;
+    // const prodData = PRD.find({}, (err, prod) => {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    //     else {
+    //         console.log("Product Found");
+    //         product = prod;
 
-//         }
+    //     }
 
-//     }
-//     );
-//     if (!prodData) {
-//         throw new Error('Product Not FOund');
-//     }
+    // }
+    // );
+    // if (!prodData) {
+    //     throw new Error('Product Not FOund');
+    // }
 
-//     res.send(product);
+    // res.send(product);
 
-//     PRD.find()
+    PRD.find()
+        .then(prod => res.json(prod))
+        .catch(err => res.status(400).json('Error : $(err)'));
 
-//         .then(prod => res.json(prod))
-
-//         .catch(err => res.status(400).json('Error : $(err)'));
-
-// });
+});
 
 
 
@@ -288,7 +286,7 @@ router.post('/googlelogin', (req, res) => {
                     } else {
                         if (user) {
                             const token = user.generateAuthToken();
-                            
+
                             res.cookie("jwtoken", token, {
                                 expires: new Date(Date.now() + 258920000),
                                 httpOnly: true

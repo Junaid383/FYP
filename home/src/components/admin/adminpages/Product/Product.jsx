@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link  , useLocation} from "react-router-dom";
 import "./product.css";
 // import Chart from "../../../chart/Chart";
 import Chart from "../../../emp/chart/Chart"
@@ -8,6 +8,9 @@ import {productData} from "../../dummyData"
 import { Publish } from "@material-ui/icons";
 
 export default function Product() {
+    const location = useLocation();
+    console.log(location.pathname.substring(location.pathname.lastIndexOf("/") + 1, location.pathname.length));
+
     return (
         <div className="product">
             <div className="productTitleContainer">

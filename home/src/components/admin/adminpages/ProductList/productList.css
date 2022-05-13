@@ -1,37 +1,95 @@
-.productList{
-    flex: 3.87;
-    padding: 20px;
-    margin-bottom: 30px;
+.productList {
+  flex: 3.87;
+  padding: 20px;
+  margin-bottom: 30px;
 
 }
 
-.productTitleContainer{
-    padding-bottom: 10px;
+.productTitleContainer {
+  padding-bottom: 10px;
 }
-.productListItem{
-    display: flex;
-    align-items: center;
+
+.productListItem {
+  display: flex;
+  align-items: center;
 }
 
 .productListImg {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-  }
-
-.productListEdit{
-    border: none;
-    border-radius: 10px;
-    padding: 5px 10px;
-    background-color: #3bb077;
-    color: white;
-    cursor: pointer;
-    margin-right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
 }
 
-.productListDelete{
-    color: red;
-    cursor: pointer;
+.productListEdit {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: #3bb077;
+  color: white;
+  cursor: pointer;
+  /* margin-right: 20px; */
+}
+
+.productListDelete {
+  color: red;
+  cursor: pointer;
+}
+
+
+/* ================= Table =================  */
+
+
+.receipts-table a {
+  cursor: pointer;
+  padding: 5px;
+  /* background-color: hotpink; */
+  border: none;
+}
+
+table {
+  margin-top: 15px;
+  /* border-collapse: collapse; */
+  width: 100%;
+}
+
+.trHead {
+  border: 1px solid #ddd;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  text-align: left;
+  background-color: #F5F6FA;
+  color: #A3A6B4;
+  font-weight: bold;
+}
+
+.trData {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.scrollableDiv {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.scrollableDiv600 {
+  max-height: 600px;
+}
+
+.scrollableDiv600H {
+  height: 600px;
+}
+
+.h-page {
+  height: 640px;
+}
+
+.scrollableDiv thead th {
+  position: sticky;
+  top: -12px;
 }
