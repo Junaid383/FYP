@@ -247,6 +247,15 @@ router.get('/admin/users', (req, res) => {
 
 });
 
+router.get('/employee/home', (req, res) => {
+
+
+    PRD.find()
+        .then(prod => res.json(prod))
+        .catch(err => res.status(400).json('Error : $(err)'));
+
+});
+
 
 
 
