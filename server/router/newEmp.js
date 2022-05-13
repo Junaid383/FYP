@@ -117,7 +117,7 @@ router.post('/admsignin', async (req, res) => {
 
 
 // -----------------------------------------NEW EMPLOYEE-------------------------------------------------
-router.post('/newUser', async (req, res) => {
+router.post('/admin/newUser', async (req, res) => {
 
     const { username, name, email, password, cpassword, phone, address } = req.body;
     console.log(req.body);
@@ -231,31 +231,22 @@ router.post('/admin/newProduct', upload.single('image'), async (req, res) => {
 
 router.get('/admin/products', (req, res) => {
 
-    // console.log('Welcome to productlist ');
-    // let product;
-    // const prodData = PRD.find({}, (err, prod) => {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    //     else {
-    //         console.log("Product Found");
-    //         product = prod;
-
-    //     }
-
-    // }
-    // );
-    // if (!prodData) {
-    //     throw new Error('Product Not FOund');
-    // }
-
-    // res.send(product);
 
     PRD.find()
         .then(prod => res.json(prod))
         .catch(err => res.status(400).json('Error : $(err)'));
 
 });
+
+router.get('/admin/users', (req, res) => {
+
+
+    EMP.find()
+        .then(prod => res.json(prod))
+        .catch(err => res.status(400).json('Error : $(err)'));
+
+});
+
 
 
 
