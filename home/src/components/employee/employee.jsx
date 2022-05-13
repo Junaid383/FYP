@@ -77,7 +77,7 @@ function employee() {
                             <div className={`${styles.select_customer_div} ${styles.d_flex_sp}`}>
                                 <label for="select-customer">Select Customer:</label>
                                 <select name="select-customer"  className={styles.select_input}>
-                                    <option >None/Walk-in</option>
+                                    <option >None</option>
                                 </select>
 
                             </div>
