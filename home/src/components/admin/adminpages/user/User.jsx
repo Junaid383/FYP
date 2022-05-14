@@ -1,11 +1,48 @@
-import React from 'react'
+import React, { useEffect  , useState } from "react";
 
 import "./user.css";
 import { CalendarToday, LocationSearching, MailOutline, PermIdentity, PhoneAndroid, Publish } from '@material-ui/icons'
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 
 
 export default function User() {
+  const [data, setData] = useState([]);
+
+  const location = useLocation();
+  const userID = location.pathname.substring(location.pathname.lastIndexOf("/") + 1, location.pathname.length)
+  console.log(userID);
+
+  const FetchData = async (e) => {
+    const res = await fetch("/admin/user/:userID", {  ///newEMP route
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID
+      }),
+    });
+    const data1 = await res.json();  //getting data from backend newEMP line 245
+    console.log(data1);
+    setData(data1)
+
+
+    }
+
+   
+
+ 
+
+
+
+
+  useEffect(()=>{
+   FetchData(); 
+  },[]);
+
+ 
+
+
   return <div className="user">
     <div className="userTitleContainer">
       <h1 className="userTitle">Edit Employee</h1>
@@ -18,7 +55,7 @@ export default function User() {
         <div className="userShowTop">
           <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="userShowImg" />
           <div className="userShowTopTitle">
-            <span className="userShowUserName">Ali Asad</span>
+            <span className="userShowUserName">Software</span>
             <span className="userShowUserTitle">Engineer</span>
           </div>
         </div>
@@ -27,26 +64,23 @@ export default function User() {
 
           <div className="userShowInfo">
             <PermIdentity className="userShowIcon" />
-            <span className="userShowInfoTitle">aliasad00</span>
+          <span className="userShowInfoTitle">{data.name}</span>
           </div>
-          <div className="userShowInfo">
-            <CalendarToday className="userShowIcon" />
-            <span className="userShowInfoTitle">10.12.1999</span>
-          </div>
+          
 
           <span className="userShowTitle">Contact Details</span>
 
           <div className="userShowInfo">
             <PhoneAndroid className="userShowIcon" />
-            <span className="userShowInfoTitle">+92 316 6201209</span>
+            <span className="userShowInfoTitle">{data.phone}</span>
           </div>
           <div className="userShowInfo">
             <MailOutline className="userShowIcon" />
-            <span className="userShowInfoTitle">aliasad00@gmail.com</span>
+          <span className="userShowInfoTitle">{data.email}</span>
           </div>
           <div className="userShowInfo">
             <LocationSearching className="userShowIcon" />
-            <span className="userShowInfoTitle">Lahore | Pakistan</span>
+            <span className="userShowInfoTitle">{data.address}</span>
           </div>
 
         </div>

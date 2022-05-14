@@ -66,6 +66,22 @@ export default function UserList() {
   }
 
 
+//==================== Handling Update FUnction ==============================
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -107,7 +123,10 @@ export default function UserList() {
 
                   <td className="trData">
                     <Link to={`/admin/user/${cell._id}`}>
-                      <button className="productListEdit">Edit</button>
+                      <button  className="productListEdit">
+                        Edit
+                      </button>
+                      {/*  onClick={PostData} */}
                     </Link>
                     <DeleteOutline className="productListDelete" />
                   </td>
@@ -117,10 +136,6 @@ export default function UserList() {
           </tbody>
         </table>
       </div>
-
-
-
-
     </div>
   );
 }
