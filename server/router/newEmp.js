@@ -234,25 +234,60 @@ router.get("/employee/home", (req, res) => {
 });
 
 // ====================Update User==================
+router.post("/admin/user/update", async (req, res) => {
+  const { userID, username, name, email, phone, address } = req.body;
+  console.log(req.body);
+
+  if (!username || !name || !email || !phone || !address) {
+    console.log("Fill all field");
+    return res.status(422).json({ error: "Filled All fields" });
+  }
+
+  try {
+    const empExist = await EMP.findOne({ _id: userID }); //First from DB and 2nd from IP fields to check if same email exist or not
+
+    if (!empExist) {
+      return res.status(422).json({ error: "User not exist" });
+    } else {
+      EMP.findByIdAndUpdate(
+        userID,
+        {
+          username: username,
+          name: name , 
+          email:email,
+          phone:phone,
+          address:address
+         
+        },
+        function (err, doc) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log("Updated User : ", doc);
+          }
+        }
+      );
+
+      res.status(201).json({ message: "EMP registered" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 router.post("/admin/user/:userID", (req, res) => {
-  console.log("Update User Rendered");
-  console.log(req.body.userID);
-
+  //   console.log("Update User Rendered");
+  //   console.log(req.body);
   EMP.findById(req.body.userID)
     .then((user) => {
-        
-        res.json(user);  //sending data back to user-line25
-        console.log(user.name);
-        console.log(user.email);
+      ``;
+
+      res.json(user); //sending data back to user-line25
     })
     .catch((err) => {
       console.log(err);
     });
 });
-
-
-
 
 router.get("/admin", authenticate, (res, req) => {
   console.log("Welcome to success");
