@@ -152,7 +152,7 @@ router.post("/admin/newUser", async (req, res) => {
     console.log(err);
   }
 });
-// ------------------------------EMPLOYEE_____Login________________________________________----------------------
+// ------------------------------EMPLOYEE__Login_____________----------------------
 
 router.post("/signin", async (req, res) => {
   try {
