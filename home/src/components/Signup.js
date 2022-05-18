@@ -27,7 +27,7 @@ function Signup() {
 
     const { username, name, email, phone, password, cpassword, address } = user;
 
-    const res = await fetch("/newUser", {
+    const res = await fetch("/admin/newUser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -55,7 +55,7 @@ function Signup() {
     } else {
       toast.success('Registration Successful', {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,

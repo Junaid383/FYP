@@ -5,11 +5,12 @@ import styles from "./employee.module.css";
 
 function employee() {
   const [data, setData] = useState([]);
-
+  const [cartProducts, setCartProducts] = useState([]);
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
   const domainURL = "http://localhost:5000";
+
   const fetchProducts = async () => {
     const response = await fetch(`${domainURL}/employee/home`);
     const prods = await response.json();
@@ -17,12 +18,10 @@ function employee() {
     setData(prods);
     // createReceiptsTable(prods)
   };
+
   useEffect(() => {
     fetchProducts();
   }, []);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   // var data = [];
   var newTable;
@@ -61,6 +60,17 @@ function employee() {
     //populating the table
   }
 
+  const searchHandler = (event) => {
+    console.log(event.target.value);
+  };
+  const addToCartHandler = (id) => {
+    // console.log(id);`
+
+    const productToAddInCart = data.find((theObj) => theObj._id === id);
+    console.log(productToAddInCart);
+    setCartProducts([...cartProducts, productToAddInCart]);
+  };
+  
   return (
     <div>
       <span className={styles.account_options}>
@@ -86,8 +96,8 @@ function employee() {
           <p className={styles.success_info}></p>
         </div>
       </div>
-      <div className={`${styles.main} ${styles.d_flex}`}>
-        <div className={styles.last_receipts_container}>
+      <div className={` ${styles.main} ${styles.d_flex}`}>
+        <div className={styles.last_transactions_container}>
           <div className={styles.section_title_bkg}>
             <h1>Recent Orders</h1>
           </div>
@@ -110,6 +120,7 @@ function employee() {
                 <i className={`${styles.fas} ${styles.fa_search}`}></i>
               </span>
               <input
+                onChange={searchHandler}
                 type="text"
                 name="search-products"
                 placeholder="Search for an item"
@@ -137,7 +148,7 @@ function employee() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((cell, idx) => {
+                    {data.map((cell) => {
                       return (
                         <tr key={cell._id}>
                           {/* <td className="trData">{idx + 1}</td> */}
@@ -145,10 +156,12 @@ function employee() {
                           <td className="trData">{cell.price}</td>
                           <td className="trData">{cell.stock}</td>
                           <td className="trData">
-                            <Link to={`/admin/product/${cell._id}`}>
-                              <button className="productListEdit">Add to Cart</button>
-                            </Link>
-                            
+                            <button
+                              className="productListEdit"
+                              onClick={() => addToCartHandler(cell._id)}
+                            >
+                              Add to Cart
+                            </button>
                           </td>
                         </tr>
                       );
@@ -174,27 +187,66 @@ function employee() {
                 </select>
               </div>
             </div>
-            <div className={`${styles.nothing} ${styles.nothing_cart_item}`}>
-              <h1>No Items in Order</h1>
-              <h3>Search and Add to order </h3>
-            </div>
-            <div className={styles.scrollableDiv}></div>
+            {cartProducts.length === 0 ? (
+              <div className={`${styles.nothing} ${styles.nothing_cart_item}`}>
+                <h1>No Items in Order</h1>
+                <h3>Search and Add to order </h3>
+              </div>
+            ) : (
+              <div className={styles.scrollableDiv}>
+                <table id="current-order-box-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      {/* <th>Qty</th>
+                      <th>Total</th> */}
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cartProducts.map((cartItem, idx) => (
+                      <tr>
+                        <td>{idx + 1}</td>
+                        <td>{cartItem.name}</td>
+                        <td>Rs. {cartItem.price}</td>
+                        {/* <td>
+                          <input
+                            type="number"
+                            value="4"
+                            name="qty"
+                            id="qty-85"
+                            class="current-prod-qty"
+                            min="0"
+                            oninput="currentProdQty(event)"
+                          />
+                        </td> */}
+                        {/* <td>Rs. 5200</td> */}
+                        <td>
+                          <button>Remove</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
             <br></br>
 
             <div className={styles.calculationDivs}>
-              <div className={`${styles.subtotal_div} ${styles.d_flex_sp}`}>
+              <div className={`${styles.subtotal_div}`}>
                 <h2>Subtotal:</h2>
                 <p className={styles.to_right}>0 Rs.</p>
               </div>
               <div className={`${styles.add_discount_div} ${styles.d_flex_sp}`}>
-                <label for="add-discount">Add Discount</label>
+                <label htmlFor="add-discount">Add Discount</label>
                 <div className={`${styles.discount_input} ${styles.to_right}`}>
                   <input
                     type="number"
-                    value="0"
                     name="add-discount"
                     min="0"
-                    disabled
+                    
                   />
                   <span>Rs. </span>
                 </div>
@@ -218,7 +270,7 @@ function employee() {
               </div>
             </div>
             <br></br>
-            <button disabled className={`${styles.btn} ${styles.save_btn}`}>
+            <button disabled className={`${styles.save_btn} ${styles.btn}`}>
               Save & Print Receipt
             </button>
           </div>

@@ -157,7 +157,7 @@ router.post('/signin', async (req, res) => {
         if (!email || !password) {
             return res.status(400).json({ error: "Filled all fields" });
         }
-        const empLog = await EMP.findOne({ email: email });
+        const empLog = await EMP.findOne({ email: email }); //find One is mongodb method
         // console.log(empLog);
 
         if (empLog) {

@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 const cors = require("cors");
 const express = require('express');
 const app = express();
-
 dotenv.config({ path: './config.env' });
 
 // const DB = 'mongodb+srv://admin:admin@cluster0.sgfz4.mongodb.net/inventroy?retryWrites=true&w=majority'
