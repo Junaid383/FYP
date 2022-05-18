@@ -65,27 +65,7 @@ export default function UserList() {
     //populating the table
   }
 
-
-//==================== Handling Update FUnction ==============================
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //==================== Handling Update FUnction ==============================
 
   return (
     <div className="userList">
@@ -123,12 +103,12 @@ export default function UserList() {
 
                   <td className="trData">
                     <Link to={`/admin/user/${cell._id}`}>
-                      <button  className="productListEdit">
-                        Edit
-                      </button>
+                      <button className="productListEdit">Edit</button>
                       {/*  onClick={PostData} */}
                     </Link>
-                    <DeleteOutline className="productListDelete" />
+                    <button>
+                      <DeleteOutline className="productListDelete" />
+                    </button>
                   </td>
                 </tr>
               );
