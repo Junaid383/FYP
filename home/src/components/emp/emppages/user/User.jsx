@@ -29,10 +29,7 @@ export default function User() {
             <PermIdentity className="userShowIcon" />
             <span className="userShowInfoTitle">aliasad00</span>
           </div>
-          <div className="userShowInfo">
-            <CalendarToday className="userShowIcon" />
-            <span className="userShowInfoTitle">10.12.1999</span>
-          </div>
+         
 
           <span className="userShowTitle">Contact Details</span>
 
