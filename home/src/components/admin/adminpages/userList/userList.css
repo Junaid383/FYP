@@ -34,3 +34,8 @@
       color: red;
       cursor: pointer;
   }
+  .delButtonUser{
+    /* display: none; */
+    border: none;
+    background-color: white;
+  }

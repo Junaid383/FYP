@@ -36,12 +36,24 @@ function Login() {
 
     if (res.status === 400 || !data) {
       
-      window.alert("Error");
+      toast.error("Login Failed.", {
+        position: "top-center",
+        reverseOrder: false,
+        autoClose: 1500,
+      })
 
 
     }
     else {
-      window.alert('Logged IN');
+      toast.success('Login Successful', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
       histroy.push("/admin/home");
 
     }

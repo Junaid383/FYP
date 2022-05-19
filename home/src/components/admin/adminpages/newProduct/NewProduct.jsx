@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styles from "./newProduct.module.css";
+import { ToastContainer , toast } from 'react-toastify';
+
 import { NavLink, useHistory } from 'react-router-dom';
 
 
@@ -44,10 +46,22 @@ export default function NewProduct() {
 
     if (res.status === 422 || !data) {
         console.log(data.image);
-      window.alert("Invalid Registration");
+        toast.error("Registration Error.", {
+          position: "top-center",
+          reverseOrder: false,
+          autoClose: 1500,
+        })
 
     } else {
-      window.alert(" Product Registered Successfull");
+      toast.success('Product Enter Successfully ', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
 
       history.push('/admin/products');
     }

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 // import"from"'./newuser.css';
 import "./newuser.css";
+import { ToastContainer , toast } from 'react-toastify';
+
 import { NavLink, useHistory } from "react-router-dom";
 
 export default function newUser() {
@@ -52,9 +54,22 @@ export default function newUser() {
 
     if (res.status === 422 || !data) {
       
-      window.alert("Invalid Registration");
+      toast.error("Registration Failed.", {
+        position: "top-center",
+        reverseOrder: false,
+        autoClose: 1500,
+      })
+     
     } else {
-      window.alert(" Employee Registered Successfull");
+      toast.success('Em[ployee Registered Successful', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
 
       history.push("/admin/users");
     }

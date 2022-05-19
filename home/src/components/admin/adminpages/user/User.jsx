@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {useHistory } from "react-router-dom";
+import { ToastContainer , toast } from 'react-toastify';
+
 
 import "./user.css";
 import {
@@ -84,9 +86,21 @@ const PostData = async () => {
   console.log(updata);
   if (res.status === 422 || !updata) {
       
-    window.alert("Invalid Updation");
+    toast.error("Fill all Fields.", {
+      position: "top-center",
+      reverseOrder: false,
+      autoClose: 1500,
+    })
   } else {
-    window.alert(" Employee Updated Successfull");
+    toast.success('User Update Successful', {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+    });
 
     history.push("/admin/users/");
   }

@@ -84,7 +84,7 @@ function Login() {
 
 
             <button type='submit' id="signUpBut" onClick={loginUser}  >Login</button>
-            {/* <GoogleButton/> */}
+            <GoogleButton/>
 
             {/* <a href= "" id="googleLogin"><i class="fab fa-google"></i>Sign In With Google</a> */}
 
