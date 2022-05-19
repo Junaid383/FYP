@@ -65,7 +65,13 @@ export default function UserList() {
     //populating the table
   }
 
-  //==================== Handling Update FUnction ==============================
+  //==================== Handling Delete FUnction ==============================
+
+const delUser =()=>{
+  
+}
+
+
 
   return (
     <div className="userList">
@@ -106,7 +112,8 @@ export default function UserList() {
                       <button className="productListEdit">Edit</button>
                       {/*  onClick={PostData} */}
                     </Link>
-                    <button>
+                    
+                    <button onClick={delUser} className="delButtonUser">
                       <DeleteOutline className="productListDelete" />
                     </button>
                   </td>
