@@ -65,6 +65,35 @@ export default function ProductList() {
     //populating the table
   }
 
+
+
+  // =================DELete Product===================
+  const updateProductsTable =(id)=>{
+    const updatedArray = data.filter(obj=>obj._id!==id)
+    setData(updatedArray)
+  }
+  const delProd =async (id)=>{
+    const res = await fetch("/admin/product/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+       id
+      }),
+    });
+    if(res.ok){
+    const deletedPROD = await res.json();
+    // console.log(deletedEmp.emp._id)
+    updateProductsTable(deletedPROD.emp._id)
+    }
+    
+    
+    
+      
+    }
+    
+
   return (
     <div className="productList">
       <div className="productTitleContainer">
@@ -108,7 +137,12 @@ export default function ProductList() {
                     <Link to={`/admin/product/${cell._id}`}>
                       <button className="productListEdit">Edit</button>
                     </Link>
-                    <DeleteOutline className="productListDelete" />
+                    <button
+                      onClick={() => delProd(cell._id)}
+                      className="delButtonUser"
+                    >
+                      <DeleteOutline className="productListDelete" />
+                    </button>
                   </td>
                 </tr>
               );

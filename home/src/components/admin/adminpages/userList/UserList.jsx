@@ -10,6 +10,7 @@ import { useState } from "react";
 
 export default function UserList() {
   const [data, setData] = useState([]);
+  // const [delUser , setdelUser] = useState([]);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -24,10 +25,9 @@ export default function UserList() {
   };
   useEffect(() => {
     fetchProducts();
+    
   }, []);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+ 
 
   var newTable;
   function createReceiptsTable(arraysOfArrays) {
@@ -66,8 +66,28 @@ export default function UserList() {
   }
 
   //==================== Handling Delete FUnction ==============================
+const updateProductsTable =(id)=>{
+  const updatedArray = data.filter(obj=>obj._id!==id)
+  setData(updatedArray)
+}
+const delUser =async (id)=>{
+const res = await fetch("/admin/user/delete", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+   id
+  }),
+});
+if(res.ok){
+const deletedEmp = await res.json();
+// console.log(deletedEmp.emp._id)
+updateProductsTable(deletedEmp.emp._id)
+}
 
-const delUser =()=>{
+
+
   
 }
 
@@ -113,7 +133,7 @@ const delUser =()=>{
                       {/*  onClick={PostData} */}
                     </Link>
                     
-                    <button onClick={delUser} className="delButtonUser">
+                    <button onClick={()=> delUser(cell._id)} className="delButtonUser">
                       <DeleteOutline className="productListDelete" />
                     </button>
                   </td>
