@@ -5,9 +5,10 @@
   margin: 0;
 }
 .main {
-  width: 1500px;
+  width: 1350px;
 
   margin: 0 auto;
+  margin-bottom: 76px;
 }
 
 /* error Block */
@@ -38,7 +39,7 @@
 }
 .dropbtn {
   width: 80px;
-  background-color: white;
+  background-color: E9D5CA;
   color: #4d4f5c;
   outline: none;
   border: none;
@@ -65,7 +66,7 @@
 
 .account_options {
   position: absolute;
-  right: 300px;
+  right: 200px;
 }
 /* tables  */
 
@@ -228,7 +229,7 @@ tr:hover {
   /* background-color: darkgray;s */
 }
 .total_div > h1 {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .status_of_payment_div {
@@ -255,6 +256,7 @@ tr:hover {
   font-size: larger;
   position: relative;
   bottom: -20px;
+  margin-bottom: 24px;
 }
 .order_status_btn {
   width: 200px;
@@ -324,10 +326,11 @@ tr:hover {
   z-index: -9;
 }
 .section_title_bkg > h1 {
-  font-size: xx-large;
-  font-weight: 900;
+  /* font-style: ; */
+  font-size: x-large;
+  font-weight: 700;
   position: relative;
-  top: 9px;
+  top: 20px;
 }
 .section_wraper {
   padding: 25px;
@@ -377,4 +380,14 @@ tr:hover {
 
 .b_s_none {
   box-shadow: none;
+}
+
+
+.removebtn{
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: #EC9B3B;
+  color: white;
+  cursor: pointer; 
 }

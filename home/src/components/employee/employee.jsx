@@ -1,15 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "./employee.module.css";
 
+let total = 0;
+
+
 function employee() {
-  const [data, setData] = useState([]);
-  const [cartProducts, setCartProducts] = useState([]);
+
+  const [data, setData] = useState([]); // saari mongo db wali
+  const [cartProducts, setCartProducts] = useState([]); // sirf hmari CART wali state
+  const [subTotal, setSubTotal] = useState(); // total price ki state after discount
+  const [totalAmountAfterDiscount, setTotalAfterDiscount] = useState(); // total ki state before discount
+  const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
   const domainURL = "http://localhost:5000";
+
+  const discountRef = useRef(null);
 
   const fetchProducts = async () => {
     const response = await fetch(`${domainURL}/employee/home`);
@@ -63,20 +72,42 @@ function employee() {
   const searchHandler = (event) => {
     console.log(event.target.value);
   };
-  const addToCartHandler = (id) => {
+
+  const itemRemoveHandler = (item) => {
+    // console.log(item);
+    const updatedCartItems = cartProducts.filter((theObj) => theObj._id !== item._id);
+    setCartProducts(updatedCartItems);
+
+    total -= item.price;
+    setSubTotal(total);
+    setTotalAfterDiscount(total);
+  };
+
+  const addToCartHandler = (item) => {
     // console.log(id);`
 
-    const productToAddInCart = data.find((theObj) => theObj._id === id);
-    console.log(productToAddInCart);
-    setCartProducts([...cartProducts, productToAddInCart]);
-  };
-  
+    const productToAddInCart = data.find((theObj) => theObj._id === item._id);
+    // console.log(productToAddInCart);
+    setCartProducts([...cartProducts, productToAddInCart]); // rest operator
+
+
+    total += item.price;
+    setSubTotal(total);
+    setTotalAfterDiscount(total);
+  };  
+
+  const discountHandler = () => {
+    // console.log(discountRef.current.value);
+    setDiscount(discountRef.current.value);
+    setTotalAfterDiscount(pichlaTotal=>pichlaTotal - discountRef.current.value);
+  }
+
   return (
     <div>
       <span className={styles.account_options}>
         <div className={styles.dropdown}>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
-            Emp
+            EMP
             <i className={`${styles.fa} ${styles.fa_caret_down}`}></i>
           </button>
           <div className={styles.dropdown_content}>
@@ -158,7 +189,7 @@ function employee() {
                           <td className="trData">
                             <button
                               className="productListEdit"
-                              onClick={() => addToCartHandler(cell._id)}
+                              onClick={() => addToCartHandler(cell)}
                             >
                               Add to Cart
                             </button>
@@ -202,7 +233,7 @@ function employee() {
                       <th>Price</th>
                       {/* <th>Qty</th>
                       <th>Total</th> */}
-                      <th>Remove</th>
+                      <th>remove</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -224,7 +255,7 @@ function employee() {
                         </td> */}
                         {/* <td>Rs. 5200</td> */}
                         <td>
-                          <button>Remove</button>
+                          <button className={styles.removebtn} onClick= {() =>  itemRemoveHandler(cartItem)}>Remove</button>
                         </td>
                       </tr>
                     ))}
@@ -237,23 +268,18 @@ function employee() {
             <div className={styles.calculationDivs}>
               <div className={`${styles.subtotal_div}`}>
                 <h2>Subtotal:</h2>
-                <p className={styles.to_right}>0 Rs.</p>
+                <p className={styles.to_right}>{subTotal} Rs.</p>
               </div>
               <div className={`${styles.add_discount_div} ${styles.d_flex_sp}`}>
                 <label htmlFor="add-discount">Add Discount</label>
                 <div className={`${styles.discount_input} ${styles.to_right}`}>
-                  <input
-                    type="number"
-                    name="add-discount"
-                    min="0"
-                    
-                  />
+                  <input type="number" ref={discountRef} onChange={discountHandler} name="add-discount" min="0" value={discountedAmount} />
                   <span>Rs. </span>
                 </div>
               </div>
               <div className={`${styles.total_div} ${styles.d_flex_sp}`}>
                 <h1>Total bill:</h1>
-                <h2 className={styles.to_right}>0 Rupees</h2>
+                <h2 className={styles.to_right}>{totalAmountAfterDiscount} Rs</h2>
               </div>
               <div
                 className={`${styles.status_of_payment_div} ${styles.d_flex_sp}`}
