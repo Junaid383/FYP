@@ -161,7 +161,7 @@ const PostData = async () => {
   return (
     <div className="product">
       <div className="productTitleContainer">
-        <h1 className="productTitle">Product</h1>
+        <h1 className="productTitle">Edit Product</h1>
         <Link to="/admin/newProduct">
           <button className="productAddButton">Create</button>
         </Link>
@@ -191,7 +191,7 @@ const PostData = async () => {
 
             <div className="productInfoItem">
               <span className="productInfoKey">In Stock:</span>
-              <span className="productInfoValue">no</span>
+              <span className="productInfoValue">Yes</span>
             </div>
           </div>
         </div>

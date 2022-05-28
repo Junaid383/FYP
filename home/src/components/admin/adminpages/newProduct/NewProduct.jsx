@@ -46,7 +46,7 @@ export default function NewProduct() {
 
     if (res.status === 422 || !data) {
         console.log(data.image);
-        toast.error("Registration Error.", {
+        toast.error("Filled All Field.", {
           position: "top-center",
           reverseOrder: false,
           autoClose: 1500,
