@@ -54,14 +54,14 @@ export default function newUser() {
 
     if (res.status === 422 || !data) {
       
-      toast.error("Registration Failed.", {
+      toast.error("Filled All Fieled.", {
         position: "top-center",
         reverseOrder: false,
         autoClose: 1500,
       })
      
     } else {
-      toast.success('Em[ployee Registered Successful', {
+      toast.success('Employee Registered Successful', {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -88,7 +88,7 @@ export default function newUser() {
             value={user.username}
             onChange={handleInputs}
             type="text"
-            placeholder="Ali"
+            placeholder="Enter Username"
           />
         </div>
 
@@ -101,7 +101,7 @@ export default function newUser() {
             value={user.name}
             onChange={handleInputs}
             type="text"
-            placeholder="Ali Asad"
+            placeholder="Enter FUll Name "
           />
         </div>
 
@@ -114,7 +114,7 @@ export default function newUser() {
             value={user.email}
             onChange={handleInputs}
             type="email"
-            placeholder="ali@gmail.com"
+            placeholder="Enter Email Address"
           />
         </div>
 
@@ -127,7 +127,7 @@ export default function newUser() {
             value={user.password}
             onChange={handleInputs}
             type="password"
-            placeholder="password"
+            placeholder="Enter Password"
           />
         </div>
 
@@ -140,7 +140,7 @@ export default function newUser() {
             value={user.xpassword}
             onChange={handleInputs}
             type="password"
-            placeholder="xpassword"
+            placeholder="Confirm Password"
           />
         </div>
 
@@ -148,12 +148,12 @@ export default function newUser() {
           <label htmlFor="">Phone</label>
           <input
            name = "phone"
-            className="ipfield"
+            // className="ipfield"
             autoComplete="off"
             value={user.phone}
             onChange={handleInputs}
             type="text"
-            placeholder="+92 316 6201209"
+            placeholder="Enter Contact Number"
           />
         </div>
 
@@ -166,7 +166,7 @@ export default function newUser() {
             value={user.address}
             onChange={handleInputs}
             type="text"
-            placeholder="Lahore | Pakistan"
+            placeholder="Address"
           />
         </div>
 
