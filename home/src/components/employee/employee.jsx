@@ -2,12 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "./employee.module.css";
-
+import CartItem from "./CartItem";
 let total = 0;
 
-
 function employee() {
-
   const [data, setData] = useState([]); // saari mongo db wali
   const [cartProducts, setCartProducts] = useState([]); // sirf hmari CART wali state
   const [subTotal, setSubTotal] = useState(); // total price ki state after discount
@@ -25,83 +23,70 @@ function employee() {
     const prods = await response.json();
 
     setData(prods);
+    console.log(prods);
     // createReceiptsTable(prods)
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  // var data = [];
-  var newTable;
-  function createReceiptsTable(arraysOfArrays) {
-    var t_cols = 8;
-    let tableElement = document.createElement("tablee");
-    tableElement.id = "table-main-receipts";
-
-    document.getElementById("receipts-table-div").appendChild(tableElement);
-    var row;
-    newTable = document.getElementById("table-main-receipts");
-    //Inserting New Row
-    for (let i = 0; i < arraysOfArrays.length; i++) {
-      row = newTable.insertRow();
-      for (let j = 0; j < t_cols; j++) row.insertCell();
-    }
-    //creating table head
-    var tablehead = newTable.createTHead();
-    // tablehead.classList.add("sticky");
-    row = tablehead.insertRow();
-    let ths = [
-      "Order Id",
-      "Datetime",
-      "Amount",
-      "Sold by",
-      "Sold to",
-      "Status",
-      "Action",
-      "Manage",
-    ];
-    for (let i = 0; i < t_cols; i++) row.append(document.createElement("th"));
-    for (let i = 0; i < t_cols; i++)
-      tablehead.rows[0].cells[i].innerHTML = ths[i];
-
-    var dataTable;
-    //populating the table
-  }
-
+  // useEffect(()=>)
   const searchHandler = (event) => {
     console.log(event.target.value);
   };
 
   const itemRemoveHandler = (item) => {
     // console.log(item);
-    const updatedCartItems = cartProducts.filter((theObj) => theObj._id !== item._id);
+    const updatedCartItems = cartProducts.filter(
+      (theObj) => theObj._id !== item._id
+    );
     setCartProducts(updatedCartItems);
 
-    total -= item.price;
-    setSubTotal(total);
-    setTotalAfterDiscount(total);
+    // total -= item.price;
+    setSubTotal(updateTotal(updatedCartItems));
+    // setTotalAfterDiscount(total);
   };
 
   const addToCartHandler = (item) => {
     // console.log(id);`
-
-    const productToAddInCart = data.find((theObj) => theObj._id === item._id);
+    const allProducts = [...data];
+    const productToAddInCart = allProducts.find(
+      (theObj) => theObj._id === item._id
+      );
+      //console.log(productToAddInCart);
+    productToAddInCart.qty = 1;
     // console.log(productToAddInCart);
-    setCartProducts([...cartProducts, productToAddInCart]); // rest operator
-
-
-    total += item.price;
-    setSubTotal(total);
-    setTotalAfterDiscount(total);
-  };  
+    // following line is => finding wheather the product that user clicked on from search to add in the cart is already available in the cart not
+    const idx = cartProducts.findIndex((x) => x._id === item._id);
+    if (idx !== -1) {
+      const tempCartProducts = [...cartProducts];
+      tempCartProducts[idx] = {
+        ...tempCartProducts[idx],
+        qty: (tempCartProducts[idx].qty += 1),
+      };
+      setCartProducts(tempCartProducts);
+      setSubTotal(updateTotal(tempCartProducts))
+    } else {
+      setCartProducts([...cartProducts, productToAddInCart]); // rest operator
+      setSubTotal(updateTotal(cartProducts)+(productToAddInCart.price))
+    }
+    
+  };
 
   const discountHandler = () => {
     // console.log(discountRef.current.value);
     setDiscount(discountRef.current.value);
-    setTotalAfterDiscount(pichlaTotal=>pichlaTotal - discountRef.current.value);
+    setTotalAfterDiscount(
+      (pichlaTotal) => pichlaTotal - discountRef.current.value
+    );
+  };
+  const updateTotal = (arr)=>{
+    let total = 0;
+    arr.forEach((cartProd) => {
+      total += cartProd.qty*cartProd.price;
+    });
+    return total;
   }
-
   return (
     <div>
       <span className={styles.account_options}>
@@ -231,33 +216,20 @@ function employee() {
                       <th>#</th>
                       <th>Name</th>
                       <th>Price</th>
-                      {/* <th>Qty</th>
-                      <th>Total</th> */}
+
+                      <th>Qty</th>
+                      <th>Total</th>
                       <th>remove</th>
                     </tr>
                   </thead>
                   <tbody>
                     {cartProducts.map((cartItem, idx) => (
-                      <tr>
-                        <td>{idx + 1}</td>
-                        <td>{cartItem.name}</td>
-                        <td>Rs. {cartItem.price}</td>
-                        {/* <td>
-                          <input
-                            type="number"
-                            value="4"
-                            name="qty"
-                            id="qty-85"
-                            class="current-prod-qty"
-                            min="0"
-                            oninput="currentProdQty(event)"
-                          />
-                        </td> */}
-                        {/* <td>Rs. 5200</td> */}
-                        <td>
-                          <button className={styles.removebtn} onClick= {() =>  itemRemoveHandler(cartItem)}>Remove</button>
-                        </td>
-                      </tr>
+                      <CartItem
+                        key={cartItem._id + idx}
+                        data={cartItem}
+                        idx={idx}
+                        itemRemoveHandler={itemRemoveHandler}
+                      />
                     ))}
                   </tbody>
                 </table>
@@ -273,13 +245,22 @@ function employee() {
               <div className={`${styles.add_discount_div} ${styles.d_flex_sp}`}>
                 <label htmlFor="add-discount">Add Discount</label>
                 <div className={`${styles.discount_input} ${styles.to_right}`}>
-                  <input type="number" ref={discountRef} onChange={discountHandler} name="add-discount" min="0" value={discountedAmount} />
+                  <input
+                    type="number"
+                    ref={discountRef}
+                    onChange={discountHandler}
+                    name="add-discount"
+                    min="0"
+                    value={discountedAmount}
+                  />
                   <span>Rs. </span>
                 </div>
               </div>
               <div className={`${styles.total_div} ${styles.d_flex_sp}`}>
                 <h1>Total bill:</h1>
-                <h2 className={styles.to_right}>{totalAmountAfterDiscount} Rs</h2>
+                <h2 className={styles.to_right}>
+                  {subTotal-discountedAmount} Rs
+                </h2>
               </div>
               <div
                 className={`${styles.status_of_payment_div} ${styles.d_flex_sp}`}
