@@ -62,6 +62,10 @@ function AdminDashboard() {
                         <Recipts/>
                     </Route>
 
+                    <Route path="/admin/recipts/:ID">
+                        <Recipts/>
+                    </Route>
+
 
                     {/* reports */}
                     <Route path="/admin/reports">

@@ -86,7 +86,8 @@ function Signup() {
               autoComplete='off'
               value={user.username}
               onChange={handleInputs}
-              placeholder="Username" />
+              placeholder="Username"
+              required />
 
           </div>
 
@@ -105,6 +106,8 @@ function Signup() {
             <label for="left_card_grey">Email address</label>
             {/* <LockOutlined className="card_input_icon" /> */}
             <input type="email" name='email'
+            pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$'
+            
               autoComplete='off'
               value={user.email}
               onChange={handleInputs}
@@ -119,9 +122,11 @@ function Signup() {
             {/* <LockOutlined className="card_input_icon" /> */}
             <input className="form-control" type="tel" name='phone'
               autoComplete='off'
+              pattern="^\d{4}-\d{3}-\d{4}$"
               value={user.phone}
               onChange={handleInputs}
-              placeholder="Contact" />
+              placeholder="XXXX-XXX-XXXX" 
+              required/>
           </div>
 
           <div className="form-group">

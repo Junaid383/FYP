@@ -110,7 +110,7 @@ router.post("/admsignin", async (req, res) => {
   }
 });
 
-// -----------------------------------------NEW EMPLOYEE-------------------------------------------------
+// -----------------  ------------------------NEW EMPLOYEE-------------------------------------------------
 router.post("/admin/newUser", async (req, res) => {
   const { username, name, email, password, cpassword, phone, address } =
     req.body;
