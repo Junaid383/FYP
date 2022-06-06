@@ -6,9 +6,11 @@ import { productRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Modal from './Modal'
 
 export default function ProductList() {
   const [data, setData] = useState([]);
+  const [isOpen , setIsOpen] = useState(false);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -72,6 +74,7 @@ export default function ProductList() {
     const updatedArray = data.filter(obj=>obj._id!==id)
     setData(updatedArray)
   }
+  
   const delProd =async (id)=>{
     const res = await fetch("/admin/product/delete", {
       method: "POST",
@@ -137,10 +140,19 @@ export default function ProductList() {
                     <Link to={`/admin/product/${cell._id}`}>
                       <button className="productListEdit">Edit</button>
                     </Link>
-                    <button
+
+
+                    {/* <button
                       onClick={() => delProd(cell._id)}
                       className="delButtonUser"
                     >
+                      <DeleteOutline className="productListDelete" />
+                    </button> */}
+                     <button
+                      onClick={()=> setIsOpen(true)} 
+                      className="delButtonUser"
+                    >
+                      
                       <DeleteOutline className="productListDelete" />
                     </button>
                   </td>

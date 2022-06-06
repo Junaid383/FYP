@@ -24,7 +24,7 @@ const App = () => {
         {/* <Topbar /> */}
 
         <Switch>
-          <Route exact path="/">
+          <Route ex act path="/">
 
             <Home />
           </Route>
@@ -54,6 +54,7 @@ const App = () => {
           <Route path="/test" >
             <Test />
           </Route>
+
 
 
         </Switch>
