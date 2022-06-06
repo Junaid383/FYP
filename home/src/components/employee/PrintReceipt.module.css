@@ -42,7 +42,8 @@
     background-color: rgb(165, 20, 20);
 }
 
-.print_prnt-btn-div button{
+
+.print_prnt-btn-div > button{
     background-color: #A3A0FB;
     border:none;
     color:white;
@@ -54,7 +55,7 @@
     font-weight: bold;
 
 }
-.print_prnt-btn-div button:hover {
+.print_prnt-btn-div > button:hover {
     cursor: pointer;
     background-color: #807cf5;
     box-shadow: 0px 8px 14px 0px rgba(173, 171, 173, 0.print_57);
