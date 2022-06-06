@@ -17,6 +17,7 @@ import Product from "./admin/adminpages/Product/Product";
 import NewProduct from "./admin/adminpages/newProduct/NewProduct";
 import Recipts from "./admin/adminpages/recipts/Recipts";
 import Reports from "./admin/adminpages/reports/Reports";
+// import Navbar from './components/Navbar';
 
 
 function AdminDashboard() {
@@ -24,6 +25,7 @@ function AdminDashboard() {
         <Route path="/admin">
            <div className="container" id="container">
                 <Sidebar />
+                {/* <Navbar /> */}
                  <Switch>
                     <Route exact path="/admin/home">
                         <AdminHome />
