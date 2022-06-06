@@ -52,8 +52,8 @@ function employee() {
     const allProducts = [...data];
     const productToAddInCart = allProducts.find(
       (theObj) => theObj._id === item._id
-      );
-      //console.log(productToAddInCart);
+    );
+    //console.log(productToAddInCart);
     productToAddInCart.qty = 1;
     // console.log(productToAddInCart);
     // following line is => finding wheather the product that user clicked on from search to add in the cart is already available in the cart not
@@ -65,12 +65,11 @@ function employee() {
         qty: (tempCartProducts[idx].qty += 1),
       };
       setCartProducts(tempCartProducts);
-      setSubTotal(updateTotal(tempCartProducts))
+      setSubTotal(updateTotal(tempCartProducts));
     } else {
       setCartProducts([...cartProducts, productToAddInCart]); // rest operator
-      setSubTotal(updateTotal(cartProducts)+(productToAddInCart.price))
+      setSubTotal(updateTotal(cartProducts) + productToAddInCart.price);
     }
-    
   };
 
   const discountHandler = () => {
@@ -80,13 +79,13 @@ function employee() {
       (pichlaTotal) => pichlaTotal - discountRef.current.value
     );
   };
-  const updateTotal = (arr)=>{
+  const updateTotal = (arr) => {
     let total = 0;
     arr.forEach((cartProd) => {
-      total += cartProd.qty*cartProd.price;
+      total += cartProd.qty * cartProd.price;
     });
     return total;
-  }
+  };
   return (
     <div>
       <span className={styles.account_options}>
@@ -259,7 +258,7 @@ function employee() {
               <div className={`${styles.total_div} ${styles.d_flex_sp}`}>
                 <h1>Total bill:</h1>
                 <h2 className={styles.to_right}>
-                  {subTotal-discountedAmount} Rs
+                  {subTotal - discountedAmount} Rs
                 </h2>
               </div>
               <div
@@ -272,14 +271,16 @@ function employee() {
                   Change Pay Status
                 </button>
                 <div className={styles.paid_status_text}>
-                  <h2>Unpaid</h2>
+                  <h2>Paid</h2>
                 </div>
               </div>
             </div>
             <br></br>
-            <button disabled className={`${styles.save_btn} ${styles.btn}`}>
-              Save & Print Receipt
-            </button>
+            <Link to={`/employee/printreceipt`}>
+              <button  className={`${styles.save_btn} ${styles.btn}`}>
+                Save & Print Receipt
+              </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -54,7 +54,7 @@ function Login() {
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-      }); histroy.push("/employee/home");
+      }); histroy.push("/employee/");
 
     }
 
