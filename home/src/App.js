@@ -24,7 +24,7 @@ const App = () => {
         {/* <Topbar /> */}
 
         <Switch>
-          <Route ex act path="/">
+          <Route exact path="/">
 
             <Home />
           </Route>
