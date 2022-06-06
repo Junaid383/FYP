@@ -11,6 +11,12 @@ function employee() {
   const [subTotal, setSubTotal] = useState(); // total price ki state after discount
   const [totalAmountAfterDiscount, setTotalAfterDiscount] = useState(); // total ki state before discount
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
+ 
+  //Serach Filter
+  const [name, setName] = useState('');
+    const [foundUsers, setFoundUsers] = useState();
+ 
+ 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
@@ -23,16 +29,41 @@ function employee() {
     const prods = await response.json();
 
     setData(prods);
+    console.log("All data");
     console.log(prods);
-    // createReceiptsTable(prods)
+    
+
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
   // useEffect(()=>)
-  const searchHandler = (event) => {
-    console.log(event.target.value);
+  const searchHandler =async (event) => {
+
+    const response = await fetch(`${domainURL}/employee/home`);
+    const getData = await response.json();
+    
+    // console.log(getData);
+    // console.log(event.target.value);
+    const keyword = event.target.value;
+
+    if (keyword !== '') {
+        const results = getData.filter((user) => {
+            return user.name.toLowerCase().includes(keyword.toLowerCase());
+        });
+        // console.log(results);
+        setData(results);
+
+    } else {
+      setData(getData);
+    }
+
+    setName(keyword);
+
+
+
+
   };
 
   const itemRemoveHandler = (item) => {
@@ -130,10 +161,10 @@ function employee() {
           </div>
           <div className={styles.section_wraper}>
             <div className={styles.search_bar_selling}>
-              <span for="search-products">
+              {/* <span for="search-products">
                 {" "}
                 <i className={`${styles.fas} ${styles.fa_search}`}></i>
-              </span>
+              </span> */}
               <input
                 onChange={searchHandler}
                 type="text"
@@ -161,7 +192,7 @@ function employee() {
                       <th className="trHead">Stock</th>
                       <th className="trHead">Action</th>
                     </tr>
-                  </thead>
+                  </thead>  
                   <tbody>
                     {data.map((cell) => {
                       return (
@@ -272,7 +303,7 @@ function employee() {
                 </button>
                 <div className={styles.paid_status_text}>
                   <h2>Paid</h2>
-                </div>
+                </div>  
               </div>
             </div>
             <br></br>
