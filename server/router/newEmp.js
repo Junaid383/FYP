@@ -24,6 +24,7 @@ require("../database/conn");
 const ADMIN = require("../models/adminSchema");
 const EMP = require("../models/schema");
 const PRD = require("../models/newProduct");
+const RECEPITS = require("../models/recepits");
 const { response } = require("express");
 
 //===========================================googleLogins
@@ -165,7 +166,7 @@ router.post("/signin", async (req, res) => {
 
     if (empLog) {
       const isMatch = await bcrypt.compare(password, empLog.password);
-
+      console.log(empLog._id);
       const token = await empLog.generateAuthToken();
 
       res.cookie("jwtoken", token, {
@@ -176,7 +177,7 @@ router.post("/signin", async (req, res) => {
       if (!isMatch) {
         res.status(400).json({ error: "Invalid Credentials" });
       } else {
-        res.json({ message: "Logged IN" });
+        res.json({ message: "Logged IN", empID: empLog._id });
       }
     } else {
       res.status(400).json({ error: "Invalid" });
@@ -227,30 +228,83 @@ router.get("/admin/users", (req, res) => {
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
-router.get("/employee/home", (req, res) => {
+// router.get("/employee/home", (req, res) => {
+//   PRD.find()
+//     .then((prod) => res.json(prod))
+//     .catch((err) => res.status(400).json("Error : $(err)"));
+// });
+
+//==========================EMPLOYEE=============
+router.get("/employee/:userID", (req, res) => {
   PRD.find()
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
+let rpID;
+router.post("/employee/printreceipt", async (req, res) => {
+  // console.log(req.body);
+  const { userID, cartProduct, subTotal, discountedAmount } = req.body;
+  try {
+    const loggedIn = await EMP.findOne({ _id: userID });
+
+    const loggedInUserName = loggedIn.name;
+    let total = subTotal - discountedAmount;
+    // console.log(cartProduct);
+    console.log(loggedInUserName);
+    console.log(subTotal);
+    console.log(discountedAmount);
+    console.log(total);
+
+    if (loggedIn) {
+      const recpts = new RECEPITS({
+        loggedInUserName,
+        cartProduct,
+        subTotal,
+        discountedAmount,
+        total,
+      });
+      
+      const recptReg = await recpts.save();
+      console.log("RECIPT CREATED");
+      console.log(recptReg._id);
+      rpID = recptReg._id;
+      res.status(201).json({ message: "Recipt Created" ,recptID: recptReg._id });
+    } 
+    else {
+      console.log("RECIPT NOT CREATED");
+
+      return res.status(422).json({ error: "Recipt Not Created" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 
+//=====================RECEPIT DISPLAY==================
+router.get("/printreceipt", (req, res) => {
+  // RECEPITS.find()
+    // .then((prod) => res.json(prod))
+    // .catch((err) => res.status(400).json("Error : $(err)"));
+
+  RECEPITS.findOne({_id:rpID } )
+  .then((prod) => res.json(prod))
+  .catch((err) => res.status(400).json("Error : $(err)"));
+});
 
 //======================================user delete=================
-router.post("/admin/user/delete" , async(req , res) =>{
+router.post("/admin/user/delete", async (req, res) => {
   console.log(req.body.id);
   const userID = req.body.id;
   try {
-    const delEMP = await EMP.findByIdAndRemove(userID , function(err ,docs){
+    const delEMP = await EMP.findByIdAndRemove(userID, function (err, docs) {
       if (err) {
         console.log(err);
       } else {
-       
-      res.status(201).json({ message: "Removed User",emp:docs });
-
+        res.status(201).json({ message: "Removed User", emp: docs });
       }
-    }) ;
-  } 
-  catch(err){
+    });
+  } catch (err) {
     console.log(err);
   }
 });
@@ -275,11 +329,10 @@ router.post("/admin/user/update", async (req, res) => {
         userID,
         {
           username: username,
-          name: name , 
-          email:email,
-          phone:phone,
-          address:address
-         
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
         },
         function (err, doc) {
           if (err) {
@@ -316,18 +369,16 @@ router.get("/admin", authenticate, (res, req) => {
   res.send(req.rootUser);
 });
 
-
 // ==========================Product Update ===============
-router.post("/admin/product/update" , async(req , res) =>{
-  const{prodID , name , price , quantity}  = req.body;
+router.post("/admin/product/update", async (req, res) => {
+  const { prodID, name, price, quantity } = req.body;
   console.log(req.body);
 
-  if(!name || !price || !quantity){
+  if (!name || !price || !quantity) {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
   try {
-    
     const prodExist = await PRD.findOne({ _id: prodID }); //First from DB and 2nd from IP fields to check if same email exist or not
 
     if (!prodExist) {
@@ -336,10 +387,9 @@ router.post("/admin/product/update" , async(req , res) =>{
       PRD.findByIdAndUpdate(
         prodID,
         {
-          name: name , 
-          price:price,
-          stock:quantity,
-         
+          name: name,
+          price: price,
+          stock: quantity,
         },
         function (err, doc) {
           if (err) {
@@ -351,36 +401,28 @@ router.post("/admin/product/update" , async(req , res) =>{
       );
 
       res.status(201).json({ message: "Product registered" });
-    }  
-  
-  
+    }
   } catch (err) {
-    console.log(err);
-
-  }
-})
-
-
-// ===========================PRODUCT delete==============
-router.post("/admin/product/delete" , async(req , res) =>{
-  console.log(req.body.id);
-  const prodID = req.body.id;
-  try {
-    const delPRD = await PRD.findByIdAndRemove(prodID , function(err ,docs){
-      if (err) {
-        console.log(err);
-      } else {
-       
-      res.status(201).json({ message: "Removed Product",emp:docs });
-
-      } 
-    }) ;
-  } 
-  catch(err){
     console.log(err);
   }
 });
 
+// ===========================PRODUCT delete==============
+router.post("/admin/product/delete", async (req, res) => {
+  console.log(req.body.id);
+  const prodID = req.body.id;
+  try {
+    const delPRD = await PRD.findByIdAndRemove(prodID, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(201).json({ message: "Removed Product", emp: docs });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 router.post("/admin/product/:userID", (req, res) => {
   //   console.log("Update User Rendered");
@@ -395,13 +437,6 @@ router.post("/admin/product/:userID", (req, res) => {
       console.log(err);
     });
 });
-
-
-
-
-
-
-
 
 router.post("/googlelogin", (req, res) => {
   const { tokenId } = req.body;
@@ -454,11 +489,5 @@ router.post("/googlelogin", (req, res) => {
       }
     });
 });
-
-
-
-
-
-
 
 module.exports = router;

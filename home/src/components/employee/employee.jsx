@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link  ,useLocation , useHistory } from "react-router-dom";
 import { useState } from "react";
 import styles from "./employee.module.css";
 import CartItem from "./CartItem";
+import { ToastContainer , toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 let total = 0;
 
 function employee() {
@@ -14,8 +16,17 @@ function employee() {
  
   //Serach Filter
   const [name, setName] = useState('');
-    const [foundUsers, setFoundUsers] = useState();
- 
+  const [foundUsers, setFoundUsers] = useState();
+  const histroy = useHistory();
+
+  const location = useLocation();
+  const userID = location.pathname.substring(
+    location.pathname.lastIndexOf("/") + 1,
+    location.pathname.length
+  );
+
+
+
  
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -25,7 +36,7 @@ function employee() {
   const discountRef = useRef(null);
 
   const fetchProducts = async () => {
-    const response = await fetch(`${domainURL}/employee/home`);
+    const response = await fetch(`${domainURL}/employee/${userID}`);
     const prods = await response.json();
 
     setData(prods);
@@ -37,6 +48,8 @@ function employee() {
 
   useEffect(() => {
     fetchProducts();
+    setDiscount(0);
+    setSubTotal(0)
   }, []);
   // useEffect(()=>)
   const searchHandler =async (event) => {
@@ -117,6 +130,68 @@ function employee() {
     });
     return total;
   };
+
+  const PostData = async (e) =>{
+    // console.log("Button Clicked");
+    // console.log(cartProducts);
+    // console.log(subTotal);
+    // console.log(discountedAmount);
+    // console.log(subTotal - discountedAmount);
+
+    
+    const res = await fetch("/employee/printreceipt", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID,
+        cartProducts,
+        subTotal,
+        discountedAmount,
+
+      }),
+    });
+
+
+
+    const data = await res.json();
+    console.log(data);
+
+    if (res.status === 422 || !data) {
+      toast.error("Add Cart to Product First ", {
+        position: "top-center",
+        reverseOrder: false,
+        autoClose: 1500,
+      })
+
+    }
+    else {
+      toast.success('Creating Recipt', {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+     setTimeout(()=>{
+       histroy.push(`/printreceipt`); 
+      
+     },2000)
+
+    }
+
+
+
+
+  }
+
+
+
+
+
   return (
     <div>
       <span className={styles.account_options}>
@@ -161,10 +236,7 @@ function employee() {
           </div>
           <div className={styles.section_wraper}>
             <div className={styles.search_bar_selling}>
-              {/* <span for="search-products">
-                {" "}
-                <i className={`${styles.fas} ${styles.fa_search}`}></i>
-              </span> */}
+             
               <input
                 onChange={searchHandler}
                 type="text"
@@ -307,11 +379,19 @@ function employee() {
               </div>
             </div>
             <br></br>
-            <Link to={`/employee/printreceipt`}>
-              <button  className={`${styles.save_btn} ${styles.btn}`}>
+            {/* <Link to={`/employee/printreceipt`}> */}
+              <button  className={`${styles.save_btn} ${styles.btn}`}
+             
+               type="submit"
+               name="signup"
+               value="register"
+               onClick={cartProducts.length===0?()=>{}: PostData}
+              
+              
+              >
                 Save & Print Receipt
               </button>
-            </Link>
+            {/* </Link> */}
           </div>
         </div>
       </div>

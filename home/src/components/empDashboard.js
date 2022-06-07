@@ -13,13 +13,15 @@ function empDashboard() {
       <Switch>
        
      
-        <Route path="/employee" exact>
+        <Route path="/employee/:empID" exact>
           <Employee />
         </Route>
 
-        <Route path="/employee/printreceipt">
+        <Route path="/printreceipt">
           <PrintReceipt />
         </Route>
+
+        
      
      
      

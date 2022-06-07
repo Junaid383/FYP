@@ -4,6 +4,8 @@ import "./Signin/styles.css";
 import { NavLink, useHistory, userHistroy } from 'react-router-dom';
 import { ToastContainer , toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
+
 import GoogleButton from './googleButton/GoogleLoginButton'
 
 // import toast, { Toaster } from 'react-hot-toast';
@@ -34,8 +36,8 @@ function Login() {
       })
     });
 
-    const data = res.json();
-    // console.log(data);
+    const data = await res.json();
+    console.log(data);
 
     if (res.status === 400 || !data) {
       toast.error("Login Failed.", {
@@ -54,7 +56,11 @@ function Login() {
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
-      }); histroy.push("/employee/");
+      });
+     setTimeout(()=>{
+       histroy.push(`/employee/${data.empID}`); 
+      
+     },1000)
 
     }
 
@@ -82,8 +88,11 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="  Enter your password" />
 
-
             <button type='submit' id="signUpBut" onClick={loginUser}  >Login</button>
+
+            {/* <Link to={`/employee/${data._id}`}>
+              <button type='submit' id="signUpBut" onClick={loginUser}  >Login</button>
+            </Link> */}
             <GoogleButton/>
 
             {/* <a href= "" id="googleLogin"><i class="fab fa-google"></i>Sign In With Google</a> */}

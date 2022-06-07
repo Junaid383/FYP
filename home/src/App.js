@@ -12,6 +12,7 @@ import EmpDashboard from "./components/empDashboard";
 import AdminDashboard from './components/AdminDashboard';
 
 import Test from './components/test/Toasttest'
+import PrintReceipt from './components/employee/PrintReceipt';
 
 
 
@@ -52,7 +53,7 @@ const App = () => {
           </Route>
 
           <Route path="/test" >
-            <Test />
+          <PrintReceipt />
           </Route>
 
 

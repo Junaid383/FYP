@@ -1,7 +1,28 @@
-import React from "react";
+import React , { useEffect } from "react";
+import { useState } from "react";
+
 import "./PrintReceipt.css"
 const PrintReceipt = () => {
-  
+  const [data, setData] = useState([]);
+
+  const fetchProducts = async () => {
+    const response = await fetch(`/printreceipt`);
+    const prods = await response.json();
+
+    setData(prods);
+    // createReceiptsTable(prods)
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+
+
+
+
   function printReceipt(e) {
     // document.getElementById("prnt-btn").style.display = "none";
     window.print();
@@ -13,10 +34,9 @@ const PrintReceipt = () => {
       <div className="print_main-page">
         <div className="print_header">
           <div className="print_shop-title">
-            <h1>Ahmed Traders</h1>
+            <h1>BITF18-Morning Traders</h1>
             <p className="print_description">
-              Satellite Town Block A Satellite Town, Naya Shehar Chakwal Punjab
-              38000
+             Punjab University of Information Technology-Lahore
             </p>
           </div>
           <div className="print_order-id">
@@ -33,7 +53,7 @@ const PrintReceipt = () => {
             </tr>
             <tr>
               <th>Sold by: </th>
-              <td>Ali Asad</td>
+              <td>{data.loggedInUserName}</td>
             </tr>
             <tr>
               <th>Date Time: </th>
@@ -76,15 +96,15 @@ const PrintReceipt = () => {
             <table>
               <tr>
                 <th className="print_w-70 print_t-right">Sub Total:</th>
-                <td className="print_w-30"> Rs. 999999</td>
+                <td className="print_w-30">Rs. {data.subTotal}</td>
               </tr>
               <tr>
                 <th className="print_w-70 print_t-right">Discount:</th>
-                <td> Rs. 000000</td>
+                <td> Rs. {data.discountedAmount}</td>
               </tr>
               <tr>
                 <th className="print_w-70 print_t-right">Total:</th>
-                <td> Rupees 999999</td>
+                <td> Rupees {data.total}</td>
               </tr>
             </table>
           </tbody>
