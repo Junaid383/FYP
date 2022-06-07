@@ -45,63 +45,13 @@ const FetchData = async (e) => {
 
 
 
-  // ===========UPDAte Product================
-//   const [prod, setProd] = useState({
-//     name: "",
-//     price: "",
-//     quantity: "",
-//   });
-
 const [user, setUser]=useState({
     name: "",
     price: "",
     quantity: "",
   });
 
-//   let name, value;
-//   const handleInputs = (e) => {
-//     name = e.target.name;
-//     value = e.target.value;
-
-//     setProd({ ...prod, [name]: value });
-//   };
-
-//   const updateData = async () => {
-//     const { name, price, quantity } = prod;
-//     const res = await fetch("/admin/product/update", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         name,
-//         prodID,
-//         price,
-//         quantity,
-//       }),
-//     });
-//     const updata = await res.json();
-//     console.log(updata);
-//     if (res.status === 422 || !updata) {
-//       toast.error("Fill all Fields.", {
-//         position: "top-center",
-//         reverseOrder: false,
-//         autoClose: 1500,
-//       });
-//     } else {
-//       toast.success("Product Update Successful", {
-//         position: "top-center",
-//         autoClose: 1000,
-//         hideProgressBar: false,
-//         closeOnClick: true,
-//         pauseOnHover: false,
-//         draggable: true,
-//         progress: undefined,
-//       });
-
-//       history.push("/admin/products");
-//     }
-//   };
+  
 let name , value;
 const handleInputs = (e)=>{
   name = e.target.name;
