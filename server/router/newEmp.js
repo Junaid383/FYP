@@ -271,13 +271,13 @@ router.post("/employee/printreceipt", async (req, res) => {
 
     const loggedInUserName = loggedIn.name;
     let total = subTotal - discountedAmount;
-    console.log(cartProducts);
-    console.log(loggedInUserName);
+    // console.log(cartProducts);
+    // console.log(loggedInUserName);
     // console.log(subTotal);
     // console.log(discountedAmount);
     // console.log(total);
-    console.log(completeData);
-    console.log(completeTime);
+    // console.log(completeData);
+    // console.log(completeTime);
 
 
     if (loggedIn) {
