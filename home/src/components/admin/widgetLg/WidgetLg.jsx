@@ -1,8 +1,31 @@
-import React from 'react';
+import React , { useEffect } from "react";
+import { useState } from "react";
+
 
 import "./widgetLg.css"
 
 export default function WidgetLg() {
+  const [data, setData] = useState([]);
+
+  const fetchProducts = async () => {
+    const response = await fetch(`/admin/receiptData`);
+    const prods = await response.json();
+
+    setData(prods);
+    console.log(prods);
+    // createReceiptsTable(prods)
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+
+
+
+
 
 
   const Button = ({ type }) => {
@@ -15,65 +38,30 @@ export default function WidgetLg() {
     <h3 className="widgetLgTitle">Latest Transactions</h3>
     <table className="widgetLgTable">
       <tr className="widgetLgTr">
-        <th className="widgetLgTh">Customer</th>
+        <th className="widgetLgTh">Employee</th>
         <th className="widgetLgTh">Date</th>
         <th className="widgetLgTh">Amount</th>
         <th className="widgetLgTh">Status</th>
       </tr>
-      <tr className="widgetLgTr">
+
+     {data.map((cell, idx) => {
+       return(
+      <tr className="widgetLgTr" key={cell._id}>
         <td className="widgetLgUser">
           <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="widgetLgImg" />
-          <span className="widgetLgName">Muhammad Junaid</span>
+          <span className="widgetLgName">{cell.loggedInUserName}</span>
         </td>
-        <td className="widgetLgDate">2 Jan 2022</td>
-        <td className="widgetLgAmount">$234.5</td>
+        <td className="widgetLgDate">{cell.completeData}</td>
+        <td className="widgetLgAmount">Rs.{cell.total}</td>
         <td className="widgetLgStatus"><Button type="Approved" /></td>
 
       </tr>
+     )}
+     )}
 
-      <tr className="widgetLgTr">
-        <td className="widgetLgUser">
-          <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="widgetLgImg" />
-          <span className="widgetLgName">Muhammad Junaid</span>
-        </td>
-        <td className="widgetLgDate">2 Jan 2022</td>
-        <td className="widgetLgAmount">$234.5</td>
-        <td className="widgetLgStatus"><Button type="Declined" /></td>
+    
 
-      </tr>
-
-      <tr className="widgetLgTr">
-        <td className="widgetLgUser">
-          <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="widgetLgImg" />
-          <span className="widgetLgName">Muhammad Junaid</span>
-        </td>
-        <td className="widgetLgDate">2 Jan 2022</td>
-        <td className="widgetLgAmount">$234.5</td>
-        <td className="widgetLgStatus"><Button type="Pending" /></td>
-
-      </tr>
-
-      <tr className="widgetLgTr">
-        <td className="widgetLgUser">
-          <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="widgetLgImg" />
-          <span className="widgetLgName">Muhammad Junaid</span>
-        </td>
-        <td className="widgetLgDate">2 Jan 2022</td>
-        <td className="widgetLgAmount">$234.5</td>
-        <td className="widgetLgStatus"><Button type="Approved" /></td>
-
-      </tr>
-
-      <tr className="widgetLgTr">
-        <td className="widgetLgUser">
-          <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="widgetLgImg" />
-          <span className="widgetLgName">Muhammad Junaid</span>
-        </td>
-        <td className="widgetLgDate">2 Jan 2022</td>
-        <td className="widgetLgAmount">$234.5</td>
-        <td className="widgetLgStatus"><Button type="Pending" /></td>
-
-      </tr>
+      
     </table>
   </div>;
 }

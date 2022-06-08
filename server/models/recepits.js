@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");
+const { stringify } = require('querystring');
 
 
 const recepits = new mongoose.Schema({
@@ -27,6 +28,15 @@ const recepits = new mongoose.Schema({
         type: Number,
         // required: true
     },
+    completeData:{
+        type : String,
+        // required: true
+    },
+    completeTime:{
+        type: String,
+        // required: true
+
+    }
     
 
 });

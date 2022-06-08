@@ -57,7 +57,7 @@ const PrintReceipt = () => {
             </tr>
             <tr>
               <th>Date Time: </th>
-              <td>06-06-2022 13:01</td>
+              <td>{data.completeData}  {data.completeTime}</td>
             </tr>
             <tr>
               <th>Status: </th>

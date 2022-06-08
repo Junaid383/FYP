@@ -241,8 +241,30 @@ router.get("/employee/:userID", (req, res) => {
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 let rpID;
+
+
+
+
 router.post("/employee/printreceipt", async (req, res) => {
   // console.log(req.body);
+  let ts = Date.now();
+  let date_ob = new Date(ts);
+  let date = date_ob.getDate();
+  const monthNames = ["Jan", "Feb", "Mar", "April", "May", "June",
+    "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+  ];
+  let month = monthNames[date_ob.getMonth()] ;  
+  let year = date_ob.getFullYear();
+  let hours = date_ob.getHours();
+  let minutes = date_ob.getMinutes();
+
+  
+  let completeData = date + "-" + month + "-" + year ;
+  let completeTime = hours + ":"+ minutes;
+
+
+
+
   const { userID, cartProduct, subTotal, discountedAmount } = req.body;
   try {
     const loggedIn = await EMP.findOne({ _id: userID });
@@ -251,9 +273,12 @@ router.post("/employee/printreceipt", async (req, res) => {
     let total = subTotal - discountedAmount;
     // console.log(cartProduct);
     console.log(loggedInUserName);
-    console.log(subTotal);
-    console.log(discountedAmount);
-    console.log(total);
+    // console.log(subTotal);
+    // console.log(discountedAmount);
+    // console.log(total);
+    console.log(completeData);
+    console.log(completeTime);
+
 
     if (loggedIn) {
       const recpts = new RECEPITS({
@@ -262,11 +287,14 @@ router.post("/employee/printreceipt", async (req, res) => {
         subTotal,
         discountedAmount,
         total,
+        completeData,
+        completeTime
+
       });
       
       const recptReg = await recpts.save();
       console.log("RECIPT CREATED");
-      console.log(recptReg._id);
+      // console.log(recptReg._id);
       rpID = recptReg._id;
       res.status(201).json({ message: "Recipt Created" ,recptID: recptReg._id });
     } 
@@ -279,6 +307,13 @@ router.post("/employee/printreceipt", async (req, res) => {
     console.log(e);
   }
 });
+
+// =================ADMIN RECIPT DISPLAY=============
+router.get("/admin/receiptData" , (req , res) =>{
+  RECEPITS.find().sort({_id:-1}).limit(6)
+  .then((prod) => res.json(prod))
+  .catch((err) => res.status(400).json("Error : $(err)"));
+})
 
 
 //=====================RECEPIT DISPLAY==================
