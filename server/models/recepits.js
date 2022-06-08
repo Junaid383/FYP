@@ -11,9 +11,26 @@ const recepits = new mongoose.Schema({
         type: String,
         // required: true
     },
-    cartProduct: [{
-        type: Object,
+    cartProducts: [{
+        id:{
+        type: String,
+        // required: true
+    },image:{
+        type: String,
+        // required: true
+    },name:{
+        type: String,
         required: true
+    },stock:{
+        type: String,
+        required: true
+    },price:{
+        type: String,
+        required: true
+    },qty:{
+        type: String,
+        required: true
+    }
     }],
 
     subTotal: {

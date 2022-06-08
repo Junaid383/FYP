@@ -52,7 +52,7 @@ function employee() {
     setSubTotal(0)
   }, []);
   // useEffect(()=>)
-  const searchHandler =async (event) => {
+  const searchHandler = async (event) => {
 
     const response = await fetch(`${domainURL}/employee/home`);
     const getData = await response.json();
@@ -132,11 +132,11 @@ function employee() {
   };
 
   const PostData = async (e) =>{
-    // console.log("Button Clicked");
-    // console.log(cartProducts);
-    // console.log(subTotal);
-    // console.log(discountedAmount);
-    // console.log(subTotal - discountedAmount);
+    console.log("Button Clicked");
+    console.log(cartProducts);
+    console.log(subTotal);
+    console.log(discountedAmount);
+    console.log(subTotal - discountedAmount);
 
     
     const res = await fetch("/employee/printreceipt", {

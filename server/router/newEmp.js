@@ -265,13 +265,13 @@ router.post("/employee/printreceipt", async (req, res) => {
 
 
 
-  const { userID, cartProduct, subTotal, discountedAmount } = req.body;
+  const { userID, cartProducts, subTotal, discountedAmount } = req.body;
   try {
     const loggedIn = await EMP.findOne({ _id: userID });
 
     const loggedInUserName = loggedIn.name;
     let total = subTotal - discountedAmount;
-    // console.log(cartProduct);
+    console.log(cartProducts);
     console.log(loggedInUserName);
     // console.log(subTotal);
     // console.log(discountedAmount);
@@ -283,7 +283,7 @@ router.post("/employee/printreceipt", async (req, res) => {
     if (loggedIn) {
       const recpts = new RECEPITS({
         loggedInUserName,
-        cartProduct,
+        cartProducts,
         subTotal,
         discountedAmount,
         total,
