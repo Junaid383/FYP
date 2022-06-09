@@ -25,6 +25,7 @@ const ADMIN = require("../models/adminSchema");
 const EMP = require("../models/schema");
 const PRD = require("../models/newProduct");
 const RECEPITS = require("../models/recepits");
+const ORDERS  = require("../models/order")
 const { response } = require("express");
 
 //===========================================googleLogins
@@ -222,6 +223,15 @@ router.get("/admin/products", (req, res) => {
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
+
+// ============ADMIN RECEPITS===============
+router.get("/admin/recepits", (req, res) => {
+  RECEPITS.find()
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
+});
+
+
 router.get("/admin/users", (req, res) => {
   EMP.find()
     .then((prod) => res.json(prod))
@@ -241,10 +251,61 @@ router.get("/employee/:userID", (req, res) => {
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 let rpID;
+let odrID;
+//===============ORDERS handler===========
+router.post("/employee/order" , async(req  , res) =>{
+  const { userID, subTotal, discountedAmount } = req.body;
+  console.log(req.body);
+  let orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+  let custmerID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+  
+  console.log(orderID);
+  console.log(custmerID);
+
+
+  try {
+    const loggedIn = await EMP.findOne({ _id: userID });
+
+    const loggedInUserName = loggedIn.name;
+    let total = subTotal - discountedAmount;
+
+
+
+    if (loggedIn) {
+      const order = new ORDERS({
+        loggedInUserName,
+        
+        subTotal,
+        discountedAmount,
+        total,
+        orderID,
+        custmerID,
+
+      });
+      // console.log(status);
+      
+      const orderReg = await order.save();
+      console.log("Order CREATED");
+      
+      odrID = orderReg._id;
+      res.status(201).json({ message: "Order Created" ,orderID: orderReg._id ,empName: orderReg.loggedInUserName  });
+    } 
+    else {
+      console.log("RECIPT NOT CREATED");
+
+      return res.status(422).json({ error: "Recipt Not Created" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
 
 
 
 
+})
+
+
+// ==================PRINT recepit========================
 router.post("/employee/printreceipt", async (req, res) => {
   // console.log(req.body);
   let ts = Date.now();
@@ -261,7 +322,7 @@ router.post("/employee/printreceipt", async (req, res) => {
   
   let completeData = date + "-" + month + "-" + year ;
   let completeTime = hours + ":"+ minutes;
-
+  let status = `APPROVED`;
 
 
 
@@ -288,15 +349,17 @@ router.post("/employee/printreceipt", async (req, res) => {
         discountedAmount,
         total,
         completeData,
-        completeTime
+        completeTime,
+        status,
 
       });
+      // console.log(status);
       
       const recptReg = await recpts.save();
       console.log("RECIPT CREATED");
-      // console.log(recptReg._id);
+      // console.log(recptReg.status);
       rpID = recptReg._id;
-      res.status(201).json({ message: "Recipt Created" ,recptID: recptReg._id });
+      res.status(201).json({ message: "Recipt Created" ,recptID: recptReg._id ,empName: recptReg.loggedInUserName  });
     } 
     else {
       console.log("RECIPT NOT CREATED");
@@ -315,6 +378,13 @@ router.get("/admin/receiptData" , (req , res) =>{
   .catch((err) => res.status(400).json("Error : $(err)"));
 })
 
+router.get("/admin/orderData" , (req , res) =>{
+  ORDERS.find().sort({_id:-1}).limit(6)
+  .then((prod) => res.json(prod))
+  .catch((err) => res.status(400).json("Error : $(err)"));
+})
+
+
 
 //=====================RECEPIT DISPLAY==================
 router.get("/printreceipt", (req, res) => {
@@ -324,6 +394,17 @@ router.get("/printreceipt", (req, res) => {
 
   RECEPITS.findOne({_id:rpID } )
   .then((prod) => res.json(prod))
+  .catch((err) => res.status(400).json("Error : $(err)"));
+});
+
+
+router.get("/order", (req, res) => {
+  // RECEPITS.find()
+    // .then((prod) => res.json(prod))
+    // .catch((err) => res.status(400).json("Error : $(err)"));
+
+  ORDERS.findOne({_id:odrID } )
+  .then((odr) => res.json(odr))
   .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
