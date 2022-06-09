@@ -1,8 +1,63 @@
 import "./recipts.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
 
 function Recipts() {
+
+  const [data, setData] = useState([]);
+  const domainURL = "http://localhost:5000";
+  const fetchProducts = async () => {
+    const response = await fetch(`${domainURL}/admin/recepits`);
+    const prods = await response.json();
+
+    setData(prods);
+    // createReceiptsTable(prods)
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  var newTable;
+  function createReceiptsTable(arraysOfArrays) {
+    var t_cols = 8;
+    let tableElement = document.createElement("tablee");
+    tableElement.id = "table-main-receipts";
+
+    document.getElementById("receipts-table-div").appendChild(tableElement);
+    var row;
+    newTable = document.getElementById("table-main-receipts");
+    //Inserting New Row
+    for (let i = 0; i < arraysOfArrays.length; i++) {
+      row = newTable.insertRow();
+      for (let j = 0; j < t_cols; j++) row.insertCell();
+    }
+    //creating table head
+    var tablehead = newTable.createTHead();
+    // tablehead.classList.add("sticky");
+    row = tablehead.insertRow();
+    let ths = [
+      "Order Id",
+      "Datetime",
+      "Amount",
+      "Sold by",
+      "Sold to",
+      "Status",
+      "Action",
+      "Manage",
+    ];
+    for (let i = 0; i < t_cols; i++) row.append(document.createElement("th"));
+    for (let i = 0; i < t_cols; i++)
+      tablehead.rows[0].cells[i].innerHTML = ths[i];
+
+    var dataTable;
+    //populating the table
+  }
+
   const Button = ({ type }) => {
     return <button className={"widgetLggButton " + type}> {type}</button>;
   };
@@ -11,14 +66,20 @@ function Recipts() {
     <div className="recipts">
       <div className="widgetLgg">
         <h3 className="widgetLgggTitle">Recipts</h3>
-        <table className="widgetLggTable">
+        <table className="widgetLggTable" id="table-main-receipts" >
+        <thead>
           <tr className="">
-            <th className="widgetLggTh">Customer</th>
+            <th className="widgetLggTh">Employee</th>
             <th className="widgetLggTh">Date</th>
             <th className="widgetLggTh">Amount</th>
             <th className="widgetLggTh">Status</th>
           </tr>
+          </thead>
 
+
+          <tbody>
+          {data.map((cell, idx) => {
+              return (
           <tr className="widgetLggTr">
             <td className="widgetLggUser">
               <img
@@ -26,10 +87,10 @@ function Recipts() {
                 alt=""
                 className="widgetLggImg"
               />
-              <span className="widgetLggName">Muhammad Junaid</span>
+              <span className="widgetLggName">{cell.loggedInUserName}</span>
             </td>
-            <td className="widgetLggDate">2 Jan 2022</td>
-            <td className="widgetLggAmount">$234.5</td>
+            <td className="widgetLggDate">{cell.completeData}</td>
+              <td className="widgetLggAmount">Rs. {cell.total} </td>
             <td className="widgetLggStatus">
               <Link to={`/admin/recipts/${1}`}>
                 {/* <Button type="Approved" /> */}
@@ -37,101 +98,10 @@ function Recipts() {
               </Link>
             </td>
           </tr>
-
-          <tr className="widgetLggTr">
-            <td className="widgetLggUser">
-              <img
-                src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                alt=""
-                className="widgetLggImg"
-              />
-              <span className="widgetLggName">Muhammad Junaid</span>
-            </td>
-            <td className="widgetLggDate">2 Jan 2022</td>
-            <td className="widgetLggAmount">$234.5</td>
-            <td className="widgetLggStatus">
-              <Link to={`/admin/recipts/${1}`}>
-                {/* <Button type="Approved" /> */}
-                <button className="reciptView">View</button>
-              </Link>
-            </td>
-          </tr>
-
-          <tr className="widgetLggTr">
-            <td className="widgetLggUser">
-              <img
-                src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                alt=""
-                className="widgetLggImg"
-              />
-              <span className="widgetLggName">Muhammad Junaid</span>
-            </td>
-            <td className="widgetLggDate">2 Jan 2022</td>
-            <td className="widgetLggAmount">$234.5</td>
-            <td className="widgetLggStatus">
-              <Link to={`/admin/recipts/${1}`}>
-                {/* <Button type="Approved" /> */}
-                <button className="reciptView">View</button>
-              </Link>
-            </td>
-          </tr>
-
-          <tr className="widgetLggTr">
-            <td className="widgetLggUser">
-              <img
-                src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                alt=""
-                className="widgetLggImg"
-              />
-              <span className="widgetLggName">Muhammad Junaid</span>
-            </td>
-            <td className="widgetLggDate">2 Jan 2022</td>
-            <td className="widgetLggAmount">$234.5</td>
-            <td className="widgetLggStatus">
-              <Link to={`/admin/recipts/${1}`}>
-                {/* <Button type="Approved" /> */}
-                <button className="reciptView">View</button>
-              </Link>
-            </td>
-          </tr>
-
-          <tr className="widgetLggTr">
-            <td className="widgetLggUser">
-              <img
-                src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                alt=""
-                className="widgetLggImg"
-              />
-              <span className="widgetLggName">Muhammad Junaid</span>
-            </td>
-            <td className="widgetLggDate">2 Jan 2022</td>
-            <td className="widgetLggAmount">$234.5</td>
-            <td className="widgetLggStatus">
-              <Link to={`/admin/recipts/${1}`}>
-                {/* <Button type="Approved" /> */}
-                <button className="reciptView">View</button>
-              </Link>
-            </td>
-          </tr>
-
-          <tr className="widgetLggTr">
-            <td className="widgetLggUser">
-              <img
-                src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                alt=""
-                className="widgetLggImg"
-              />
-              <span className="widgetLggName">Muhammad Junaid</span>
-            </td>
-            <td className="widgetLggDate">2 Jan 2022</td>
-            <td className="widgetLggAmount">$234.5</td>
-            <td className="widgetLggStatus">
-              <Link to={`/admin/recipts/${1}`}>
-                {/* <Button type="Approved" /> */}
-                <button className="reciptView">View</button>
-              </Link>
-            </td>
-          </tr>
+);
+})}
+  </tbody>
+         
         </table>
 
         {/* </table> */}

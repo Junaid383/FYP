@@ -144,6 +144,28 @@ function employee() {
     console.log(discountedAmount);
     console.log(subTotal - discountedAmount);
 
+<<<<<<< HEAD
+    const res = await fetch("/employee/printreceipt", {
+=======
+    
+   
+
+    const order =  fetch("/employee/order", {
+>>>>>>> 9ca1a7e9577258a472e0260141026557b8b38deb
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID,
+        subTotal,
+        discountedAmount,
+      }),
+    });
+    
+
+<<<<<<< HEAD
+=======
     const res = await fetch("/employee/printreceipt", {
       method: "POST",
       headers: {
@@ -154,9 +176,11 @@ function employee() {
         cartProducts,
         subTotal,
         discountedAmount,
+
       }),
     });
 
+>>>>>>> 9ca1a7e9577258a472e0260141026557b8b38deb
     const data = await res.json();
     console.log(data);
 

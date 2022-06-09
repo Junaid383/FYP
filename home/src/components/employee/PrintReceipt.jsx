@@ -4,6 +4,8 @@ import { useState } from "react";
 import "./PrintReceipt.css";
 const PrintReceipt = () => {
   const [data, setData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
+
 
   const fetchProducts = async () => {
     const response = await fetch(`/printreceipt`);
@@ -18,6 +20,22 @@ const PrintReceipt = () => {
   useEffect(() => {
     console.log(data);
   }, [data]);
+
+
+  const fetchOrders = async () => {
+    const response = await fetch(`/order`);
+    const dataOrder = await response.json();
+    console.log(dataOrder);
+    console.log(response);
+    setOrderData(dataOrder);
+    // createReceiptsTable(prods)
+  };
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+  useEffect(() => {
+    console.log(orderData);
+  }, [orderData]);
 
   function printReceipt(e) {
     // document.getElementById("prnt-btn").style.display = "none";
@@ -36,7 +54,7 @@ const PrintReceipt = () => {
             </p>
           </div>
           <div className="print_order-id">
-            <h1>Order Id # 9999</h1>
+          <h1>Order Id #{orderData.orderID}</h1>
           </div>
         </div>
       </div>
@@ -45,7 +63,7 @@ const PrintReceipt = () => {
           <table>
             <tr>
               <th>Customer-Id:</th>
-              <td>9999</td>
+              <td>{orderData.custmerID}</td>
             </tr>
             <tr>
               <th>Sold by: </th>
@@ -84,6 +102,7 @@ const PrintReceipt = () => {
             </tr>
           </thead>
           <tbody>
+<<<<<<< HEAD
             {/* {data.map((cell, idx) => { */}
               {/* return ( */}
                 <tr  >
@@ -99,21 +118,34 @@ const PrintReceipt = () => {
 
 
 
+=======
+            {/* {data.map((cell) => { */}
+              {/* return ( */}
+                <tr >
+                  <td className="print_t-left print_w-70">name</td>
+                  <td> Rs.price</td>
+                  <td>qty</td>
+                  <td> Rs. price * qty</td>
+                </tr>
+              {/* ); */}
+            {/* })} */}
+          
+>>>>>>> 9ca1a7e9577258a472e0260141026557b8b38deb
           </tbody>
-            <table>
-              <tr>
-                <th className="print_w-70 print_t-right">Sub Total:</th>
-                <td className="print_w-30">Rs. {data.subTotal}</td>
-              </tr>
-              <tr>
-                <th className="print_w-70 print_t-right">Discount:</th>
-                <td> Rs. {data.discountedAmount}</td>
-              </tr>
-              <tr>
-                <th className="print_w-70 print_t-right">Total:</th>
-                <td> Rupees {data.total}</td>
-              </tr>
-            </table>
+          <table>
+            <tr>
+              <th className="print_w-70 print_t-right">Sub Total:</th>
+              <td className="print_w-30">Rs. {data.subTotal}</td>
+            </tr>
+            <tr>
+              <th className="print_w-70 print_t-right">Discount:</th>
+              <td> Rs. {data.discountedAmount}</td>
+            </tr>
+            <tr>
+              <th className="print_w-70 print_t-right">Total:</th>
+              <td> Rupees {data.total}</td>
+            </tr>
+          </table>
         </table>
       </div>
       <div className="print_thankyou-message">

@@ -6,33 +6,11 @@ const bcrypt = require("bcryptjs");
 const { stringify } = require('querystring');
 
 
-const recepits = new mongoose.Schema({
+const orders = new mongoose.Schema({
     loggedInUserName: {
         type: String,
         // required: true
     },
-    cartProducts: [{
-        id:{
-        type: String,
-        // required: true
-    },image:{
-        type: String,
-        // required: true
-    },name:{
-        type: String,
-        required: true
-    },stock:{
-        type: String,
-        required: true
-    },price:{
-        type: String,
-        required: true
-    },qty:{
-        type: String,
-        required: true
-    }
-    }],
-
     subTotal: {
         type: Number,
         // required: true
@@ -45,22 +23,22 @@ const recepits = new mongoose.Schema({
         type: Number,
         // required: true
     },
-    completeData:{
+    orderID:{
         type : String,
         // required: true
     },
-    completeTime:{
+    custmerID:{
         type: String,
         // required: true
 
     },
     status:{
-        type:String,
+        type: String,
     }
-    
+   
 
 });
 
-const RECEPITS = mongoose.model('Recepits', recepits);
+const ORDERS = mongoose.model('Orders', orders);
 
-module.exports = RECEPITS;
+module.exports = ORDERS;
