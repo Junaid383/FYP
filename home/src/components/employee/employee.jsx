@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { Link  ,useLocation , useHistory } from "react-router-dom";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useHistory } from "react-router-dom";
+
 import styles from "./employee.module.css";
 import CartItem from "./CartItem";
-import { ToastContainer , toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 let total = 0;
 
 function employee() {
@@ -13,9 +13,9 @@ function employee() {
   const [subTotal, setSubTotal] = useState(); // total price ki state after discount
   const [totalAmountAfterDiscount, setTotalAfterDiscount] = useState(); // total ki state before discount
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
- 
+
   //Serach Filter
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [foundUsers, setFoundUsers] = useState();
   const histroy = useHistory();
 
@@ -25,9 +25,6 @@ function employee() {
     location.pathname.length
   );
 
-
-
- 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
@@ -42,52 +39,48 @@ function employee() {
     setData(prods);
     console.log("All data");
     console.log(prods);
-    
-
   };
 
   useEffect(() => {
     fetchProducts();
     setDiscount(0);
-    setSubTotal(0)
+    setSubTotal(0);
   }, []);
   // useEffect(()=>)
   const searchHandler = async (event) => {
-
     const response = await fetch(`${domainURL}/employee/home`);
     const getData = await response.json();
-    
+
     // console.log(getData);
     // console.log(event.target.value);
     const keyword = event.target.value;
 
-    if (keyword !== '') {
-        const results = getData.filter((user) => {
-            return user.name.toLowerCase().includes(keyword.toLowerCase());
-        });
-        // console.log(results);
-        setData(results);
-
+    if (keyword !== "") {
+      const results = getData.filter((user) => {
+        return user.name.toLowerCase().includes(keyword.toLowerCase());
+      });
+      // console.log(results);
+      setData(results);
     } else {
       setData(getData);
     }
 
     setName(keyword);
-
-
-
-
   };
+  useEffect(() => {
+    setSubTotal(updateTotal(cartProducts));
+  }, [cartProducts]);
 
   const itemRemoveHandler = (item) => {
     // console.log(item);
+
     const updatedCartItems = cartProducts.filter(
       (theObj) => theObj._id !== item._id
     );
     setCartProducts(updatedCartItems);
 
     // total -= item.price;
-    setSubTotal(updateTotal(updatedCartItems));
+    // setSubTotal(updateTotal(updatedCartItems));
     // setTotalAfterDiscount(total);
   };
 
@@ -109,10 +102,10 @@ function employee() {
         qty: (tempCartProducts[idx].qty += 1),
       };
       setCartProducts(tempCartProducts);
-      setSubTotal(updateTotal(tempCartProducts));
+      // setSubTotal(updateTotal(tempCartProducts));
     } else {
       setCartProducts([...cartProducts, productToAddInCart]); // rest operator
-      setSubTotal(updateTotal(cartProducts) + productToAddInCart.price);
+      // setSubTotal(updateTotal(cartProducts) + productToAddInCart.price);
     }
   };
 
@@ -131,14 +124,26 @@ function employee() {
     return total;
   };
 
-  const PostData = async (e) =>{
+  const qtyChangeHandler = (item, what) => {
+    const allProducts = [...cartProducts];
+    const productAddedInCart = allProducts.findIndex(
+      (theObj) => theObj._id === item._id
+    );
+    if (what) {
+      allProducts[productAddedInCart].qty += 1;
+    } else {
+      allProducts[productAddedInCart].qty -= 1;
+    }
+    setCartProducts(allProducts);
+  };
+
+  const PostData = async (e) => {
     console.log("Button Clicked");
     console.log(cartProducts);
     console.log(subTotal);
     console.log(discountedAmount);
     console.log(subTotal - discountedAmount);
 
-    
     const res = await fetch("/employee/printreceipt", {
       method: "POST",
       headers: {
@@ -149,11 +154,8 @@ function employee() {
         cartProducts,
         subTotal,
         discountedAmount,
-
       }),
     });
-
-
 
     const data = await res.json();
     console.log(data);
@@ -163,11 +165,9 @@ function employee() {
         position: "top-center",
         reverseOrder: false,
         autoClose: 1500,
-      })
-
-    }
-    else {
-      toast.success('Creating Recipt', {
+      });
+    } else {
+      toast.success("Creating Recipt", {
         position: "top-center",
         autoClose: 1500,
         hideProgressBar: false,
@@ -176,32 +176,22 @@ function employee() {
         draggable: true,
         progress: undefined,
       });
-     setTimeout(()=>{
-       histroy.push(`/printreceipt`); 
-      
-     },2000)
-
+      setTimeout(() => {
+        histroy.push(`/printreceipt`);
+      }, 2000);
     }
-
-
-
-
-  }
-
-
-
-
+  };
 
   return (
     <div>
       <span className={styles.account_options}>
         <div className={styles.dropdown}>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
-            EMP
+            GOOD BYE?
             <i className={`${styles.fa} ${styles.fa_caret_down}`}></i>
           </button>
           <div className={styles.dropdown_content}>
-            <a href="#">Settings</a>
+            {/* <a href="#">Settings</a> */}
             <a href="logout">Logout</a>
           </div>
         </div>
@@ -236,7 +226,6 @@ function employee() {
           </div>
           <div className={styles.section_wraper}>
             <div className={styles.search_bar_selling}>
-             
               <input
                 onChange={searchHandler}
                 type="text"
@@ -259,12 +248,12 @@ function employee() {
                   <thead>
                     <tr>
                       {/* <th className="trHead">ID</th> */}
-                      <th className="trHead">Name</th>
-                      <th className="trHead">Price</th>
-                      <th className="trHead">Stock</th>
-                      <th className="trHead">Action</th>
+                      <th className={styles.trHead}>Name</th>
+                      <th className={styles.trHead}>Price</th>
+                      <th className={styles.trHead}>Stock</th>
+                      <th className={styles.trHead}>Action</th>
                     </tr>
-                  </thead>  
+                  </thead>
                   <tbody>
                     {data.map((cell) => {
                       return (
@@ -331,6 +320,7 @@ function employee() {
                         data={cartItem}
                         idx={idx}
                         itemRemoveHandler={itemRemoveHandler}
+                        qtyChangeHandler={qtyChangeHandler}
                       />
                     ))}
                   </tbody>
@@ -353,6 +343,7 @@ function employee() {
                     onChange={discountHandler}
                     name="add-discount"
                     min="0"
+                    max={subTotal}
                     value={discountedAmount}
                   />
                   <span>Rs. </span>
@@ -375,22 +366,20 @@ function employee() {
                 </button>
                 <div className={styles.paid_status_text}>
                   <h2>Paid</h2>
-                </div>  
+                </div>
               </div>
             </div>
             <br></br>
             {/* <Link to={`/employee/printreceipt`}> */}
-              <button  className={`${styles.save_btn} ${styles.btn}`}
-             
-               type="submit"
-               name="signup"
-               value="register"
-               onClick={cartProducts.length===0?()=>{}: PostData}
-              
-              
-              >
-                Save & Print Receipt
-              </button>
+            <button
+              className={`${styles.save_btn} ${styles.btn}`}
+              type="submit"
+              name="signup"
+              value="register"
+              onClick={cartProducts.length === 0 ? () => {} : PostData}
+            >
+              Save & Print Receipt
+            </button>
             {/* </Link> */}
           </div>
         </div>

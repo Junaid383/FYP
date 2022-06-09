@@ -84,30 +84,17 @@ const PrintReceipt = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {data.map((cell, idx) => {
-              return (
-                <tr  key={cell._id}>
-                  <td className="print_t-left print_w-70">{cell.name}</td>
-                  <td> Rs.{cell.price}</td>
-                  <td>{cell.qty}</td>
-                  <td> Rs. {cell.price * cell.qty}</td>
+            {/* {data.map((cell, idx) => { */}
+              {/* return ( */}
+                <tr  >
+                  <td className="print_t-left print_w-70">name</td>
+                  <td> Rs.9999</td>
+                  <td>Rs. 0000</td>
+                  <td> Rs. 99999</td>
                 </tr>
-              );
-            })} */}
-{data.map((cell, idx) => {
-       return(
-      <tr className="widgetLgTr" key={cell._id}>
-        <td className="widgetLgUser">
-          {/* <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="" className="widgetLgImg" /> */}
-          <span className="widgetLgName">{cell.name}</span>
-        </td>
-        <td className="widgetLgDate">{cell.price}</td>
-        <td className="widgetLgAmount">Rs.{cell.total}</td>
-        {/* <td className="widgetLgStatus"><Button type="Approved" /></td> */}
+              {/* ); */}
+            {/* })} */}
 
-      </tr>
-     )}
-     )}
 
 
 
