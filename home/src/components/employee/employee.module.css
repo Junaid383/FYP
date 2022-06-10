@@ -91,6 +91,24 @@ th {
   color: #f5f6fa;
   font-weight: bold;
 }
+
+.inputQty{
+  width: 4rem;
+}
+
+.trHead {
+  border: 1px solid #ddd;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  text-align: center;
+  background-color: #F5F6FA;
+  color: #A3A6B4;
+  font-weight: bold;
+}
+
+
 tr:nth_child(even) {
   background-color: #f2f2f2;
 }
