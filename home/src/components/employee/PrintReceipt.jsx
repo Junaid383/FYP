@@ -102,17 +102,21 @@ const PrintReceipt = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {data.map((cell) => { */}
+            {/* {data.map((cell, idx) => { */}
               {/* return ( */}
-                <tr >
+                <tr  >
                   <td className="print_t-left print_w-70">name</td>
-                  <td> Rs.price</td>
-                  <td>qty</td>
-                  <td> Rs. price * qty</td>
+                  <td> Rs.9999</td>
+                  <td>Rs. 0000</td>
+                  <td> Rs. 99999</td>
                 </tr>
               {/* ); */}
             {/* })} */}
-          
+
+
+
+
+
           </tbody>
           <table>
             <tr>
