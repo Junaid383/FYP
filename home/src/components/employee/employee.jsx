@@ -71,23 +71,23 @@ function employee() {
     } else {
       setData(getData);
     }
-
     setName(keyword);
-
-
-
-
   };
+  
+  useEffect(() => {
+    setSubTotal(updateTotal(cartProducts));
+  }, [cartProducts]);
 
   const itemRemoveHandler = (item) => {
     // console.log(item);
+
     const updatedCartItems = cartProducts.filter(
       (theObj) => theObj._id !== item._id
     );
     setCartProducts(updatedCartItems);
 
     // total -= item.price;
-    setSubTotal(updateTotal(updatedCartItems));
+    // setSubTotal(updateTotal(updatedCartItems));
     // setTotalAfterDiscount(total);
   };
 
@@ -109,10 +109,10 @@ function employee() {
         qty: (tempCartProducts[idx].qty += 1),
       };
       setCartProducts(tempCartProducts);
-      setSubTotal(updateTotal(tempCartProducts));
+      // setSubTotal(updateTotal(tempCartProducts));
     } else {
       setCartProducts([...cartProducts, productToAddInCart]); // rest operator
-      setSubTotal(updateTotal(cartProducts) + productToAddInCart.price);
+      // setSubTotal(updateTotal(cartProducts) + productToAddInCart.price);
     }
   };
 
@@ -130,6 +130,20 @@ function employee() {
     });
     return total;
   };
+
+  const qtyChangeHandler = (item, what) => {
+    const allProducts = [...cartProducts];
+    const productAddedInCart = allProducts.findIndex(
+      (theObj) => theObj._id === item._id
+    );
+    if (what) {
+      allProducts[productAddedInCart].qty += 1;
+    } else {
+      allProducts[productAddedInCart].qty -= 1;
+    }
+    setCartProducts(allProducts);
+  };
+
 
   const PostData = async (e) =>{
     console.log("Button Clicked");
@@ -273,10 +287,10 @@ function employee() {
                   <thead>
                     <tr>
                       {/* <th className="trHead">ID</th> */}
-                      <th className="trHead">Name</th>
-                      <th className="trHead">Price</th>
-                      <th className="trHead">Stock</th>
-                      <th className="trHead">Action</th>
+                      <th className={styles.trHead}>Name</th>
+                      <th className={styles.trHead}>Price</th>
+                      <th className={styles.trHead}>Stock</th>
+                      <th className={styles.trHead}>Action</th>
                     </tr>
                   </thead>  
                   <tbody>
@@ -333,7 +347,7 @@ function employee() {
                       <th>Name</th>
                       <th>Price</th>
 
-                      <th>Qty</th>
+                      <th >Qty</th>
                       <th>Total</th>
                       <th>remove</th>
                     </tr>
@@ -345,6 +359,7 @@ function employee() {
                         data={cartItem}
                         idx={idx}
                         itemRemoveHandler={itemRemoveHandler}
+                        qtyChangeHandler={qtyChangeHandler}
                       />
                     ))}
                   </tbody>
@@ -367,6 +382,7 @@ function employee() {
                     onChange={discountHandler}
                     name="add-discount"
                     min="0"
+                    max={subTotal}
                     value={discountedAmount}
                   />
                   <span>Rs. </span>
