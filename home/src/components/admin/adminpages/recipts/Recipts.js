@@ -3,10 +3,11 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-
 function Recipts() {
-
   const [data, setData] = useState([]);
+  const [name, setName] = useState('');
+
+
   const domainURL = "http://localhost:5000";
   const fetchProducts = async () => {
     const response = await fetch(`${domainURL}/admin/recepits`);
@@ -21,6 +22,10 @@ function Recipts() {
   useEffect(() => {
     console.log(data);
   }, [data]);
+
+  
+
+
 
   var newTable;
   function createReceiptsTable(arraysOfArrays) {
@@ -58,50 +63,89 @@ function Recipts() {
     //populating the table
   }
 
-  const Button = ({ type }) => {
-    return <button className={"widgetLggButton " + type}> {type}</button>;
+  const searchHandler = async (event) => {
+
+    const response = await fetch(`/admin/recepits`);
+    const getData = await response.json();
+    
+    console.log(getData);
+    // console.log(event.target.value);
+    const keyword = event.target.value;
+
+    if (keyword !== '') {
+        const results = getData.filter((user) => {
+                  
+
+
+        });
+        console.log(results);
+        setData(results);
+
+    } else {
+      setData(getData);
+    }
+
+    setName(keyword);
+
+
+
+
   };
+
 
   return (
     <div className="recipts">
       <div className="widgetLgg">
         <h3 className="widgetLgggTitle">Recipts</h3>
-        <table className="widgetLggTable" id="table-main-receipts" >
-        <thead>
-          <tr className="">
-            <th className="widgetLggTh">Employee</th>
-            <th className="widgetLggTh">Date</th>
-            <th className="widgetLggTh">Amount</th>
-            <th className="widgetLggTh">Status</th>
-          </tr>
+        <input
+                onChange={searchHandler}
+                type="text"
+                name="search-products"
+                placeholder="Search for an item"
+              />
+        <table className="widgetLggTable" id="table-main-receipts">
+          <thead>
+            <tr className="">
+            <th className="widgetLggTh">Order ID</th>
+
+              <th className="widgetLggTh">Employee</th>
+              <th className="widgetLggTh">Date</th>
+              <th className="widgetLggTh">Time</th>
+
+              <th className="widgetLggTh">Amount</th>
+              <th className="widgetLggTh">Status</th>
+            </tr>
           </thead>
 
-
           <tbody>
-          {data.map((cell, idx) => {
+            {data.map((cell, idx) => {
               return (
-          <tr className="widgetLggTr">
-            <td className="widgetLggUser">
-              <img
-                src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
-                alt=""
-                className="widgetLggImg"
-              />
-              <span className="widgetLggName">{cell.loggedInUserName}</span>
-            </td>
-            <td className="widgetLggDate">{cell.completeData}</td>
-              <td className="widgetLggAmount">Rs. {cell.total} </td>
-            <td className="widgetLggStatus">
-              <Link to={`/admin/recipts/${1}`}>
-                {/* <Button type="Approved" /> */}
-                <button className="reciptView">View</button>
-              </Link>
-            </td>
-          </tr>
-);
-})}
-  </tbody>
-         
+                <tr className="widgetLggTr" key={cell._id}>
+                  <td className="widgetLggTr">{cell.orderID}</td>
+                  <td className="widgetLggUser">
+                    <img
+                      src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png"
+                      alt=""
+                      className="widgetLggImg"
+                    />
+                    <span className="widgetLggName">
+                      {cell.loggedInUserName}
+                    </span>
+                  </td>
+                  <td className="widgetLggDate">{cell.completeData}</td>
+                  <td className="widgetLggDate">{cell.completeTime}</td>
+
+                  <td className="widgetLggAmount">Rs. {cell.total} </td>
+                  <td className="widgetLggStatus">
+                    <Link to={`/admin/recipts/${1}`}>
+                      {/* <Button type="Approved" /> */}
+                      <button className="reciptView">View</button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
 
         {/* </table> */}

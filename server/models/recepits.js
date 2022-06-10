@@ -56,8 +56,13 @@ const recepits = new mongoose.Schema({
     },
     status:{
         type:String,
+    },
+    orderID:{
+        type:String,
+    },
+    custmerID:{
+        type: String
     }
-    
 
 });
 

@@ -252,12 +252,14 @@ router.get("/employee/:userID", (req, res) => {
 });
 let rpID;
 let odrID;
+let orderID;
+let custmerID;
 //===============ORDERS handler===========
 router.post("/employee/order" , async(req  , res) =>{
   const { userID, subTotal, discountedAmount } = req.body;
   console.log(req.body);
-  let orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-  let custmerID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+   orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+   custmerID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
   
   console.log(orderID);
   console.log(custmerID);
@@ -351,6 +353,8 @@ router.post("/employee/printreceipt", async (req, res) => {
         completeData,
         completeTime,
         status,
+        orderID,
+        custmerID
 
       });
       // console.log(status);
