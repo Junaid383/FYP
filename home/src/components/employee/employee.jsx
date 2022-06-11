@@ -168,7 +168,7 @@ function employee() {
       }),
     });
     const orderData = await order.json();
-    // console.log(orderData.orderID);
+    // console.log(orderData);
 
     const res = await fetch("/employee/printreceipt", {
       method: "POST",

@@ -69,7 +69,7 @@ function Recipts() {
    
     if (keyword !== "") {
       const results = getData.filter((user) => {
-        return user.orderID.toString().includes(keyword);
+        return user.orderID==keyword;
     });
       console.log("Filtered Data");
       console.log(results);
