@@ -91,8 +91,7 @@ export default function ProductList() {
     updateProductsTable(deletedPROD.emp._id)
     }
     
-    
-    
+  
       
     }
     
@@ -124,7 +123,13 @@ export default function ProductList() {
               <th className="trHead">ID</th>
               <th className="trHead">Name</th>
               <th className="trHead">Price</th>
+              <th className="trHead">Orignal Cost</th>
+
               <th className="trHead">Stock</th>
+              <th className="trHead">Unit</th>
+              <th className="trHead">Category</th>
+
+
               <th className="trHead">Status</th>
             </tr>
           </thead>
@@ -135,7 +140,12 @@ export default function ProductList() {
                   <td className="trData">{idx + 1}</td>
                   <td className="trData">{cell.name}</td>
                   <td className="trData">{cell.price}</td>
+                  <td className="trData">{cell.cost}</td>
+
                   <td className="trData">{cell.stock}</td>
+                  <td className="trData">{cell.unit}</td>
+                  <td className="trData">{cell.category}</td>
+
                   <td className="trData">
                     <Link to={`/admin/product/${cell._id}`}>
                       <button className="productListEdit">Edit</button>

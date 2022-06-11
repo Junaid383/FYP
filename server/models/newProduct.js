@@ -28,6 +28,18 @@ const newProduct = new mongoose.Schema({
         type: Number,
         // required: true
     },
+    cost: {
+        type: Number,
+        required: true
+    },
+    unit: {
+        type: String,
+        // required: true
+    },
+    category: {
+        type: String,
+        // required: true
+    },
    
     
 

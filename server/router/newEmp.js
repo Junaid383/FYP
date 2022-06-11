@@ -193,11 +193,16 @@ router.post("/signin", async (req, res) => {
 router.post("/admin/newProduct", upload.single("image"), async (req, res) => {
   // req.body.image = req.file.path;
   // console.log( req.body);
-  const { image, name, stock, price, active } = req.body;
+  const { image, name, stock, price, active ,  cost , unit , category } = req.body;
   console.log(req.body);
-  if (!name || !stock || !price) {
+  if (!name || !stock || !price ||  !cost || ! unit || ! category) {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
+  }
+  if(price>cost)
+  {
+    console.log("Sale Price Must be larger");
+    return res.status(422).json({ error: "Sale Price Must be larger" });
   }
   try {
     const prdExist = await PRD.findOne({ name: name }); //First from DB and 2nd from IP fields to check if same email exist or not
@@ -205,7 +210,7 @@ router.post("/admin/newProduct", upload.single("image"), async (req, res) => {
     if (prdExist) {
       return res.status(422).json({ error: "Product  exist" });
     } else {
-      const prd = new PRD({ image, name, stock, price, active });
+      const prd = new PRD({ image, name, stock, price, active, cost , unit , category });
       const prdReg = await prd.save();
       res.status(201).json({ message: "Product Entered" });
     }

@@ -24,7 +24,7 @@ export default function NewProduct() {
   const PostData = async (e) => {
     e.preventDefault();
 
-    const { image, name, stock, price } = user;
+    const { image, name, stock, price , cost , unit , category } = user;
 
     const res = await fetch("/admin/newProduct", {
       method: "POST",
@@ -35,7 +35,7 @@ export default function NewProduct() {
       },
       body: JSON.stringify({
 
-        image, name, stock, price 
+        image, name, stock, price , cost , unit , category
 
       })
     });
@@ -94,8 +94,27 @@ export default function NewProduct() {
             autoComplete="off"
             value={user.name}
             onChange={handleInputs}
-            type="text" placeholder="Oranges" />
+            type="text" placeholder="Product Name" />
         </div>
+
+        <div className={styles.addProductItem}>
+          <label>Price</label>
+          <input name="price"
+            autoComplete="off"
+            value={user.price}
+            onChange={handleInputs}
+            type="number" placeholder="Price" />
+        </div>
+
+        <div className={styles.addProductItem}>
+          <label>Orignal Price</label>
+          <input name="cost"
+            autoComplete="off"
+            value={user.cost}
+            onChange={handleInputs}
+            type="number" placeholder="Orignal Cost" />
+        </div> 
+
         <div className={styles.addProductItem}>
           <label>Stock</label>
           <input name="stock"
@@ -104,13 +123,22 @@ export default function NewProduct() {
             onChange={handleInputs}
             type="number" placeholder="Quantity" />
         </div>
+       
         <div className={styles.addProductItem}>
-          <label>Price</label>
-          <input name="price"
+          <label>Unit</label>
+          <input name="unit"
             autoComplete="off"
-            value={user.price}
+            value={user.unit}
             onChange={handleInputs}
-            type="number" placeholder="Price" />
+            type="text" placeholder="Unit" />
+        </div>
+        <div className={styles.addProductItem}>
+          <label>Category</label>
+          <input name="category"
+            autoComplete="off"
+            value={user.category}
+            onChange={handleInputs}
+            type="text" placeholder="Category" />
         </div>
 
         {/* <div className={styles.addProductItem}>
