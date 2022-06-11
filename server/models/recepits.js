@@ -62,6 +62,9 @@ const recepits = new mongoose.Schema({
     },
     custmerID:{
         type: String
+    },
+    loggedInUserID:{
+        type:String
     }
 
 });

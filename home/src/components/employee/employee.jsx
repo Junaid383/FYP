@@ -146,16 +146,16 @@ function employee() {
 
 
   const PostData = async (e) =>{
-    console.log("Button Clicked");
-    console.log(cartProducts);
-    console.log(subTotal);
-    console.log(discountedAmount);
-    console.log(subTotal - discountedAmount);
+    // console.log("Button Clicked");
+    // console.log(cartProducts);
+    // console.log(subTotal);
+    // console.log(discountedAmount);
+    // console.log(subTotal - discountedAmount);
 
     
    
 
-    const order =  fetch("/employee/order", {
+    const order = await fetch("/employee/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -163,11 +163,12 @@ function employee() {
       body: JSON.stringify({
         userID,
         subTotal,
-        discountedAmount,
+        discountedAmount, 
 
       }),
     });
-    
+    const orderData = await order.json();
+    // console.log(orderData.orderID);
 
     const res = await fetch("/employee/printreceipt", {
       method: "POST",
@@ -205,7 +206,7 @@ function employee() {
         progress: undefined,
       });
      setTimeout(()=>{
-       histroy.push(`/printreceipt`); 
+       histroy.push(`/printreceipt/${orderData.orderID}`); 
       
      },2000)
 

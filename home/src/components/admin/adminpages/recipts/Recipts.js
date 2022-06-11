@@ -68,9 +68,8 @@ function Recipts() {
     console.log(keyword);
    
     if (keyword !== "") {
-      // const results = getData.filter(itemInArray => itemInArray.orderID === keyword)
       const results = getData.filter((user) => {
-        return user.orderID;
+        return user.orderID.toString().includes(keyword);
     });
       console.log("Filtered Data");
       console.log(results);

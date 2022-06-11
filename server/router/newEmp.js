@@ -226,7 +226,7 @@ router.get("/admin/products", (req, res) => {
 
 // ============ADMIN RECEPITS===============
 router.get("/admin/recepits", (req, res) => {
-  RECEPITS.find()
+  RECEPITS.find().sort({_id:-1})
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
@@ -261,8 +261,8 @@ router.post("/employee/order" , async(req  , res) =>{
    orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
    custmerID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
   
-  console.log(orderID);
-  console.log(custmerID);
+  // console.log(orderID);
+  // console.log(custmerID);
 
 
   try {
@@ -287,10 +287,10 @@ router.post("/employee/order" , async(req  , res) =>{
       // console.log(status);
       
       const orderReg = await order.save();
-      console.log("Order CREATED");
+      // console.log("Order CREATED");
       
       odrID = orderReg._id;
-      res.status(201).json({ message: "Order Created" ,orderID: orderReg._id ,empName: orderReg.loggedInUserName  });
+      res.status(201).json({ message: "Order Created" ,orderID: orderID ,empName: orderReg.loggedInUserName  });
     } 
     else {
       console.log("RECIPT NOT CREATED");
@@ -333,6 +333,8 @@ router.post("/employee/printreceipt", async (req, res) => {
     const loggedIn = await EMP.findOne({ _id: userID });
 
     const loggedInUserName = loggedIn.name;
+    const loggedInUserID = loggedIn._id;
+
     let total = subTotal - discountedAmount;
     // console.log(cartProducts);
     // console.log(loggedInUserName);
@@ -345,6 +347,7 @@ router.post("/employee/printreceipt", async (req, res) => {
 
     if (loggedIn) {
       const recpts = new RECEPITS({
+        loggedInUserID,
         loggedInUserName,
         cartProducts,
         subTotal,
@@ -360,7 +363,7 @@ router.post("/employee/printreceipt", async (req, res) => {
       // console.log(status);
       
       const recptReg = await recpts.save();
-      console.log("RECIPT CREATED");
+      // console.log("RECIPT CREATED");
       // console.log(recptReg.status);
       rpID = recptReg._id;
       res.status(201).json({ message: "Recipt Created" ,recptID: recptReg._id ,empName: recptReg.loggedInUserName  });
