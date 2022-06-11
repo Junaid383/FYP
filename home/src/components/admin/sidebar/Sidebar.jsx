@@ -1,5 +1,5 @@
-import './sidebar.css'
-import React from 'react';
+import "./sidebar.css";
+import React, { useEffect, useState } from "react";
 
 import {
   LineStyle,
@@ -15,18 +15,29 @@ import {
   WorkOutline,
   Report,
 } from "@material-ui/icons";
-import { Link, NavLink } from 'react-router-dom';
-
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
+  const [isActive, setisActive] = useState();
+
+  const location = useLocation();
+
+
+  useEffect(() => {
+    setisActive(extractName(location.pathname));
+  }, [location.pathname]);
+
+  const extractName = (path) =>
+    path.substring(path.lastIndexOf("/") + 1, path.length);
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <NavLink to="/admin/home" className='link'>
-              <li className="sidebarListItem active">
+            <NavLink to="/admin/home" className="link">
+              <li className={`sidebarListItem ${isActive==="home" ? "active" : null}`}>
                 <LineStyle className="sidebarIcon" />
                 Home
               </li>
@@ -44,14 +55,14 @@ export default function Sidebar() {
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
-            <NavLink to="/admin/users" className='link'>
-              <li className="sidebarListItem">
+            <NavLink to="/admin/users" className="link">
+              <li className={`sidebarListItem ${isActive==="users" ? "active" : null}`}>
                 <PermIdentity className="sidebarIcon" />
                 Employee
               </li>
             </NavLink>
-            <NavLink to="/admin/products" className='link'>
-              <li className="sidebarListItem">
+            <NavLink to="/admin/products" className="link">
+              <li className={`sidebarListItem ${isActive==="products" ? "active" : null}`}>
                 <Storefront className="sidebarIcon" />
                 Products
               </li>
@@ -61,14 +72,13 @@ export default function Sidebar() {
               Transactions
             </li>
 
-            <NavLink to="/admin/recipts" className='link'>
-              <li className="sidebarListItem">
+            <NavLink to="/admin/recipts" className="link">
+              <li className={`sidebarListItem ${isActive==="recipts" ? "active" : null}`}>
                 <BarChart className="sidebarIcon" />
                 Recipts
               </li>
             </NavLink>
           </ul>
-
         </div>
 
         <div className="sidebarMenu">
@@ -99,9 +109,9 @@ export default function Sidebar() {
               <Timeline className="sidebarIcon" />
               Analytics
             </li>
-            
-            <NavLink to="/admin/reports" className='link'>
-              <li className="sidebarListItem">
+
+            <NavLink to="/admin/reports" className="link">
+              <li className={`sidebarListItem ${isActive==="reports" ? "active" : null}`}>
                 <Report className="sidebarIcon" />
                 Reports
               </li>

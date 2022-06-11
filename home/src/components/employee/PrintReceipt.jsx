@@ -6,7 +6,6 @@ const PrintReceipt = () => {
   const [data, setData] = useState([]);
   const [orderData, setOrderData] = useState([]);
 
-
   const fetchProducts = async () => {
     const response = await fetch(`/printreceipt/`);
     const prods = await response.json();
@@ -18,9 +17,8 @@ const PrintReceipt = () => {
     fetchProducts();
   }, []);
   useEffect(() => {
-    console.log(data);
+    console.log(data.cartProducts);
   }, [data]);
-
 
   const fetchOrders = async () => {
     const response = await fetch(`/order`);
@@ -54,7 +52,7 @@ const PrintReceipt = () => {
             </p>
           </div>
           <div className="print_order-id">
-          <h1>Order Id #{orderData.orderID}</h1>
+            <h1>Order Id #{orderData.orderID}</h1>
           </div>
         </div>
       </div>
@@ -102,21 +100,18 @@ const PrintReceipt = () => {
             </tr>
           </thead>
           <tbody>
-            {/* {data.map((cell, idx) => { */}
-              {/* return ( */}
-                <tr  >
-                  <td className="print_t-left print_w-70">name</td>
-                  <td> Rs.9999</td>
-                  <td>Rs. 0000</td>
-                  <td> Rs. 99999</td>
-                </tr>
-              {/* ); */}
-            {/* })} */}
-
-
-
-
-
+            {data.cartProducts
+              ? data.cartProducts.map((d) => {
+                  return (
+                    <tr>
+                      <td className="print_t-left print_w-70">{d.name}</td>
+                      <td> Rs.{d.price}</td>
+                      <td>   {d.qty}</td>
+                      <td> Rs. {d.price * d.qty}</td>
+                    </tr>
+                  );
+                })
+              : null}
           </tbody>
           <table>
             <tr>

@@ -1,11 +1,13 @@
 import "./recipts.css";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 function Recipts() {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
+
+ 
 
   const domainURL = "http://localhost:5000";
   const fetchProducts = async () => {
@@ -66,11 +68,11 @@ function Recipts() {
     // console.log(event.target.value);
     const keyword = event.target.value;
     console.log(keyword);
-   
+
     if (keyword !== "") {
       const results = getData.filter((user) => {
-        return user.orderID==keyword;
-    });
+        return String(user.orderID).includes(String(keyword));
+      });
       console.log("Filtered Data");
       console.log(results);
       setData(results);
@@ -80,11 +82,6 @@ function Recipts() {
 
     setName(keyword);
   };
-
-  
-
-
-
 
   return (
     <div className="recipts">
@@ -136,7 +133,7 @@ function Recipts() {
                     <td className="widgetLggStatus">
                       <Link to={`/admin/viewreceipt/${cell._id}`}>
                         {/* <Button type="Approved" /> */}
-                        <button className="reciptView" >View</button>
+                        <button className="reciptView">View</button>
                       </Link>
                     </td>
                   </tr>

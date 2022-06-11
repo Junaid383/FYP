@@ -397,7 +397,7 @@ router.post("/viewreceipt/:orderID", (req, res) => {
   let orderIDbyOrder = req.body.orderID;
   RECEPITS.findById(orderIDbyOrder)
   .then((user) => {
-    console.log(user);
+    // console.log(user);
     res.json(user); //sending data back to user-line25
   })
   .catch((err) => {
