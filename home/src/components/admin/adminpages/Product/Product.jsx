@@ -10,6 +10,7 @@ import User from "../user/User";
 import { ToastContainer, toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
+
 export default function Product() {
   const history = useHistory();
   const [data, setData] = useState([]);
