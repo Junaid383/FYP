@@ -392,9 +392,26 @@ router.get("/admin/orderData" , (req , res) =>{
 })
 
 
+router.post("/viewreceipt/:orderID", (req, res) => {
+  // console.log(req.body);
+  let orderIDbyOrder = req.body.orderID;
+  RECEPITS.findById(orderIDbyOrder)
+  .then((user) => {
+    console.log(user);
+    res.json(user); //sending data back to user-line25
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+  // RECEPITS.findOne({_id:rpID } )
+  // .then((prod) => res.json(prod))
+  // .catch((err) => res.status(400).json("Error : $(err)"));
+});
+
 
 //=====================RECEPIT DISPLAY==================
-router.get("/printreceipt", (req, res) => {
+router.get("/printreceipt/", (req, res) => {
   // RECEPITS.find()
     // .then((prod) => res.json(prod))
     // .catch((err) => res.status(400).json("Error : $(err)"));

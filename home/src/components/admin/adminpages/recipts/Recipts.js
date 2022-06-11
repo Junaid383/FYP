@@ -81,6 +81,11 @@ function Recipts() {
     setName(keyword);
   };
 
+  
+
+
+
+
   return (
     <div className="recipts">
       <div className="widgetLgg">
@@ -129,9 +134,9 @@ function Recipts() {
 
                     <td className="widgetLggAmount">Rs. {cell.total} </td>
                     <td className="widgetLggStatus">
-                      <Link to={`/admin/recipts/${1}`}>
+                      <Link to={`/admin/viewreceipt/${cell._id}`}>
                         {/* <Button type="Approved" /> */}
-                        <button className="reciptView">View</button>
+                        <button className="reciptView" >View</button>
                       </Link>
                     </td>
                   </tr>

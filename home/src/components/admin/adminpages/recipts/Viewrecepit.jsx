@@ -1,16 +1,30 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import "./PrintReceipt.css";
+
+import "./viewReceipt.css";
 const PrintReceipt = () => {
   const [data, setData] = useState([]);
   const [orderData, setOrderData] = useState([]);
 
-
+  const location = useLocation();
+  const orderID = location.pathname.substring(
+    location.pathname.lastIndexOf("/") + 1,
+    location.pathname.length
+  );
   const fetchProducts = async () => {
-    const response = await fetch(`/printreceipt/`);
+    const response = await fetch(`/viewreceipt/:orderID` , {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            orderID,
+        }),  
+    });
     const prods = await response.json();
-
+    console.log(prods);
     setData(prods);
     // createReceiptsTable(prods)
   };
@@ -22,20 +36,20 @@ const PrintReceipt = () => {
   }, [data]);
 
 
-  const fetchOrders = async () => {
-    const response = await fetch(`/order`);
-    const dataOrder = await response.json();
-    console.log(dataOrder);
-    console.log(response);
-    setOrderData(dataOrder);
-    // createReceiptsTable(prods)
-  };
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-  useEffect(() => {
-    console.log(orderData);
-  }, [orderData]);
+//   const fetchOrders = async () => {
+//     const response = await fetch(`/order`);
+//     const dataOrder = await response.json();
+//     console.log(dataOrder);
+//     console.log(response);
+//     setOrderData(dataOrder);
+//     // createReceiptsTable(prods)
+//   };
+//   useEffect(() => {
+//     fetchOrders();
+//   }, []);
+//   useEffect(() => {
+//     console.log(orderData);
+//   }, [orderData]);
 
   function printReceipt(e) {
     // document.getElementById("prnt-btn").style.display = "none";
@@ -44,7 +58,7 @@ const PrintReceipt = () => {
     // window.close();
   }
   return (
-    <div>
+    <div className="viewRecepit">
       <div className="print_main-page">
         <div className="print_header">
           <div className="print_shop-title">
@@ -54,7 +68,7 @@ const PrintReceipt = () => {
             </p>
           </div>
           <div className="print_order-id">
-          <h1>Order Id #{orderData.orderID}</h1>
+          <h1>Order Id #{data.orderID}</h1>
           </div>
         </div>
       </div>
@@ -63,7 +77,7 @@ const PrintReceipt = () => {
           <table>
             <tr>
               <th>Customer-Id:</th>
-              <td>{orderData.custmerID}</td>
+              <td>{data.custmerID}</td>
             </tr>
             <tr>
               <th>Sold by: </th>

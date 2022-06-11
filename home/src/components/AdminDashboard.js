@@ -17,6 +17,7 @@ import Product from "./admin/adminpages/Product/Product";
 import NewProduct from "./admin/adminpages/newProduct/NewProduct";
 import Recipts from "./admin/adminpages/recipts/Recipts";
 import Reports from "./admin/adminpages/reports/Reports";
+import Viewrecepits from './admin/adminpages/recipts/Viewrecepit'
 // import Navbar from './components/Navbar';
 
 
@@ -64,8 +65,8 @@ function AdminDashboard() {
                         <Recipts/>
                     </Route>
 
-                    <Route path="/admin/recipts/:ID">
-                        <Recipts/>
+                    <Route path="/admin/viewreceipt/:ID">
+                        <Viewrecepits/>
                     </Route>
 
 
