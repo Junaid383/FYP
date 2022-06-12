@@ -25,7 +25,7 @@ const ADMIN = require("../models/adminSchema");
 const EMP = require("../models/schema");
 const PRD = require("../models/newProduct");
 const RECEPITS = require("../models/recepits");
-const ORDERS  = require("../models/order")
+const ORDERS = require("../models/order");
 const { response } = require("express");
 
 //===========================================googleLogins
@@ -193,14 +193,13 @@ router.post("/signin", async (req, res) => {
 router.post("/admin/newProduct", upload.single("image"), async (req, res) => {
   // req.body.image = req.file.path;
   // console.log( req.body);
-  const { image, name, stock, price, active ,  cost , unit , category } = req.body;
+  const { image, name, stock, price, active, cost, unit, category } = req.body;
   console.log(req.body);
-  if (!name || !stock || !price ||  !cost || ! unit || ! category) {
+  if (!name || !stock || !price || !cost || !unit || !category) {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
-  if(price>cost)
-  {
+  if (price < cost) {
     console.log("Sale Price Must be larger");
     return res.status(422).json({ error: "Sale Price Must be larger" });
   }
@@ -210,7 +209,16 @@ router.post("/admin/newProduct", upload.single("image"), async (req, res) => {
     if (prdExist) {
       return res.status(422).json({ error: "Product  exist" });
     } else {
-      const prd = new PRD({ image, name, stock, price, active, cost , unit , category });
+      const prd = new PRD({
+        image,
+        name,
+        stock,
+        price,
+        active,
+        cost,
+        unit,
+        category,
+      });
       const prdReg = await prd.save();
       res.status(201).json({ message: "Product Entered" });
     }
@@ -224,21 +232,30 @@ router.post("/admin/newProduct", upload.single("image"), async (req, res) => {
 
 router.get("/admin/products", (req, res) => {
   PRD.find()
+    .sort({ name: 1 })
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
-
 
 // ============ADMIN RECEPITS===============
 router.get("/admin/recepits", (req, res) => {
-  RECEPITS.find().sort({_id:-1})
+  RECEPITS.find()
+    .sort({ _id: -1 })
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
+router.get("/employee/recentrecepits", (req, res) => {
+  RECEPITS.find()
+    .sort({ _id: -1 })
+    .limit(4)
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
+});
 
 router.get("/admin/users", (req, res) => {
   EMP.find()
+    .sort({ name: 1 })
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
@@ -250,25 +267,50 @@ router.get("/admin/users", (req, res) => {
 // });
 
 //==========================EMPLOYEE=============
+router.get("employeedata/:userID", (req, res) => {
+  let empData = req.body.id;
+  EMP.findById(req.body.userID)
+    .then((user) => {
+      res.json(user); //sending data back to user-line25
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 router.get("/employee/:userID", (req, res) => {
   PRD.find()
+    .sort({ name: 1 })
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
+router.get("datafinder/:userID", (req, res) => {
+  let empData = req.body.userID;
+  EMP.findById(empData)
+    .then((user) => {
+      // console.log(user);
+      res.json(user); //sending data back to user-line25
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 let rpID;
 let odrID;
 let orderID;
 let custmerID;
 //===============ORDERS handler===========
-router.post("/employee/order" , async(req  , res) =>{
+router.post("/employee/order", async (req, res) => {
   const { userID, subTotal, discountedAmount } = req.body;
   console.log(req.body);
-   orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-   custmerID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
-  
+  orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+  custmerID = (Math.floor(Math.random() * 10000) + 10000)
+    .toString()
+    .substring(1);
+
   // console.log(orderID);
   // console.log(custmerID);
-
 
   try {
     const loggedIn = await EMP.findOne({ _id: userID });
@@ -276,28 +318,30 @@ router.post("/employee/order" , async(req  , res) =>{
     const loggedInUserName = loggedIn.name;
     let total = subTotal - discountedAmount;
 
-
-
     if (loggedIn) {
       const order = new ORDERS({
         loggedInUserName,
-        
+
         subTotal,
         discountedAmount,
         total,
         orderID,
         custmerID,
-
       });
       // console.log(status);
-      
+
       const orderReg = await order.save();
       // console.log("Order CREATED");
-      
+
       odrID = orderReg._id;
-      res.status(201).json({ message: "Order Created" ,orderID: orderID ,empName: orderReg.loggedInUserName  });
-    } 
-    else {
+      res
+        .status(201)
+        .json({
+          message: "Order Created",
+          orderID: orderID,
+          empName: orderReg.loggedInUserName,
+        });
+    } else {
       console.log("RECIPT NOT CREATED");
 
       return res.status(422).json({ error: "Recipt Not Created" });
@@ -305,12 +349,7 @@ router.post("/employee/order" , async(req  , res) =>{
   } catch (e) {
     console.log(e);
   }
-
-
-
-
-})
-
+});
 
 // ==================PRINT recepit========================
 router.post("/employee/printreceipt", async (req, res) => {
@@ -318,20 +357,28 @@ router.post("/employee/printreceipt", async (req, res) => {
   let ts = Date.now();
   let date_ob = new Date(ts);
   let date = date_ob.getDate();
-  const monthNames = ["Jan", "Feb", "Mar", "April", "May", "June",
-    "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "April",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
-  let month = monthNames[date_ob.getMonth()] ;  
+  let month = monthNames[date_ob.getMonth()];
   let year = date_ob.getFullYear();
   let hours = date_ob.getHours();
   let minutes = date_ob.getMinutes();
 
-  
-  let completeData = date + "-" + month + "-" + year ;
-  let completeTime = hours + ":"+ minutes;
+  let completeData = date + "-" + month + "-" + year;
+  let completeTime = hours + ":" + minutes;
   let status = `APPROVED`;
-
-
 
   const { userID, cartProducts, subTotal, discountedAmount } = req.body;
   try {
@@ -349,7 +396,6 @@ router.post("/employee/printreceipt", async (req, res) => {
     // console.log(completeData);
     // console.log(completeTime);
 
-
     if (loggedIn) {
       const recpts = new RECEPITS({
         loggedInUserID,
@@ -362,18 +408,22 @@ router.post("/employee/printreceipt", async (req, res) => {
         completeTime,
         status,
         orderID,
-        custmerID
-
+        custmerID,
       });
       // console.log(status);
-      
+
       const recptReg = await recpts.save();
       // console.log("RECIPT CREATED");
       // console.log(recptReg.status);
       rpID = recptReg._id;
-      res.status(201).json({ message: "Recipt Created" ,recptID: recptReg._id ,empName: recptReg.loggedInUserName  });
-    } 
-    else {
+      res
+        .status(201)
+        .json({
+          message: "Recipt Created",
+          recptID: recptReg._id,
+          empName: recptReg.loggedInUserName,
+        });
+    } else {
       console.log("RECIPT NOT CREATED");
 
       return res.status(422).json({ error: "Recipt Not Created" });
@@ -384,57 +434,58 @@ router.post("/employee/printreceipt", async (req, res) => {
 });
 
 // =================ADMIN RECIPT DISPLAY=============
-router.get("/admin/receiptData" , (req , res) =>{
-  RECEPITS.find().sort({_id:-1}).limit(6)
-  .then((prod) => res.json(prod))
-  .catch((err) => res.status(400).json("Error : $(err)"));
-})
+router.get("/admin/receiptData", (req, res) => {
+  RECEPITS.find()
+    .sort({ _id: -1 })
+    .limit(6)
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
+});
 
-router.get("/admin/orderData" , (req , res) =>{
-  ORDERS.find().sort({_id:-1}).limit(6)
-  .then((prod) => res.json(prod))
-  .catch((err) => res.status(400).json("Error : $(err)"));
-})
-
+router.get("/admin/orderData", (req, res) => {
+  ORDERS.find()
+    .sort({ _id: -1 })
+    .limit(6)
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
+});
 
 router.post("/viewreceipt/:orderID", (req, res) => {
   // console.log(req.body);
   let orderIDbyOrder = req.body.orderID;
   RECEPITS.findById(orderIDbyOrder)
-  .then((user) => {
-    // console.log(user);
-    res.json(user); //sending data back to user-line25
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    .then((user) => {
+      // console.log(user);
+      res.json(user); //sending data back to user-line25
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   // RECEPITS.findOne({_id:rpID } )
   // .then((prod) => res.json(prod))
   // .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
-
 //=====================RECEPIT DISPLAY==================
 router.get("/printreceipt/", (req, res) => {
   // RECEPITS.find()
-    // .then((prod) => res.json(prod))
-    // .catch((err) => res.status(400).json("Error : $(err)"));
+  // .then((prod) => res.json(prod))
+  // .catch((err) => res.status(400).json("Error : $(err)"));
 
-  RECEPITS.findOne({_id:rpID } )
-  .then((prod) => res.json(prod))
-  .catch((err) => res.status(400).json("Error : $(err)"));
+  RECEPITS.findOne({ _id: rpID })
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
 });
-
 
 router.get("/order", (req, res) => {
   // RECEPITS.find()
-    // .then((prod) => res.json(prod))
-    // .catch((err) => res.status(400).json("Error : $(err)"));
+  // .then((prod) => res.json(prod))
+  // .catch((err) => res.status(400).json("Error : $(err)"));
 
-  ORDERS.findOne({_id:odrID } )
-  .then((odr) => res.json(odr))
-  .catch((err) => res.status(400).json("Error : $(err)"));
+  ORDERS.findOne({ _id: odrID })
+    .then((odr) => res.json(odr))
+    .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
 //======================================user delete=================
@@ -463,7 +514,6 @@ router.post("/admin/user/update", async (req, res) => {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
-  
 
   try {
     const empExist = await EMP.findOne({ _id: userID }); //First from DB and 2nd from IP fields to check if same email exist or not
@@ -517,22 +567,21 @@ router.get("/admin", authenticate, (res, req) => {
 
 // ==========================Product Update ===============
 router.post("/admin/product/update", async (req, res) => {
-  const { prodID, name, price, quantity , cost, unit,category } = req.body;
+  const { prodID, name, price, quantity, cost, unit, category } = req.body;
   console.log(req.body);
 
   if (!name || !price || !quantity || !cost || !unit || !category) {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
-  console.log("Price:" + price);
-  console.log("COST:" + cost);
+  // console.log("Price:" + price);
+  // console.log("COST:" + cost);
 
-  if(price<cost)
-  {
+  if (price < cost) {
     console.log("Sale Price Must be larger");
     return res.status(422).json({ error: "Sale Price Must be larger" });
   }
- 
+
   try {
     const prodExist = await PRD.findOne({ _id: prodID }); //First from DB and 2nd from IP fields to check if same email exist or not
 
@@ -545,10 +594,9 @@ router.post("/admin/product/update", async (req, res) => {
           name: name,
           price: price,
           stock: quantity,
-          cost:cost,
-          unit:unit,
-          category:category
-
+          cost: cost,
+          unit: unit,
+          category: category,
         },
         function (err, doc) {
           if (err) {

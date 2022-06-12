@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { Link  ,useLocation , useHistory } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { useState } from "react";
 import styles from "./employee.module.css";
 import CartItem from "./CartItem";
-import { ToastContainer , toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 let total = 0;
 
 function employee() {
@@ -13,9 +13,10 @@ function employee() {
   const [subTotal, setSubTotal] = useState(); // total price ki state after discount
   const [totalAmountAfterDiscount, setTotalAfterDiscount] = useState(); // total ki state before discount
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
- 
+  const [recentOrder, setrecentOrder] = useState([]);
+  const [empData, setempData] = useState();
   //Serach Filter
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [foundUsers, setFoundUsers] = useState();
   const histroy = useHistory();
 
@@ -25,15 +26,27 @@ function employee() {
     location.pathname.length
   );
 
-
-
- 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
   const domainURL = "http://localhost:5000";
 
   const discountRef = useRef(null);
+
+  let empID = userID;
+  const empDetails = async () => {  //newEMP.js ----line 270
+    const response = await fetch(`${domainURL}/datafinder/${empID}`);
+    const prods = await response.json();
+    console.log("Enter");
+    setempData(prods);
+    console.log("EMP data");
+    console.log(prods);
+  };
+
+  useEffect(() => {
+    empDetails();
+  }, [empData]);
+
 
   const fetchProducts = async () => {
     const response = await fetch(`${domainURL}/employee/${userID}`);
@@ -42,38 +55,38 @@ function employee() {
     setData(prods);
     console.log("All data");
     console.log(prods);
-    
-
   };
 
   useEffect(() => {
     fetchProducts();
     setDiscount(0);
-    setSubTotal(0)
+    setSubTotal(0);
+    empDetails();
   }, []);
+
+ 
+
   // useEffect(()=>)
   const searchHandler = async (event) => {
-
     const response = await fetch(`${domainURL}/employee/home`);
     const getData = await response.json();
-    
+
     // console.log(getData);
     // console.log(event.target.value);
     const keyword = event.target.value;
 
-    if (keyword !== '') {
-        const results = getData.filter((user) => {
-            return user.name.toLowerCase().includes(keyword.toLowerCase());
-        });
-        // console.log(results);
-        setData(results);
-
+    if (keyword !== "") {
+      const results = getData.filter((user) => {
+        return user.name.toLowerCase().includes(keyword.toLowerCase());
+      });
+      // console.log(results);
+      setData(results);
     } else {
       setData(getData);
     }
     setName(keyword);
   };
-  
+
   useEffect(() => {
     setSubTotal(updateTotal(cartProducts));
   }, [cartProducts]);
@@ -144,16 +157,12 @@ function employee() {
     setCartProducts(allProducts);
   };
 
-
-  const PostData = async (e) =>{
+  const PostData = async (e) => {
     // console.log("Button Clicked");
     // console.log(cartProducts);
     // console.log(subTotal);
     // console.log(discountedAmount);
     // console.log(subTotal - discountedAmount);
-
-    
-   
 
     const order = await fetch("/employee/order", {
       method: "POST",
@@ -163,8 +172,7 @@ function employee() {
       body: JSON.stringify({
         userID,
         subTotal,
-        discountedAmount, 
-
+        discountedAmount,
       }),
     });
     const orderData = await order.json();
@@ -180,7 +188,6 @@ function employee() {
         cartProducts,
         subTotal,
         discountedAmount,
-
       }),
     });
 
@@ -192,11 +199,9 @@ function employee() {
         position: "top-center",
         reverseOrder: false,
         autoClose: 1500,
-      })
-
-    }
-    else {
-      toast.success('Creating Recipt', {
+      });
+    } else {
+      toast.success("Creating Recipt", {
         position: "top-center",
         autoClose: 1500,
         hideProgressBar: false,
@@ -205,25 +210,30 @@ function employee() {
         draggable: true,
         progress: undefined,
       });
-     setTimeout(()=>{
-       histroy.push(`/printreceipt/${orderData.orderID}`); 
-      
-     },2000)
-
+      setTimeout(() => {
+        histroy.push(`/printreceipt/${orderData.orderID}`);
+      }, 2000);
     }
+  };
 
+  const recentOrders = async () => {
+    const response = await fetch(`${domainURL}/employee/recentrecepits`);
+    const prods = await response.json();
 
-
-
-  }
-
-
-
-
+    setrecentOrder(prods);
+    // createReceiptsTable(prods)
+  };
+  useEffect(() => {
+    recentOrders();
+  }, []);
+  useEffect(() => {
+    console.log(recentOrder);
+  }, [recentOrder]);
 
   return (
     <div>
       <span className={styles.account_options}>
+          <h4>EMPLOYEE NAME : </h4>
         <div className={styles.dropdown}>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
             EMP
@@ -253,9 +263,37 @@ function employee() {
           </div>
           <div className={styles.section_wraper}>
             <div>
-              <div className={styles.nothing}>
-                <h2>Nothing to see here --- yet</h2>
-              </div>
+              {recentOrder.length === 0 ? (
+                <div className={`${styles.nothing}`}>
+                  <h1>No</h1>
+                  <h3> Recent Order</h3>
+                </div>
+              ) : (
+                <div className={styles.scrollableDiv}>
+                  {recentOrder.map((cell, idx) => {
+                    return (
+                      <li className="widgetSmListItem">
+                        {/* <img src="https://blogs-images.forbes.com/danschawbel/files/2017/12/Dan-Schawbel_avatar_1512422077-400x400.jpg" alt="" className="widgetSmImg" /> */}
+                        {/* <div className="widgetSmUser"> */}
+                        <span className="widgetSmUsername">
+                          Order ID: {cell.orderID}
+                        </span>
+                        <span className="widgetSmUserTitle">
+                          Employee Name: {cell.loggedInUserName}
+                        </span>
+                        <span className="widgetSmUserTitle">
+                          Total: Rs.{cell.total}
+                        </span>
+                        {/* </div> */}
+                        <Link to={`/viewreceipt/${cell._id}`}>
+                          {/* <Button type="Approved" /> */}
+                          <button className="reciptView">View</button>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -265,7 +303,6 @@ function employee() {
           </div>
           <div className={styles.section_wraper}>
             <div className={styles.search_bar_selling}>
-             
               <input
                 onChange={searchHandler}
                 type="text"
@@ -291,9 +328,11 @@ function employee() {
                       <th className={styles.trHead}>Name</th>
                       <th className={styles.trHead}>Price</th>
                       <th className={styles.trHead}>Stock</th>
+                      <th className={styles.trHead}>Category</th>
+
                       <th className={styles.trHead}>Action</th>
                     </tr>
-                  </thead>  
+                  </thead>
                   <tbody>
                     {data.map((cell) => {
                       return (
@@ -301,7 +340,11 @@ function employee() {
                           {/* <td className="trData">{idx + 1}</td> */}
                           <td className="trData">{cell.name}</td>
                           <td className="trData">{cell.price}</td>
-                          <td className="trData">{cell.stock}</td>
+                          <td className="trData">
+                            {cell.stock} {cell.unit}
+                          </td>
+                          <td className="trData">{cell.category}</td>
+
                           <td className="trData">
                             <button
                               className="productListEdit"
@@ -348,7 +391,7 @@ function employee() {
                       <th>Name</th>
                       <th>Price</th>
 
-                      <th >Qty</th>
+                      <th>Qty</th>
                       <th>Total</th>
                       <th>remove</th>
                     </tr>
@@ -406,22 +449,20 @@ function employee() {
                 </button>
                 <div className={styles.paid_status_text}>
                   <h2>Paid</h2>
-                </div>  
+                </div>
               </div>
             </div>
             <br></br>
             {/* <Link to={`/employee/printreceipt`}> */}
-              <button  className={`${styles.save_btn} ${styles.btn}`}
-             
-               type="submit"
-               name="signup"
-               value="register"
-               onClick={cartProducts.length===0?()=>{}: PostData}
-              
-              
-              >
-                Save & Print Receipt
-              </button>
+            <button
+              className={`${styles.save_btn} ${styles.btn}`}
+              type="submit"
+              name="signup"
+              value="register"
+              onClick={cartProducts.length === 0 ? () => {} : PostData}
+            >
+              Save & Print Receipt
+            </button>
             {/* </Link> */}
           </div>
         </div>

@@ -5,13 +5,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Employee from "./employee/employee";
 import PrintReceipt from "./employee/PrintReceipt";
-import Viewrecepits from "./admin/adminpages/recipts/Viewrecepit"
+import Viewrecepits from "./admin/adminpages/recipts/Viewrecepit";
 
 function empDashboard() {
   return (
     <Router>
       <Switch>
-       
         <Route path="/employee/:empID" exact>
           <Employee />
         </Route>
@@ -20,9 +19,10 @@ function empDashboard() {
           <PrintReceipt />
         </Route>
 
-        
-     
-     
+        <Route path="/viewreceipt/:ID">
+          <Viewrecepits />
+        </Route>
+      
       </Switch>
     </Router>
   );
