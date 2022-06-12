@@ -159,7 +159,7 @@ export default function ProductList() {
                       <DeleteOutline className="productListDelete" />
                     </button> */}
                      <button
-                      onClick={()=> setIsOpen(true)} 
+                      onClick={()=> delProd(cell._id)} 
                       className="delButtonUser"
                     >
                       

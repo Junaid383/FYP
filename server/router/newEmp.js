@@ -442,6 +442,25 @@ router.get("/admin/receiptData", (req, res) => {
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
+
+router.get("/admin/totalorder", (req, res) => {
+  RECEPITS.find()
+    .count()
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
+});
+
+router.get("/admin/totalsale", (req, res) => {
+  
+  RECEPITS.find()
+  .then((prod) => res.json(prod))
+  .catch((err) => res.status(400).json("Error : $(err)"));
+});
+  
+
+
+
+
 router.get("/admin/orderData", (req, res) => {
   RECEPITS.find()
     .sort({ _id: -1 })
