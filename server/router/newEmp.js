@@ -463,6 +463,7 @@ router.post("/admin/user/update", async (req, res) => {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
+  
 
   try {
     const empExist = await EMP.findOne({ _id: userID }); //First from DB and 2nd from IP fields to check if same email exist or not
@@ -516,13 +517,22 @@ router.get("/admin", authenticate, (res, req) => {
 
 // ==========================Product Update ===============
 router.post("/admin/product/update", async (req, res) => {
-  const { prodID, name, price, quantity } = req.body;
+  const { prodID, name, price, quantity , cost, unit,category } = req.body;
   console.log(req.body);
 
-  if (!name || !price || !quantity) {
+  if (!name || !price || !quantity || !cost || !unit || !category) {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
+  console.log("Price:" + price);
+  console.log("COST:" + cost);
+
+  if(price<cost)
+  {
+    console.log("Sale Price Must be larger");
+    return res.status(422).json({ error: "Sale Price Must be larger" });
+  }
+ 
   try {
     const prodExist = await PRD.findOne({ _id: prodID }); //First from DB and 2nd from IP fields to check if same email exist or not
 
@@ -535,12 +545,16 @@ router.post("/admin/product/update", async (req, res) => {
           name: name,
           price: price,
           stock: quantity,
+          cost:cost,
+          unit:unit,
+          category:category
+
         },
         function (err, doc) {
           if (err) {
             console.log(err);
           } else {
-            console.log("Updated product : ", doc);
+            // console.log("Updated product : ", doc);
           }
         }
       );
