@@ -443,7 +443,7 @@ router.get("/admin/receiptData", (req, res) => {
 });
 
 router.get("/admin/orderData", (req, res) => {
-  ORDERS.find()
+  RECEPITS.find()
     .sort({ _id: -1 })
     .limit(6)
     .then((prod) => res.json(prod))

@@ -38,12 +38,12 @@ export default function WidgetSm() {
                   Customer ID: {cell.custmerID}
                 </span>
               </div>
-             
+              <Link to={`/admin/viewreceipt/${cell._id}`}>
                 <button className="widgetSmButton">
                   <Visibility className="widgetSmIcon" />
                   Display
                 </button>
-             
+                </Link>
             </li>
           );
         })}

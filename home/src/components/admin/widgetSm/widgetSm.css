@@ -40,6 +40,7 @@
     font-weight: 300 ;
 }
 .widgetSmButton{
+
     display: flex;
     align-items: center;
     border: none;
@@ -48,6 +49,7 @@
     background-color: #eeeef7;
     color:#555 ;
     cursor: pointer;
+    text-decoration: none;
 }
 .widgetSmIcon{
     font-size: 16px;
