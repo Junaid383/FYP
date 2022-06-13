@@ -21,7 +21,7 @@ const App = () => {
     <div>
       <Router>
 
-        <Navbar />
+        {/* <Navbar /> */}
         {/* <Topbar /> */}
 
         <Switch>

@@ -267,9 +267,9 @@ router.get("/admin/users", (req, res) => {
 // });
 
 //==========================EMPLOYEE=============
-router.get("employeedata/:userID", (req, res) => {
-  let empData = req.body.id;
-  EMP.findById(req.body.userID)
+router.get("/employeedata/", (req, res) => {
+  
+  EMP.find()
     .then((user) => {
       res.json(user); //sending data back to user-line25
     })
@@ -277,6 +277,8 @@ router.get("employeedata/:userID", (req, res) => {
       console.log(err);
     });
 });
+
+
 
 router.get("/employee/:userID", (req, res) => {
   PRD.find()

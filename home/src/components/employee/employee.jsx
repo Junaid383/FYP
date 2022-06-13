@@ -5,6 +5,7 @@ import styles from "./employee.module.css";
 import CartItem from "./CartItem";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGridApiOptionHandler } from "@mui/x-data-grid";
 let total = 0;
 
 function employee() {
@@ -15,6 +16,12 @@ function employee() {
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
   const [recentOrder, setrecentOrder] = useState([]);
   const [empData, setempData] = useState();
+  const [empDetailGet, setempDetailGet] = useState();
+
+  const [receiptData, setreceiptData] = useState([]);
+  const [totalSale, settotalSale] = useState();
+
+
   //Serach Filter
   const [name, setName] = useState("");
   const [foundUsers, setFoundUsers] = useState();
@@ -33,19 +40,73 @@ function employee() {
 
   const discountRef = useRef(null);
 
-  let empID = userID;
-  const empDetails = async () => {  //newEMP.js ----line 270
-    const response = await fetch(`${domainURL}/datafinder/${empID}`);
-    const prods = await response.json();
-    console.log("Enter");
-    setempData(prods);
-    console.log("EMP data");
-    console.log(prods);
+  
+
+  // useEffect(() => {
+  //   empDetails();
+  // }, []);
+
+  // const empDetails = async () => {  
+  //   const response = await fetch(`/employeedata/`);
+  //   const prods = await response.json();
+    
+    
+  //   setempData(prods);
+  //   console.log("EMP data");
+  //   console.log(prods);
+  // };
+
+  // const empFinder = (arr) => {
+  //   let sum = 0;
+  //   arr.forEach((obj) => {
+  //      if(obj._id===userID)
+  //      {
+  //       setempDetailGet(obj._id);
+  //      console.log(obj._id)
+  //      }
+  //   });
+   
+  // };
+  // useEffect(() => {
+  //   empFinder(empData);
+  // }, [empData]);
+
+  const sale = async () => {
+    const response = await fetch(`/employeedata/`);
+    const saleCount = await response.json();
+
+    setreceiptData(saleCount);
+    console.log(saleCount);
+  };
+  useEffect(() => {
+    sale();
+  }, []);
+  useEffect(() => {
+    generateTotal(receiptData);
+  }, [receiptData]);
+
+  const generateTotal = (arr) => {
+    
+    arr.forEach((obj) => {
+      if(obj._id===userID)
+           {
+            settotalSale(obj.name);
+            console.log(obj.name)
+           }
+    });
+   
   };
 
-  useEffect(() => {
-    empDetails();
-  }, [empData]);
+
+
+
+
+
+
+
+
+
+
 
 
   const fetchProducts = async () => {
@@ -61,7 +122,7 @@ function employee() {
     fetchProducts();
     setDiscount(0);
     setSubTotal(0);
-    empDetails();
+    // empDetails();
   }, []);
 
  
@@ -77,7 +138,7 @@ function employee() {
 
     if (keyword !== "") {
       const results = getData.filter((user) => {
-        return user.name.toLowerCase().includes(keyword.toLowerCase());
+        return  (user.name.toLowerCase().includes(keyword.toLowerCase()));
       });
       // console.log(results);
       setData(results);
@@ -233,7 +294,7 @@ function employee() {
   return (
     <div>
       <span className={styles.account_options}>
-          <h4>EMPLOYEE NAME : </h4>
+          <h4>EMPLOYEE NAME : {totalSale}</h4>
         <div className={styles.dropdown}>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
             EMP
@@ -241,7 +302,7 @@ function employee() {
           </button>
           <div className={styles.dropdown_content}>
             <a href="#">Settings</a>
-            <a href="logout">Logout</a>
+            <a href="/login">Logout</a>
           </div>
         </div>
       </span>
