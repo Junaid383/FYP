@@ -15,11 +15,11 @@ function employee() {
   const [totalAmountAfterDiscount, setTotalAfterDiscount] = useState(); // total ki state before discount
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
   const [recentOrder, setrecentOrder] = useState([]);
-  const [empData, setempData] = useState();
-  const [empDetailGet, setempDetailGet] = useState();
+  const [empData, setempData] = useState(userID);
+  
 
   const [receiptData, setreceiptData] = useState([]);
-  const [totalSale, settotalSale] = useState();
+  const [totalSale, settotalSale] = useState([]);
 
 
   //Serach Filter
@@ -32,6 +32,7 @@ function employee() {
     location.pathname.lastIndexOf("/") + 1,
     location.pathname.length
   );
+  
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -42,41 +43,13 @@ function employee() {
 
   
 
-  // useEffect(() => {
-  //   empDetails();
-  // }, []);
-
-  // const empDetails = async () => {  
-  //   const response = await fetch(`/employeedata/`);
-  //   const prods = await response.json();
-    
-    
-  //   setempData(prods);
-  //   console.log("EMP data");
-  //   console.log(prods);
-  // };
-
-  // const empFinder = (arr) => {
-  //   let sum = 0;
-  //   arr.forEach((obj) => {
-  //      if(obj._id===userID)
-  //      {
-  //       setempDetailGet(obj._id);
-  //      console.log(obj._id)
-  //      }
-  //   });
-   
-  // };
-  // useEffect(() => {
-  //   empFinder(empData);
-  // }, [empData]);
 
   const sale = async () => {
     const response = await fetch(`/employeedata/`);
     const saleCount = await response.json();
 
     setreceiptData(saleCount);
-    console.log(saleCount);
+    // console.log(saleCount);
   };
   useEffect(() => {
     sale();
@@ -90,7 +63,7 @@ function employee() {
     arr.forEach((obj) => {
       if(obj._id===userID)
            {
-            settotalSale(obj.name);
+            settotalSale(obj.name );
             console.log(obj.name)
            }
     });
@@ -122,7 +95,7 @@ function employee() {
     fetchProducts();
     setDiscount(0);
     setSubTotal(0);
-    // empDetails();
+    
   }, []);
 
  
@@ -291,9 +264,18 @@ function employee() {
     console.log(recentOrder);
   }, [recentOrder]);
 
+
+
+//=================settings
+
+
+
+
+
   return (
     <div>
       <span className={styles.account_options}>
+        
           <h4>EMPLOYEE NAME : {totalSale}</h4>
         <div className={styles.dropdown}>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
@@ -301,9 +283,14 @@ function employee() {
             <i className={`${styles.fa} ${styles.fa_caret_down}`}></i>
           </button>
           <div className={styles.dropdown_content}>
-            <a href="#">Settings</a>
-            <a href="/login">Logout</a>
-          </div>
+          
+          <Link to={`/employee/setting/${userID}`}>
+                 <button > Settings </button>
+           </Link>   
+                 <a href="/login">Logout</a>
+                    </div>
+
+                  
         </div>
       </span>
       <div className={styles.container}></div>
