@@ -441,7 +441,7 @@ function employee() {
 
                       <th>Qty</th>
                       <th>Total</th>
-                      <th>remove</th>
+                      <th>Remove</th>
                     </tr>
                   </thead>
                   <tbody>
