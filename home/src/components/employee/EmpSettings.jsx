@@ -124,9 +124,7 @@ const PostData = async () => {
     <div className="user">
       <div className="userTitleContainer">
         <h1 className="userTitle">Edit Employee</h1>
-        <Link to="/admin/newUser">
-          <button className="userAddButton">Create</button>
-        </Link>
+       
       </div>
       <div className="userContainer">
         <div className="userShow">
