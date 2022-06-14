@@ -43,7 +43,9 @@ function featuredinfo() {
     let sum = 0;
     arr.forEach((obj) => {
         sum+=obj.total;
+      
     });
+    sum = sum.toLocaleString('hi-IN')
     settotalSale(sum);
     console.log(sum)
   };
