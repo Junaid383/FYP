@@ -13,6 +13,7 @@ function employee() {
   const [cartProducts, setCartProducts] = useState([]); // sirf hmari CART wali state
   const [subTotal, setSubTotal] = useState(); // total price ki state after discount
   const [totalAmountAfterDiscount, setTotalAfterDiscount] = useState(); // total ki state before discount
+  const [withoutProfitTotal, setTotalWithoutProfit] = useState(0);
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
   const [recentOrder, setrecentOrder] = useState([]);
   const [empData, setempData] = useState(userID);
@@ -123,6 +124,7 @@ function employee() {
 
   useEffect(() => {
     setSubTotal(updateTotal(cartProducts));
+    setTotalWithoutProfit(updateTotalWithoutProfit(cartProducts));
   }, [cartProducts]);
 
   const itemRemoveHandler = (item) => {
@@ -178,6 +180,14 @@ function employee() {
     return total;
   };
 
+  const updateTotalWithoutProfit =(arr) =>{
+    let total = 0;
+    arr.forEach((cartProd) =>{
+      total += cartProd.qty * cartProd.cost;
+    });
+    return total;
+  };
+
   const qtyChangeHandler = (item, what) => {
     const allProducts = [...cartProducts];
     const productAddedInCart = allProducts.findIndex(
@@ -207,6 +217,7 @@ function employee() {
         userID,
         subTotal,
         discountedAmount,
+        withoutProfitTotal,
       }),
     });
     const orderData = await order.json();
@@ -463,6 +474,7 @@ function employee() {
             <div className={styles.calculationDivs}>
               <div className={`${styles.subtotal_div}`}>
                 <h2>Subtotal:</h2>
+                {/* <h4>Total without Profit: {withoutProfitTotal}</h4> */}
                 <p className={styles.to_right}>{subTotal} Rs.</p>
               </div>
               <div className={`${styles.add_discount_div} ${styles.d_flex_sp}`}>
