@@ -54,6 +54,9 @@ const recepits = new mongoose.Schema({
         // required: true
 
     },
+    profit:{
+        type: Number,
+    },
     status:{
         type:String,
     },

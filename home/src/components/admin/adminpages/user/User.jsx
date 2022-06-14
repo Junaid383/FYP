@@ -94,15 +94,18 @@ const PostData = async () => {
   } else {
     toast.success('User Update Successful', {
       position: "top-center",
-      autoClose: 1000,
+      autoClose: 1500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
     });
+    setTimeout(() => {
+      history.push("/admin/users");
+          }, 1800);
 
-    history.push("/admin/users/");
+  
   }
 
 }

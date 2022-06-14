@@ -55,14 +55,17 @@ function Signup() {
     } else {
       toast.success('Registration Successful', {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 1700,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
-      history.push('/login');
+      setTimeout(() => {
+        
+        history.push('/login');
+            }, 2000);
     }
 
   }

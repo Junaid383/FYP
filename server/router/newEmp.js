@@ -193,19 +193,20 @@ router.post("/signin", async (req, res) => {
 router.post("/admin/newProduct", upload.single("image"), async (req, res) => {
   // req.body.image = req.file.path;
   // console.log( req.body);
-  const { image, name, stock, price, active, cost, unit, category } = req.body;
+  const { image, name, price, cost, stock,  unit, category,active } = req.body;
   console.log(req.body);
   if (!name || !stock || !price || !cost || !unit || !category) {
     console.log("Fill all field");
     return res.status(422).json({ error: "Filled All fields" });
   }
-  if (price < cost) {
-    console.log("Sale Price Must be larger");
+  if(price<=cost) {
+    console.log(" Price Must be larger than Cost");
     return res.status(422).json({ error: "Sale Price Must be larger" });
   }
+  
   try {
     const prdExist = await PRD.findOne({ name: name }); //First from DB and 2nd from IP fields to check if same email exist or not
-
+   
     if (prdExist) {
       return res.status(422).json({ error: "Product  exist" });
     } else {
@@ -302,6 +303,7 @@ let rpID;
 let odrID;
 let orderID;
 let custmerID;
+let profit;
 //===============ORDERS handler===========
 router.post("/employee/order", async (req, res) => {
   const { userID, subTotal, discountedAmount , withoutProfitTotal } = req.body;
@@ -319,7 +321,7 @@ router.post("/employee/order", async (req, res) => {
 
     const loggedInUserName = loggedIn.name;
     let total = subTotal - discountedAmount;
-    let profit = total - withoutProfitTotal;
+     profit = total - withoutProfitTotal;
     console.log("Profit is :" + profit);
     if (loggedIn) {
       const order = new ORDERS({
@@ -411,6 +413,7 @@ router.post("/employee/printreceipt", async (req, res) => {
         completeTime,
         status,
         orderID,
+        profit,
         custmerID,
       });
       // console.log(status);
@@ -461,7 +464,7 @@ router.get("/admin/totalsale", (req, res) => {
   
 router.get("/admin/profit", (req, res) => {
   
-  ORDERS.find()
+  RECEPITS.find()
   .then((prod) => res.json(prod))
   .catch((err) => res.status(400).json("Error : $(err)"));
 });
@@ -531,6 +534,28 @@ router.post("/admin/user/delete", async (req, res) => {
     console.log(err);
   }
 });
+
+
+//=================RECEPIT DELETE=====================
+router.post("/admin/recepit/delete", async (req, res) => {
+  console.log(req.body.id);
+  const userID = req.body.id;
+  try {
+    const delEMP = await RECEPITS.findByIdAndRemove(userID, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(201).json({ message: "RECEPIT REMOVED", emp: docs });
+      }
+    });
+    
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+
 
 // ====================Update User==================
 router.post("/admin/user/update", async (req, res) => {
@@ -604,7 +629,7 @@ router.post("/admin/product/update", async (req, res) => {
   // console.log("Price:" + price);
   // console.log("COST:" + cost);
 
-  if (price < cost) {
+  if (price<=cost) {
     console.log("Sale Price Must be larger");
     return res.status(422).json({ error: "Sale Price Must be larger" });
   }

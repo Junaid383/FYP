@@ -63,15 +63,19 @@ export default function newUser() {
     } else {
       toast.success('Employee Registered Successful', {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 1700,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
+      setTimeout(() => {
+        history.push("/admin/users");
+            }, 2000);
 
-      history.push("/admin/users");
+
+     
     }
   };
 

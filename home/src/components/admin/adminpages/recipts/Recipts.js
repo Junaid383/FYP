@@ -1,6 +1,8 @@
 import "./recipts.css";
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { DeleteOutline } from "@material-ui/icons";
+
 import { useState } from "react";
 
 function Recipts() {
@@ -82,6 +84,27 @@ function Recipts() {
 
     setName(keyword);
   };
+  const updateProductsTable =(id)=>{
+    const updatedArray = data.filter(obj=>obj._id!==id)
+    setData(updatedArray)
+  }
+
+  const delUser =async (id)=>{
+    const res = await fetch("/admin/recepit/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+       id
+      }),
+    });
+    if(res.ok){
+    const deletedEmp = await res.json();
+    // console.log(deletedEmp.emp._id)
+    updateProductsTable(deletedEmp.emp._id)
+    }
+    }
 
   return (
     <div className="recipts">
@@ -135,6 +158,10 @@ function Recipts() {
                         {/* <Button type="Approved" /> */}
                         <button className="reciptView">View</button>
                       </Link>
+
+                      <button onClick={()=> delUser(cell._id)} className="delButtonUser">
+                      <DeleteOutline className="productListDelete" />
+                    </button>
                     </td>
                   </tr>
                 );

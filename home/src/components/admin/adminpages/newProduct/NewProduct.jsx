@@ -46,7 +46,7 @@ export default function NewProduct() {
 
     if (res.status === 422 || !data) {
         console.log(data.image);
-        toast.error("Filled All Field.", {
+        toast.error("Filled All Field Correctly .", {
           position: "top-center",
           reverseOrder: false,
           autoClose: 1500,
@@ -55,15 +55,18 @@ export default function NewProduct() {
     } else {
       toast.success('Product Enter Successfully ', {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 1700,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
+      setTimeout(() => {
+        history.push('/admin/products');
+            }, 2000);
 
-      history.push('/admin/products');
+     
     }
 
   }

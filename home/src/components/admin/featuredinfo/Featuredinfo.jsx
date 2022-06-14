@@ -36,7 +36,7 @@ function featuredinfo() {
     const saleCount = await response.json();
 
     setreceiptData(saleCount);
-    // console.log(saleCount);
+    console.log(saleCount);
   };
   useEffect(() => {
     sale();

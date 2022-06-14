@@ -90,15 +90,17 @@ export default function Product() {
     } else {
       toast.success("Product Update Successfully", {
         position: "top-center",
-        autoClose: 1000,
+        autoClose: 1700,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
+      setTimeout(() => {
+        history.push("/admin/products");
+            }, 2000);
 
-      history.push("/admin/products");
     }
   };
 
