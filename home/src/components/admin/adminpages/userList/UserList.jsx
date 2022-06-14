@@ -4,11 +4,12 @@ import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 import { userRows } from "../../dummyData";
-
+import ConfirmDelete from "../../Modals/ConfirmDelete";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function UserList() {
+  const [showModal,setShowModal]=useState(false);
   const [data, setData] = useState([]);
   // const [delUser , setdelUser] = useState([]);
 
@@ -129,9 +130,10 @@ updateProductsTable(deletedEmp.emp._id)
                       {/*  onClick={PostData} */}
                     </Link>
                     
-                    <button onClick={()=> delUser(cell._id)} className="delButtonUser">
+                    <button onClick={()=>setShowModal(true)} className="delButtonUser">
                       <DeleteOutline className="productListDelete" />
                     </button>
+                    {showModal?<ConfirmDelete close={()=>setShowModal(false)} onConfirm={()=>delUser(cell._id)}/>:null}
                   </td>
                 </tr>
               );
