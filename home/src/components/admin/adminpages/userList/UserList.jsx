@@ -85,10 +85,6 @@ const deletedEmp = await res.json();
 // console.log(deletedEmp.emp._id)
 updateProductsTable(deletedEmp.emp._id)
 }
-
-
-
-  
 }
 
 
