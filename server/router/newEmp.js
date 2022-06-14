@@ -304,7 +304,7 @@ let orderID;
 let custmerID;
 //===============ORDERS handler===========
 router.post("/employee/order", async (req, res) => {
-  const { userID, subTotal, discountedAmount } = req.body;
+  const { userID, subTotal, discountedAmount , withoutProfitTotal } = req.body;
   console.log(req.body);
   orderID = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
   custmerID = (Math.floor(Math.random() * 10000) + 10000)
@@ -319,11 +319,12 @@ router.post("/employee/order", async (req, res) => {
 
     const loggedInUserName = loggedIn.name;
     let total = subTotal - discountedAmount;
-
+    let profit = total - withoutProfitTotal;
+    console.log("Profit is :" + profit);
     if (loggedIn) {
       const order = new ORDERS({
         loggedInUserName,
-
+        profit,
         subTotal,
         discountedAmount,
         total,
@@ -453,12 +454,17 @@ router.get("/admin/totalorder", (req, res) => {
 });
 
 router.get("/admin/totalsale", (req, res) => {
-  
   RECEPITS.find()
   .then((prod) => res.json(prod))
   .catch((err) => res.status(400).json("Error : $(err)"));
 });
   
+router.get("/admin/profit", (req, res) => {
+  
+  ORDERS.find()
+  .then((prod) => res.json(prod))
+  .catch((err) => res.status(400).json("Error : $(err)"));
+});
 
 
 

@@ -32,9 +32,14 @@ const orders = new mongoose.Schema({
         // required: true
 
     },
+    profit:{
+        type: Number,
+        // required: true
+    },
     status:{
         type: String,
     }
+   
    
 
 });
