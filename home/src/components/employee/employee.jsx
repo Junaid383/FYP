@@ -3,10 +3,8 @@ import { Link, useLocation, useHistory } from "react-router-dom";
 import { useState } from "react";
 import styles from "./employee.module.css";
 import CartItem from "./CartItem";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useGridApiOptionHandler } from "@mui/x-data-grid";
-let total = 0;
 
 function employee() {
   const [data, setData] = useState([]); // saari mongo db wali
@@ -17,11 +15,9 @@ function employee() {
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
   const [recentOrder, setrecentOrder] = useState([]);
   const [empData, setempData] = useState(userID);
-  
 
   const [receiptData, setreceiptData] = useState([]);
   const [totalSale, settotalSale] = useState([]);
-
 
   //Serach Filter
   const [name, setName] = useState("");
@@ -33,7 +29,6 @@ function employee() {
     location.pathname.lastIndexOf("/") + 1,
     location.pathname.length
   );
-  
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -41,9 +36,6 @@ function employee() {
   const domainURL = "http://localhost:5000";
 
   const discountRef = useRef(null);
-
-  
-
 
   const sale = async () => {
     const response = await fetch(`/employeedata/`);
@@ -60,28 +52,13 @@ function employee() {
   }, [receiptData]);
 
   const generateTotal = (arr) => {
-    
     arr.forEach((obj) => {
-      if(obj._id===userID)
-           {
-            settotalSale(obj.name );
-            console.log(obj.name)
-           }
+      if (obj._id === userID) {
+        settotalSale(obj.name);
+        console.log(obj.name);
+      }
     });
-   
   };
-
-
-
-
-
-
-
-
-
-
-
-
 
   const fetchProducts = async () => {
     const response = await fetch(`${domainURL}/employee/${userID}`);
@@ -96,10 +73,7 @@ function employee() {
     fetchProducts();
     setDiscount(0);
     setSubTotal(0);
-    
   }, []);
-
- 
 
   // useEffect(()=>)
   const searchHandler = async (event) => {
@@ -112,7 +86,15 @@ function employee() {
 
     if (keyword !== "") {
       const results = getData.filter((user) => {
-        return  (user.name.toLowerCase().includes(keyword.toLowerCase()));
+        let userPrice = String(user.price);
+        if (
+          user.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          user.category.toLowerCase().includes(keyword.toLowerCase()) ||
+          userPrice.includes(keyword) ||
+          user._id.toLowerCase().includes(keyword.toLowerCase())
+        ) {
+          return user;
+        }
       });
       // console.log(results);
       setData(results);
@@ -167,6 +149,10 @@ function employee() {
 
   const discountHandler = () => {
     // console.log(discountRef.current.value);
+    if (discountRef.current.value < 0 || discountRef.current.value > subTotal) {
+      setDiscount(0);
+      return;
+    }
     setDiscount(discountRef.current.value);
     setTotalAfterDiscount(
       (pichlaTotal) => pichlaTotal - discountRef.current.value
@@ -180,9 +166,9 @@ function employee() {
     return total;
   };
 
-  const updateTotalWithoutProfit =(arr) =>{
+  const updateTotalWithoutProfit = (arr) => {
     let total = 0;
-    arr.forEach((cartProd) =>{
+    arr.forEach((cartProd) => {
       total += cartProd.qty * cartProd.cost;
     });
     return total;
@@ -275,33 +261,23 @@ function employee() {
     console.log(recentOrder);
   }, [recentOrder]);
 
-
-
-//=================settings
-
-
-
-
+  //=================settings
 
   return (
     <div>
       <span className={styles.account_options}>
-        
-          <h4>EMPLOYEE NAME : {totalSale}</h4>
+        <h4>EMPLOYEE NAME : {totalSale}</h4>
         <div className={styles.dropdown}>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
             EMP
             <i className={`${styles.fa} ${styles.fa_caret_down}`}></i>
           </button>
           <div className={styles.dropdown_content}>
-          
-          <Link to={`/employee/setting/${userID}`}>
-                 <button > Settings </button>
-           </Link>   
-                 <a href="/login">Logout</a>
-                    </div>
-
-                  
+            <Link to={`/employee/setting/${userID}`}>
+              <button> Settings </button>
+            </Link>
+            <a href="/login">Logout</a>
+          </div>
         </div>
       </span>
       <div className={styles.container}></div>
@@ -487,6 +463,7 @@ function employee() {
                     name="add-discount"
                     min="0"
                     max={subTotal}
+                    disabled={cartProducts.length === 0}
                     value={discountedAmount}
                   />
                   <span>Rs. </span>

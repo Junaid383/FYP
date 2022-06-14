@@ -53,7 +53,7 @@ function featuredinfo() {
     
 
     });
-    sum = sum.toLocaleString("hi-IN");
+    //sum = sum.toLocaleString("hi-IN");
     settotalSale(sum);
     // console.log(sum);
   };
@@ -82,7 +82,8 @@ function featuredinfo() {
        
       }
     });
-    p = p.toLocaleString("hi-IN");
+    //p = p.toLocaleString("hi-IN");
+    //console.log("Profit :" ,typeof p );
     settotalprofit(p);
    
   };
@@ -94,7 +95,7 @@ function featuredinfo() {
       <div className="featuredItem">
         <span className="featuredTitle">Total Revenue</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">Rs.{totalSale + totalprofit}</span>
+          <span className="featuredMoney">Rs.{(totalSale +totalprofit).toLocaleString("hi-IN")}</span>
           <span className="featuredMoneyRate">
             -20.5
             <ArrowDownward className="featuredIcon negative" />{" "}
@@ -119,7 +120,7 @@ function featuredinfo() {
       <div className="featuredItem">
         <span className="featuredTitle">Total Sales</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">Rs. {totalSale}</span>
+          <span className="featuredMoney">Rs. {totalSale.toLocaleString("hi-IN")}</span>
           <span className="featuredMoneyRate">
             -10.5
             <ArrowDownward className="featuredIcon negative" />{" "}
@@ -131,7 +132,7 @@ function featuredinfo() {
       <div className="featuredItem">
         <span className="featuredTitle">Total Profit</span>
         <div className="featuredMoneyContainer">
-          <span className="featuredMoney">Rs.{totalprofit}</span>
+          <span className="featuredMoney">Rs.{totalprofit.toLocaleString("hi-IN")}</span>
           <span className="featuredMoneyRate">
             {" "}
             +20.5
