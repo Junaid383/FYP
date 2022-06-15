@@ -2,15 +2,18 @@ import "./productList.css";
 import React, { useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline } from "@material-ui/icons";
+import ConfirmDelete from "../../Modals/ConfirmDelete";
+
 import { productRows } from "../../dummyData";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import Modal from './Modal'
+import Modal from "./Modal";
 
 export default function ProductList() {
   const [data, setData] = useState([]);
-  const [isOpen , setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -67,34 +70,28 @@ export default function ProductList() {
     //populating the table
   }
 
-
-
   // =================DELete Product===================
-  const updateProductsTable =(id)=>{
-    const updatedArray = data.filter(obj=>obj._id!==id)
-    setData(updatedArray)
-  }
-  
-  const delProd =async (id)=>{
+  const updateProductsTable = (id) => {
+    const updatedArray = data.filter((obj) => obj._id !== id);
+    setData(updatedArray);
+  };
+
+  const delProd = async (id) => {
     const res = await fetch("/admin/product/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-       id
+        id,
       }),
     });
-    if(res.ok){
-    const deletedPROD = await res.json();
-    // console.log(deletedEmp.emp._id)
-    updateProductsTable(deletedPROD.emp._id)
+    if (res.ok) {
+      const deletedPROD = await res.json();
+      // console.log(deletedEmp.emp._id)
+      updateProductsTable(deletedPROD.emp._id);
     }
-    
-  
-      
-    }
-    
+  };
 
   return (
     <div className="productList">
@@ -129,7 +126,6 @@ export default function ProductList() {
               <th className="trHead">Unit</th>
               <th className="trHead">Category</th>
 
-
               <th className="trHead">Status</th>
             </tr>
           </thead>
@@ -151,20 +147,25 @@ export default function ProductList() {
                       <button className="productListEdit">Edit</button>
                     </Link>
 
-
                     {/* <button
-                      onClick={() => delProd(cell._id)}
+                      onClick={()=> delProd(cell._id)} 
                       className="delButtonUser"
                     >
                       <DeleteOutline className="productListDelete" />
                     </button> */}
-                     <button
-                      onClick={()=> delProd(cell._id)} 
+
+                    <button
+                      onClick={() => setShowModal(true)}
                       className="delButtonUser"
                     >
-                      
                       <DeleteOutline className="productListDelete" />
                     </button>
+                    {showModal ? (
+                      <ConfirmDelete
+                        close={() => setShowModal(false)}
+                        onConfirm={() => delProd(cell._id)}
+                      />
+                    ) : null}
                   </td>
                 </tr>
               );

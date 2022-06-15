@@ -632,7 +632,7 @@ router.post("/admin/product/update", async (req, res) => {
   if (price<=cost) {
     console.log("Sale Price Must be larger");
     return res.status(422).json({ error: "Sale Price Must be larger" });
-  }
+  }t
 
   try {
     const prodExist = await PRD.findOne({ _id: prodID }); //First from DB and 2nd from IP fields to check if same email exist or not

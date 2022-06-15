@@ -2,12 +2,15 @@ import "./recipts.css";
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { DeleteOutline } from "@material-ui/icons";
+import ConfirmDelete from "../../Modals/ConfirmDelete";
 
 import { useState } from "react";
 
 function Recipts() {
   const [data, setData] = useState([]);
   const [name, setName] = useState("");
+  const [showModal,setShowModal]=useState(false);
+
 
  
 
@@ -159,9 +162,18 @@ function Recipts() {
                         <button className="reciptView">View</button>
                       </Link>
 
-                      <button onClick={()=> delUser(cell._id)} className="delButtonUser">
+                      {/* <button onClick={()=> delUser(cell._id)} className="delButtonUser">
+                      <DeleteOutline className="productListDelete" />
+                    </button> */}
+
+                    
+                    <button onClick={()=>setShowModal(true)} className="delButtonUser">
                       <DeleteOutline className="productListDelete" />
                     </button>
+                    {showModal?<ConfirmDelete close={()=>setShowModal(false)} onConfirm={()=>delUser(cell._id)}/>:null}
+
+
+
                     </td>
                   </tr>
                 );
