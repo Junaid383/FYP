@@ -266,17 +266,19 @@ function employee() {
   return (
     <div>
       <span className={styles.account_options}>
-        <h4>EMPLOYEE NAME : {totalSale}</h4>
         <div className={styles.dropdown}>
+          <br/>
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
             EMP
             <i className={`${styles.fa} ${styles.fa_caret_down}`}></i>
           </button>
           <div className={styles.dropdown_content}>
-            <Link to={`/employee/setting/${userID}`}>
+            {/* <Link to={`/employee/setting/${userID}`}>
               <button> Settings </button>
-            </Link>
+            </Link> */}
+            <a href={`/employee/setting/${userID}`}>Settings</a>
             <a href="/login">Logout</a>
+            
           </div>
         </div>
       </span>
@@ -291,6 +293,10 @@ function employee() {
           <p className={styles.success_info}></p>
         </div>
       </div>
+      <div className={styles.employeenamewrapper}>
+        <h4 className={styles.employeename}>EMPLOYEE NAME : {totalSale}</h4>
+      </div>
+       
       <div className={` ${styles.main} ${styles.d_flex}`}>
         <div className={styles.last_transactions_container}>
           <div className={styles.section_title_bkg}>
@@ -332,8 +338,10 @@ function employee() {
             </div>
           </div>
         </div>
+        
         <div className={styles.search_area_emp}>
           <div className={styles.section_title_bkg}>
+            
             <h1>Search Products</h1>
           </div>
           <div className={styles.section_wraper}>

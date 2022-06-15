@@ -409,3 +409,15 @@ tr:hover {
   color: white;
   cursor: pointer; 
 }
+
+
+.employeenamewrapper{
+  display: flex;
+  justify-content: center;
+}
+
+.employeename{
+  text-align: center;
+  font-weight: bolder;
+  font-size: xx-large;
+}
