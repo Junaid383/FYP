@@ -47,6 +47,9 @@ btn-danger:hover, .modal-confirm .btn-danger:focus {
 	border-radius: 5px;
 	font-size: 13px;
 	padding: 10px 15px 25px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }
 .wrapper{
     width:400px;
