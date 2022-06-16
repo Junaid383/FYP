@@ -128,11 +128,11 @@ export default function Product() {
           <div className="productInfoBottom">
             <div className="productInfoItem">
               <span className="productInfoKey">Price</span>
-              <span className="productInfoValue">{data.price}</span>
+              <span className="productInfoValue">{(data.price)}</span>
             </div>
             <div className="productInfoItem">
               <span className="productInfoKey">Orignal Cost:</span>
-              <span className="productInfoValue">{data.cost}</span>
+              <span className="productInfoValue">{(data.cost)}</span>
             </div>
 
             <div className="productInfoItem">

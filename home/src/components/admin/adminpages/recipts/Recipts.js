@@ -155,7 +155,7 @@ function Recipts() {
                     <td className="widgetLggDate">{cell.completeData}</td>
                     <td className="widgetLggDate">{cell.completeTime}</td>
 
-                    <td className="widgetLggAmount">Rs. {cell.total} </td>
+                    <td className="widgetLggAmount">Rs. {(cell.total).toLocaleString("hi-IN")} </td>
                     <td className="widgetLggStatus">
                       <Link to={`/admin/viewreceipt/${cell._id}`}>
                         {/* <Button type="Approved" /> */}

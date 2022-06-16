@@ -121,7 +121,7 @@ const PrintReceipt = () => {
                   return (
                     <tr>
                       <td className="print_t-left print_w-70">{d.name}</td>
-                      <td> Rs.{d.price}</td>
+                      <td> Rs.{(d.price).toLocaleString("hi-IN")}</td>
                       <td>   {d.qty}</td>
                       <td> Rs. {d.price * d.qty}</td>
                     </tr>

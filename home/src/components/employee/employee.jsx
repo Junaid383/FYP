@@ -334,7 +334,7 @@ function employee() {
                           {cell.loggedInUserName}
                         </td>
                         <td className="widgetSmUserTitle">
-                          {cell.total}
+                          {(cell.total).toLocaleString("hi-IN")}
                         </td>
                         <td className="widgetSmUserTitle">
                           <Link to={`/viewreceipt/${cell._id}`}>
@@ -395,7 +395,7 @@ function employee() {
                         <tr key={cell._id}>
                           {/* <td className="trData">{idx + 1}</td> */}
                           <td className="trData">{cell.name}</td>
-                          <td className="trData">{cell.price}</td>
+                          <td className="trData">{(cell.price).toLocaleString("hi-IN")}</td>
                           <td className="trData">
                             {cell.stock} {cell.unit}
                           </td>
@@ -493,7 +493,7 @@ function employee() {
               <div className={`${styles.total_div} ${styles.d_flex_sp}`}>
                 <h1>Total bill:</h1>
                 <h2 className={styles.to_right}>
-                  {subTotal - discountedAmount} Rs
+                  {(subTotal - discountedAmount).toLocaleString("hi-IN")} Rs
                 </h2>
               </div>
               <div

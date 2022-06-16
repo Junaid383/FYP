@@ -52,7 +52,7 @@ export default function WidgetLg() {
           <span className="widgetLgName">{cell.loggedInUserName}</span>
         </td>
         <td className="widgetLgDate">{cell.completeData}</td>
-        <td className="widgetLgAmount">Rs.{cell.total}</td>
+        <td className="widgetLgAmount">Rs.{(cell.total).toLocaleString("hi-IN")}</td>
         {/* <td className="widgetLgStatus"><Button type="Approved" /></td> */}
         <td className="widgetLgStatus"> {cell.status}</td>
 

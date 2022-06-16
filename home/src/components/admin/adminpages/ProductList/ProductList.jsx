@@ -135,7 +135,7 @@ export default function ProductList() {
                 <tr key={cell._id}>
                   <td className="trData">{idx + 1}</td>
                   <td className="trData">{cell.name}</td>
-                  <td className="trData">{cell.price}</td>
+                  <td className="trData">{(cell.price).toLocaleString("hi-IN")}</td>
                   <td className="trData">{cell.cost}</td>
 
                   <td className="trData">{cell.stock}</td>
