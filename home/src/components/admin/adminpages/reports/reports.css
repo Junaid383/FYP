@@ -17,7 +17,11 @@
 }
 
 .section-controls{
-    width:50%;
+    width:50%;   
+   
+}
+button{
+    display: block;
 }
 .section-controls input{
     margin-left: 20px;

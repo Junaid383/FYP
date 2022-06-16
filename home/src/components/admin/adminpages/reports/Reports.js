@@ -1,8 +1,97 @@
 import "./reports.css";
-import React from "react";
-import C1 from "./cht1";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
 
 function Reports() {
+
+
+  const [orderData, setorderData] = useState([]);
+  const [receiptData, setreceiptData] = useState([]);
+  const [totalSale, settotalSale] = useState(0);
+
+  const [profitData, setprofitData] = useState([]);
+  const [totalprofit, settotalprofit] = useState(0);
+  const [totalrevenue , setTotalRevenue] = useState(0);
+
+
+
+  //============total Order Count===============
+  const fetchProducts = async () => {
+    const response = await fetch(`/admin/totalorder`);
+    const orderCount = await response.json();
+
+    setorderData(orderCount);
+    //   console.log(orderCount);
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+  useEffect(() => {
+    //   console.log(orderData);
+  }, [orderData]);
+
+  //=================total Sale Sum===========
+
+  const sale = async () => {
+    const response = await fetch(`/admin/totalsale`);
+    const saleCount = await response.json();
+
+    setreceiptData(saleCount);
+    console.log(saleCount);
+  };
+  useEffect(() => {
+    sale();
+  }, []);
+  useEffect(() => {
+    generateTotal(receiptData);
+  }, [receiptData]);
+
+  let sum = 0;
+  let revenue;
+  const generateTotal = (arr) => {
+    arr.forEach((obj) => {
+      sum += obj.total;
+    
+
+    });
+    //sum = sum.toLocaleString("hi-IN");
+    settotalSale(sum);
+    // console.log(sum);
+  };
+
+  //==============total Profit ===============
+  const profit = async () => {
+    const response = await fetch(`/admin/profit`);
+    const saleCount = await response.json();
+
+    setprofitData(saleCount);
+    // console.log(saleCount);
+  };
+  useEffect(() => {
+    profit();
+  }, []);
+  useEffect(() => {
+    generateProfit(profitData);
+  }, [profitData]);
+
+  let p = 0;
+  const generateProfit = (arr) => {
+    arr.forEach((obj) => {
+      if (obj.profit > 0) {
+        // console.log("PPPP:" + obj.profit);
+        p += obj.profit;
+       
+      }
+    });
+    //p = p.toLocaleString("hi-IN");
+    //console.log("Profit :" ,typeof p );
+    settotalprofit(p);
+   
+  };
+
+ 
+
   return (
     <div className="reports">
       
@@ -13,11 +102,9 @@ function Reports() {
       <div class="section-title d-flex-sp">
         <h1>Reports</h1>
         <div class="section-controls">
-          <button id="reports-today" class="btn btn-reports">
-            Today
-          </button>
+          
           <button id="reports-yesterday" class="btn btn-reports">
-            Yesterday
+            Last Week
           </button>
           <button id="reports-month" class="btn btn-reports">
             Last Month
@@ -28,15 +115,57 @@ function Reports() {
           {/* <input type="date" name="reports-date" id="reports-date"></input> */}
         </div>
       </div>
-      {/* <div id='the-graphs' class="my-graphs d-flex">
-                    </div>
+      <div className="featured">
+      <div className="featuredItem">
+        <span className="featuredTitle">Total Revenue</span>
+        <div className="featuredMoneyContainer">
+          <span className="featuredMoney">Rs.{(totalSale +totalprofit).toLocaleString("hi-IN")}</span>
+          <span className="featuredMoneyRate">
+            -20.5
+            <ArrowDownward className="featuredIcon negative" />{" "}
+          </span>
+        </div>
+        <span className="featuredSub">Compared Last Month</span>
+      </div>
 
-                    <div class="products-sold-title d-flex-sp">
-                        <h2>Products Sold </h2>
-                      <button class='btn btn-reports'>Export Data</button>
-                    </div>
-                    <div id="products-sold-div" class='products-sold scrollableDiv scrollableDiv600 tableDivBkg'>
-                    </div> */}
+      <div className="featuredItem">
+        <span className="featuredTitle">Total Orders</span>
+        <div className="featuredMoneyContainer">
+          <span className="featuredMoney">{orderData}</span>
+          <span className="featuredMoneyRate">
+            {" "}
+            +20.5
+            <ArrowUpward className="featuredIcon" />{" "}
+          </span>
+        </div>
+        <span className="featuredSub">Compared Last Month</span>
+      </div>
+
+      <div className="featuredItem">
+        <span className="featuredTitle">Total Sales</span>
+        <div className="featuredMoneyContainer">
+          <span className="featuredMoney">Rs. {totalSale.toLocaleString("hi-IN")}</span>
+          <span className="featuredMoneyRate">
+            -10.5
+            <ArrowDownward className="featuredIcon negative" />{" "}
+          </span>
+        </div>
+        <span className="featuredSub">Compared Last Month</span>
+      </div>
+
+      <div className="featuredItem">
+        <span className="featuredTitle">Total Profit</span>
+        <div className="featuredMoneyContainer">
+          <span className="featuredMoney">Rs.{totalprofit.toLocaleString("hi-IN")}</span>
+          <span className="featuredMoneyRate">
+            {" "}
+            +20.5
+            <ArrowUpward className="featuredIcon" />{" "}
+          </span>
+        </div>
+        <span className="featuredSub">Compared Last Month</span>
+      </div>
+    </div>
     </div>
   );
 }
