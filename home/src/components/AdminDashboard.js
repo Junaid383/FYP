@@ -20,6 +20,10 @@ import Reports from "./admin/adminpages/reports/Reports";
 import Viewrecepits from './admin/adminpages/recipts/Viewrecepit'
 import Navbar from '../components/Navbar';
 import AdminSettings from "./admin/adminpages/adminSettings/AdminSetting"
+import AddAdmin from "./admin/adminpages/adminSettings/NewAdmin"
+import AdminList from "./admin/adminpages/adminSettings/AdminList"
+
+
 
 function AdminDashboard() {
     return (
@@ -42,9 +46,21 @@ function AdminDashboard() {
                         <NewUser />
                     </Route>
 
-                    <Route path="/admin/adminList">
-                        <NewUser />
+{/* //============ADmin handler */}
+
+                    <Route path="/admin/createAdmin">
+                        <AddAdmin />
                     </Route>
+
+                    <Route path="/admin/adminList">
+                        <AdminList />
+                    </Route>
+
+                    <Route path="/admin/settings/:id">
+                        <AdminSettings />
+                    </Route>
+
+                 
 
                     {/* Product ROuters   */}
 

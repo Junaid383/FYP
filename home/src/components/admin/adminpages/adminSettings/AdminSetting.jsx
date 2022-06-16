@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {useHistory } from "react-router-dom";
-import { ToastContainer , toast } from 'react-toastify';
-
+import { useHistory } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import "./adminsetting.css";
 import {
@@ -15,7 +14,6 @@ import {
 import { Link, useLocation } from "react-router-dom";
 
 export default function User() {
-
   const history = useHistory();
 
   const [data, setData] = useState([]);
@@ -25,24 +23,31 @@ export default function User() {
     location.pathname.lastIndexOf("/") + 1,
     location.pathname.length
   );
-
-const fetchProducts = async () => {
-    const response = await fetch("/admin/data");
-    const adminData = await response.json();
-    console.log(adminData);
-    setData(adminData);
+// console.log("USERID " + userID);
+ 
+  const domainURL = "http://localhost:5000";
+  const fetchUser = async () => {
+    const response = await fetch(`${domainURL}/admin/adminList`);
+    const userrr = await response.json();
+    console.log(userrr);
    
+   
+    userrr.forEach(element => {
+      console.log(element);
+      if(element._id===userID)
+      {
+        setData(element);
+      }
+      
+    });
+    // setData(userrr);
+    // createReceiptsTable(prods)
   };
   useEffect(() => {
-    fetchProducts();
+    fetchUser();
     
   }, []);
 
-
-
-//   useEffect(() => {
-//     FetchData();
-//   }, []);
 
   // =============================UPDATA req=====================
   const [user, setUser] = useState({
@@ -53,75 +58,63 @@ const fetchProducts = async () => {
     phone: "",
   });
 
-let name , value;
-const handleInputs = (e)=>{
-  name = e.target.name;
-  value = e.target.value;
+  let name, value;
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
 
-  setUser({ ...user, [name]: value });
-}
+    setUser({ ...user, [name]: value });
+  };
 
-const PostData = async () => {
-  // e.preventDefault();
+  const PostData = async () => {
+    // e.preventDefault();
 
-  const { username, name, email, address , phone } = user;
-  const res = await fetch("/admRegister", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      userID,
-      username,
-      name,
-      email,
-      address, 
-      phone
-    }),
-  });
-  const updata = await res.json();
-  console.log(updata);
-  if (res.status === 422 || !updata) {
-      
-    toast.error("Fill all Fields.", {
-      position: "top-center",
-      reverseOrder: false,
-      autoClose: 1500,
-    })
-  } else {
-    toast.success('User Update Successful', {
-      position: "top-center",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
+    const { username, name, email, address, phone } = user;
+    const res = await fetch("/admin/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID,
+        username,
+        name,
+        email,
+        address,
+        phone,
+      }),
     });
+    const updata = await res.json();
+    console.log(updata);
+    if (res.status === 422 || !updata) {
+      toast.error("Fill all Fields Properly.", {
+        position: "top-center",
+        reverseOrder: false,
+        autoClose: 1500,
+      });
+    } else {
+      toast.success("Admin Update Successful", {
+        position: "top-center",
+        autoClose: 1700,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      setTimeout(() => {
+       
+        history.push(`/admin/adminList`);
+            }, 2000);
 
-    history.push(`/employee/${userID}`); 
-  }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+  };
 
   return (
     <div className="user">
       <div className="userTitleContainer">
-        <h1 className="userTitle">Edit Employee</h1>
-        <Link to="/admin/newUser">
+        <h1 className="userTitle">Edit Admin</h1>
+        <Link to="/admin/createAdmin">
           <button className="userAddButton">Create</button>
         </Link>
         <Link to="/admin/adminList">
@@ -137,7 +130,7 @@ const PostData = async () => {
               className="userShowImg"
             />
             <div className="userShowTopTitle">
-              <span className="userShowUserName">Employee</span>
+              <span className="userShowUserName">Admin</span>
               <span className="userShowUserTitle">Profile</span>
             </div>
           </div>
@@ -191,10 +184,10 @@ const PostData = async () => {
               <div className="userUpdateItem">
                 <label>Full Name</label>
                 <input
-                name="name"
-                autoComplete="off"
-                value={user.name}
-                onChange={handleInputs}
+                  name="name"
+                  autoComplete="off"
+                  value={user.name}
+                  onChange={handleInputs}
                   type="text"
                   placeholder="Name"
                   className="userUpdateInput"
@@ -204,10 +197,10 @@ const PostData = async () => {
               <div className="userUpdateItem">
                 <label>Email</label>
                 <input
-                name="email"
-                autoComplete="off"
-                value={user.email}
-                onChange={handleInputs}
+                  name="email"
+                  autoComplete="off"
+                  value={user.email}
+                  onChange={handleInputs}
                   type="text"
                   placeholder="Email"
                   className="userUpdateInput"
@@ -217,10 +210,10 @@ const PostData = async () => {
               <div className="userUpdateItem">
                 <label>Phone</label>
                 <input
-                name="phone"
-                autoComplete="off"
-                value={user.phone}
-                onChange={handleInputs}
+                  name="phone"
+                  autoComplete="off"
+                  value={user.phone}
+                  onChange={handleInputs}
                   type="text"
                   placeholder="Enter contact number"
                   className="userUpdateInput"
@@ -230,10 +223,10 @@ const PostData = async () => {
               <div className="userUpdateItem">
                 <label>Address</label>
                 <input
-                name="address"
-                autoComplete="off"
-                value={user.address }
-                onChange={handleInputs}
+                  name="address"
+                  autoComplete="off"
+                  value={user.address}
+                  onChange={handleInputs}
                   type="text"
                   placeholder="Enter new address"
                   className="userUpdateInput"
@@ -259,12 +252,15 @@ const PostData = async () => {
                 </label>
                 <input type="file" id="file" style={{ display: "none" }} />
               </div>
-              <button 
-              type="submit"
-              name="signup"
-              value="register"
-              onClick={PostData}
-              className="userUpdateButton">Update</button>
+              <button
+                type="submit"
+                name="signup"
+                value="register"
+                onClick={PostData}
+                className="userUpdateButton"
+              >
+                Update
+              </button>
             </div>
           </for>
         </div>
@@ -272,4 +268,3 @@ const PostData = async () => {
     </div>
   );
 }
-

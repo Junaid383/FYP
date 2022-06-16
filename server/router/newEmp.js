@@ -88,9 +88,9 @@ router.post("/admsignin", async (req, res) => {
       return res.status(400).json({ error: "Filled all fields" });
     }
     const admLog = await ADMIN.findOne({ email: email });
-    console.log(admLog._id);
+    // console.log(admLog._id);
     adminID = admLog._id;
-    console.log(adminID);
+    // console.log(adminID);
     if (admLog) {
       const isMatch = await bcrypt.compare(password, admLog.password);
 
@@ -120,7 +120,7 @@ router.post("/admsignin", async (req, res) => {
 router.get("/admin/data", (req, res) => {
   ADMIN.findById(adminID)
   .then((user) => {
-    console.log(user);
+    // console.log(user);
     res.json(user); //sending data back to user-line25
   })
   .catch((err) => {
@@ -286,6 +286,13 @@ router.get("/admin/users", (req, res) => {
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
 
+
+router.get("/admin/adminList", (req, res) => {
+  ADMIN.find()
+    .sort({ name: 1 })
+    .then((prod) => res.json(prod))
+    .catch((err) => res.status(400).json("Error : $(err)"));
+});
 // router.get("/employee/home", (req, res) => {
 //   PRD.find()
 //     .then((prod) => res.json(prod))
@@ -560,6 +567,22 @@ router.post("/admin/user/delete", async (req, res) => {
   }
 });
 
+router.post("/admin/delete", async (req, res) => {
+  console.log(req.body.id);
+  const userID = req.body.id;
+  try {
+    const delEMP = await ADMIN.findByIdAndRemove(userID, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(201).json({ message: "Admin Removed", emp: docs });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 
 //=================RECEPIT DELETE=====================
 router.post("/admin/recepit/delete", async (req, res) => {
@@ -574,6 +597,46 @@ router.post("/admin/recepit/delete", async (req, res) => {
       }
     });
     
+  } catch (err) {
+    console.log(err);
+  }
+});
+// ============================Admin Update===================
+router.post("/admin/update", async (req, res) => {
+  const { userID, username, name, email, phone, address } = req.body;
+  console.log(req.body);
+
+  if (!username || !name || !email || !phone || !address) {
+    console.log("Fill all field");
+    return res.status(422).json({ error: "Filled All fields" });
+  }
+
+  try {
+    const empExist = await ADMIN.findOne({ _id: userID }); //First from DB and 2nd from IP fields to check if same email exist or not
+
+    if (!empExist) {
+      return res.status(422).json({ error: "User not exist" });
+    } else {
+      ADMIN.findByIdAndUpdate(
+        userID,
+        {
+          username: username,
+          name: name,
+          email: email,
+          phone: phone,
+          address: address,
+        },
+        function (err, doc) {
+          if (err) {
+            console.log(err);
+          } else {
+            // console.log("Updated User : ", doc);
+          }
+        }
+      );
+
+      res.status(201).json({ message: "EMP registered" });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -627,6 +690,22 @@ router.post("/admin/user/:userID", (req, res) => {
   //   console.log("Update User Rendered");
   //   console.log(req.body);
   EMP.findById(req.body.userID)
+    .then((user) => {
+      ``;
+
+      res.json(user); //sending data back to user-line25
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+
+
+router.post("/admin/settings/:userID", (req, res) => {
+  //   console.log("Update User Rendered");
+  //   console.log(req.body);
+  ADMIN.findById(req.body.userID)
     .then((user) => {
       ``;
 
