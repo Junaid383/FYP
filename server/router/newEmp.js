@@ -266,7 +266,7 @@ router.get("/admin/products", (req, res) => {
 // ============ADMIN RECEPITS===============
 router.get("/admin/recepits", (req, res) => {
   RECEPITS.find()
-    
+    .sort({ _id: -1 })
     .then((prod) => res.json(prod))
     .catch((err) => res.status(400).json("Error : $(err)"));
 });
