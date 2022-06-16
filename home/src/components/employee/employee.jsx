@@ -111,7 +111,11 @@ function employee() {
 
   const itemRemoveHandler = (item) => {
     // console.log(item);
-
+    const allProducts = [...cartProducts];
+    const productToRemove = allProducts.find(
+      (theObj) => theObj._id === item._id
+    );
+    updateStock(productToRemove._id, false, item.qty);
     const updatedCartItems = cartProducts.filter(
       (theObj) => theObj._id !== item._id
     );
@@ -121,13 +125,30 @@ function employee() {
     // setSubTotal(updateTotal(updatedCartItems));
     // setTotalAfterDiscount(total);
   };
+  const updateStock = (id, decrease = true, by = 1) => {
+    const idx = data.findIndex((x) => x._id === id);
 
+    if (idx !== -1) {
+      if (data[idx].stock >= 1 || (data[idx].stock === 0 && !decrease)) {
+        const tempProducts = [...data];
+        tempProducts[idx] = {
+          ...tempProducts[idx],
+          stock: decrease
+            ? (tempProducts[idx].stock -= by)
+            : (tempProducts[idx].stock += by),
+        };
+        setData(tempProducts);
+      }
+    }
+  };
   const addToCartHandler = (item) => {
     // console.log(id);`
+
     const allProducts = [...data];
     const productToAddInCart = allProducts.find(
       (theObj) => theObj._id === item._id
     );
+    updateStock(productToAddInCart._id);
     //console.log(productToAddInCart);
     productToAddInCart.qty = 1;
     // console.log(productToAddInCart);
@@ -179,10 +200,14 @@ function employee() {
     const productAddedInCart = allProducts.findIndex(
       (theObj) => theObj._id === item._id
     );
-    if (what) {
+    const productToChangeQtyStock = data.find((obj) => obj._id === item._id);
+
+    if (what && productToChangeQtyStock.stock !== 0) {
       allProducts[productAddedInCart].qty += 1;
-    } else {
+      updateStock(productToChangeQtyStock._id);
+    } else if (!what) {
       allProducts[productAddedInCart].qty -= 1;
+      updateStock(productToChangeQtyStock._id, false);
     }
     setCartProducts(allProducts);
   };
@@ -267,7 +292,7 @@ function employee() {
     <div>
       <span className={styles.account_options}>
         <div className={styles.dropdown}>
-          <br/>
+          <br />
           <button className={`${styles.dropbtn} ${styles.b_s_none}`}>
             EMP
             <i className={`${styles.fa} ${styles.fa_caret_down}`}></i>
@@ -278,7 +303,6 @@ function employee() {
             </Link> */}
             <a href={`/employee/setting/${userID}`}>Settings</a>
             <a href="/login">Logout</a>
-            
           </div>
         </div>
       </span>
@@ -296,7 +320,7 @@ function employee() {
       <div className={styles.employeenamewrapper}>
         <h4 className={styles.employeename}>EMPLOYEE NAME : {totalSale}</h4>
       </div>
-       
+
       <div className={` ${styles.main} ${styles.d_flex}`}>
         <div className={styles.last_transactions_container}>
           <div className={styles.section_title_bkg}>
@@ -312,49 +336,45 @@ function employee() {
               ) : (
                 <div className={styles.scrollableDiv}>
                   <table id="table-main-receipts">
-                  <thead>
-                    <tr className="widgetSmListItem">
-                      <th className={styles.trHead}>ID</th>
-                      <th className={styles.trHead}>Name</th>
-                      <th className={styles.trHead}>Total</th>
-                      <th className={styles.trHead}>Check</th>
-                    </tr>
-                    </thead>
-                  <tbody>  
-                  {recentOrder.map((cell, idx) => {
-                    return (
-                      
+                    <thead>
                       <tr className="widgetSmListItem">
-                        {/* <img src="https://blogs-images.forbes.com/danschawbel/files/2017/12/Dan-Schawbel_avatar_1512422077-400x400.jpg" alt="" className="widgetSmImg" /> */}
-                        {/* <div className="widgetSmUser"> */}
-                        <td className="widgetSmUsername">
-                          {cell.orderID}
-                        </td>
-                        <td className="widgetSmUserTitle">
-                          {cell.loggedInUserName}
-                        </td>
-                        <td className="widgetSmUserTitle">
-                          {(cell.total).toLocaleString("hi-IN")}
-                        </td>
-                        <td className="widgetSmUserTitle">
-                          <Link to={`/viewreceipt/${cell._id}`}>
-                            <button className="reciptView">View</button>
-                          </Link>
-                        </td>
+                        <th className={styles.trHead}>ID</th>
+                        <th className={styles.trHead}>Name</th>
+                        <th className={styles.trHead}>Total</th>
+                        <th className={styles.trHead}>Check</th>
                       </tr>
-                    );
-                  })}
-                  </tbody>
+                    </thead>
+                    <tbody>
+                      {recentOrder.map((cell, idx) => {
+                        return (
+                          <tr className="widgetSmListItem">
+                            {/* <img src="https://blogs-images.forbes.com/danschawbel/files/2017/12/Dan-Schawbel_avatar_1512422077-400x400.jpg" alt="" className="widgetSmImg" /> */}
+                            {/* <div className="widgetSmUser"> */}
+                            <td className="widgetSmUsername">{cell.orderID}</td>
+                            <td className="widgetSmUserTitle">
+                              {cell.loggedInUserName}
+                            </td>
+                            <td className="widgetSmUserTitle">
+                              {cell.total.toLocaleString("hi-IN")}
+                            </td>
+                            <td className="widgetSmUserTitle">
+                              <Link to={`/viewreceipt/${cell._id}`}>
+                                <button className="reciptView">View</button>
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
                   </table>
                 </div>
               )}
             </div>
           </div>
         </div>
-        
+
         <div className={styles.search_area_emp}>
           <div className={styles.section_title_bkg}>
-            
             <h1>Search Products</h1>
           </div>
           <div className={styles.section_wraper}>
@@ -395,7 +415,9 @@ function employee() {
                         <tr key={cell._id}>
                           {/* <td className="trData">{idx + 1}</td> */}
                           <td className="trData">{cell.name}</td>
-                          <td className="trData">{(cell.price).toLocaleString("hi-IN")}</td>
+                          <td className="trData">
+                            {cell.price.toLocaleString("hi-IN")}
+                          </td>
                           <td className="trData">
                             {cell.stock} {cell.unit}
                           </td>
@@ -405,6 +427,8 @@ function employee() {
                             <button
                               className="productListEdit"
                               onClick={() => addToCartHandler(cell)}
+                              disabled={cell.stock <= 0 ? true : false}
+                              style={{ opacity: cell.stock <= 0 ? 0.6 : 1 }}
                             >
                               Add to Cart
                             </button>

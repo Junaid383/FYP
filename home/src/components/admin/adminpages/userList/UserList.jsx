@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function UserList() {
-  const [showModal,setShowModal]=useState(false);
+  const [showModal, setShowModal] = useState({ status: false, id: null });
   const [data, setData] = useState([]);
   // const [delUser , setdelUser] = useState([]);
 
@@ -26,9 +26,7 @@ export default function UserList() {
   };
   useEffect(() => {
     fetchProducts();
-    
   }, []);
- 
 
   var newTable;
   function createReceiptsTable(arraysOfArrays) {
@@ -67,28 +65,26 @@ export default function UserList() {
   }
 
   //==================== Handling Delete FUnction ==============================
-const updateProductsTable =(id)=>{
-  const updatedArray = data.filter(obj=>obj._id!==id)
-  setData(updatedArray)
-}
-const delUser =async (id)=>{
-const res = await fetch("/admin/user/delete", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-   id
-  }),
-});
-if(res.ok){
-const deletedEmp = await res.json();
-// console.log(deletedEmp.emp._id)
-updateProductsTable(deletedEmp.emp._id)
-}
-}
-
-
+  const updateProductsTable = (id) => {
+    const updatedArray = data.filter((obj) => obj._id !== id);
+    setData(updatedArray);
+  };
+  const delUser = async (id) => {
+    const res = await fetch("/admin/user/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id,
+      }),
+    });
+    if (res.ok) {
+      const deletedEmp = await res.json();
+      // console.log(deletedEmp.emp._id)
+      updateProductsTable(deletedEmp.emp._id);
+    }
+  };
 
   return (
     <div className="userList">
@@ -129,15 +125,26 @@ updateProductsTable(deletedEmp.emp._id)
                       <button className="productListEdit">Edit</button>
                       {/*  onClick={PostData} */}
                     </Link>
-                    
-                    <button onClick={()=>setShowModal(true)} className="delButtonUser">
+
+                    <button
+                      onClick={() =>
+                        setShowModal({ status: true, id: cell._id })
+                      }
+                      className="delButtonUser"
+                    >
                       <DeleteOutline className="productListDelete" />
                     </button>
-                    {showModal?<ConfirmDelete close={()=>setShowModal(false)} onConfirm={()=>delUser(cell._id)}/>:null}
                   </td>
                 </tr>
               );
             })}
+
+            {showModal.status ? (
+              <ConfirmDelete
+                close={() => setShowModal({ status: false, id: null })}
+                onConfirm={() => delUser(showModal.id)}
+              />
+            ) : null}
           </tbody>
         </table>
       </div>

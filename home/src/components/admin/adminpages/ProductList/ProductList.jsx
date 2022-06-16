@@ -13,7 +13,7 @@ import Modal from "./Modal";
 export default function ProductList() {
   const [data, setData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({ status: false, id: null });
 
   const handleDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
@@ -135,7 +135,9 @@ export default function ProductList() {
                 <tr key={cell._id}>
                   <td className="trData">{idx + 1}</td>
                   <td className="trData">{cell.name}</td>
-                  <td className="trData">{(cell.price).toLocaleString("hi-IN")}</td>
+                  <td className="trData">
+                    {cell.price.toLocaleString("hi-IN")}
+                  </td>
                   <td className="trData">{cell.cost}</td>
 
                   <td className="trData">{cell.stock}</td>
@@ -155,21 +157,23 @@ export default function ProductList() {
                     </button> */}
 
                     <button
-                      onClick={() => setShowModal(true)}
+                      onClick={() =>
+                        setShowModal({ status: true, id: cell._id })
+                      }
                       className="delButtonUser"
                     >
                       <DeleteOutline className="productListDelete" />
                     </button>
-                    {showModal ? (
-                      <ConfirmDelete
-                        close={() => setShowModal(false)}
-                        onConfirm={() => delProd(cell._id)}
-                      />
-                    ) : null}
                   </td>
                 </tr>
               );
-            })}
+            })}{" "}
+            {showModal.status ? (
+              <ConfirmDelete
+                close={() => setShowModal({ status: false, id: null })}
+                onConfirm={() => delProd(showModal.id)}
+              />
+            ) : null}
           </tbody>
         </table>
       </div>
