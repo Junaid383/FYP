@@ -19,7 +19,7 @@ import Recipts from "./admin/adminpages/recipts/Recipts";
 import Reports from "./admin/adminpages/reports/Reports";
 import Viewrecepits from './admin/adminpages/recipts/Viewrecepit'
 import Navbar from '../components/Navbar';
-
+import AdminSettings from "./admin/adminpages/adminSettings/AdminSetting"
 
 function AdminDashboard() {
     return (
@@ -39,6 +39,10 @@ function AdminDashboard() {
                         <User />
                     </Route>
                     <Route path="/admin/newUser">
+                        <NewUser />
+                    </Route>
+
+                    <Route path="/admin/adminList">
                         <NewUser />
                     </Route>
 
@@ -74,6 +78,10 @@ function AdminDashboard() {
                     {/* reports */}
                     <Route path="/admin/reports">
                         <Reports />
+                    </Route>
+
+                    <Route path="/admin/settings">
+                        <AdminSettings />
                     </Route>
 
                 </Switch>

@@ -30,10 +30,10 @@ function Login() {
         password
       })
     });
-
-    const data = res.json();
-    // console.log(data);
-
+    
+    const data =await res.json();
+    let nameUSER = data.admID;
+    // console.log(nameUSER.length());
     if (res.status === 400 || !data) {
       
       toast.error("Login Failed.", {
@@ -54,7 +54,11 @@ function Login() {
         draggable: true,
         progress: undefined,
       });
-      histroy.push("/admin/home");
+      setTimeout(()=>{
+       
+        histroy.push(`/admin/home`);
+       
+      },1000)
 
     }
 

@@ -80,6 +80,7 @@ router.post("/admRegister", async (req, res) => {
   }
 });
 // =====================================ADMIN SIgnIN=============
+let adminID;
 router.post("/admsignin", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -87,8 +88,9 @@ router.post("/admsignin", async (req, res) => {
       return res.status(400).json({ error: "Filled all fields" });
     }
     const admLog = await ADMIN.findOne({ email: email });
-    // console.log(empLog);
-
+    console.log(admLog._id);
+    adminID = admLog._id;
+    console.log(adminID);
     if (admLog) {
       const isMatch = await bcrypt.compare(password, admLog.password);
 
@@ -98,11 +100,12 @@ router.post("/admsignin", async (req, res) => {
         expires: new Date(Date.now() + 258920000),
         httpOnly: true,
       });
+     
 
       if (!isMatch) {
         res.status(400).json({ error: "Invalid Credentials" });
       } else {
-        res.json({ message: "Logged IN" });
+        res.json({ message: "Logged IN" , admID:admLog._id  });
       }
     } else {
       res.status(400).json({ error: "Invalid" });
@@ -111,6 +114,27 @@ router.post("/admsignin", async (req, res) => {
     console.log(err);
   }
 });
+
+
+
+router.get("/admin/data", (req, res) => {
+  ADMIN.findById(adminID)
+  .then((user) => {
+    console.log(user);
+    res.json(user); //sending data back to user-line25
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+});
+
+
+
+
+
+
+
+
 
 // -----------------  ------------------------NEW EMPLOYEE-------------------------------------------------
 router.post("/admin/newUser", async (req, res) => {
@@ -155,6 +179,7 @@ router.post("/admin/newUser", async (req, res) => {
   }
 });
 // ------------------------------EMPLOYEE__Login_____________----------------------
+
 
 router.post("/signin", async (req, res) => {
   try {
