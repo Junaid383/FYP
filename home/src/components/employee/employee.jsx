@@ -311,28 +311,41 @@ function employee() {
                 </div>
               ) : (
                 <div className={styles.scrollableDiv}>
+                  <table id="table-main-receipts">
+                  <thead>
+                    <tr className="widgetSmListItem">
+                      <th className={styles.trHead}>ID</th>
+                      <th className={styles.trHead}>Name</th>
+                      <th className={styles.trHead}>Total</th>
+                      <th className={styles.trHead}>Check</th>
+                    </tr>
+                    </thead>
+                  <tbody>  
                   {recentOrder.map((cell, idx) => {
                     return (
-                      <li className="widgetSmListItem">
+                      
+                      <tr className="widgetSmListItem">
                         {/* <img src="https://blogs-images.forbes.com/danschawbel/files/2017/12/Dan-Schawbel_avatar_1512422077-400x400.jpg" alt="" className="widgetSmImg" /> */}
                         {/* <div className="widgetSmUser"> */}
-                        <span className="widgetSmUsername">
-                          Order ID: {cell.orderID}
-                        </span>
-                        <span className="widgetSmUserTitle">
-                          Employee Name: {cell.loggedInUserName}
-                        </span>
-                        <span className="widgetSmUserTitle">
-                          Total: Rs.{cell.total}
-                        </span>
-                        {/* </div> */}
-                        <Link to={`/viewreceipt/${cell._id}`}>
-                          {/* <Button type="Approved" /> */}
-                          <button className="reciptView">View</button>
-                        </Link>
-                      </li>
+                        <td className="widgetSmUsername">
+                          {cell.orderID}
+                        </td>
+                        <td className="widgetSmUserTitle">
+                          {cell.loggedInUserName}
+                        </td>
+                        <td className="widgetSmUserTitle">
+                          {cell.total}
+                        </td>
+                        <td className="widgetSmUserTitle">
+                          <Link to={`/viewreceipt/${cell._id}`}>
+                            <button className="reciptView">View</button>
+                          </Link>
+                        </td>
+                      </tr>
                     );
                   })}
+                  </tbody>
+                  </table>
                 </div>
               )}
             </div>
