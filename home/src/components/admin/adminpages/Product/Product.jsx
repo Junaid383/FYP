@@ -79,7 +79,7 @@ export default function Product() {
     });
     console.log(res);
     const updata = await res.json();
-    console.log(updata);
+    console.log("Updated Data is "+ updata);
 
     if (res.status === 422 || !updata) {
       toast.error("Product did'nt Update.", {
@@ -88,21 +88,23 @@ export default function Product() {
         autoClose: 1500,
       });
     } else {
-      toast.success("Product Update Successfully", {
+      toast.success('Product Update Successfully', {
         position: "top-center",
-        autoClose: 1700,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
         draggable: true,
         progress: undefined,
       });
-      setTimeout(() => {
-        history.push("/admin/products");
-            }, 2000);
-
-    }
+     setTimeout(()=>{
+      history.push(`/admin/products`); 
+      
+     },2000)
   };
+}
+
+
 
   return (
     <div className="product">
@@ -156,7 +158,8 @@ export default function Product() {
         </div>
       </div>
       <div className="productBottom">
-        <form className="productForm">
+        {/* <form className="productForm" > */}
+          <div className="productForm">
           <div className="productFormLeft">
             <label>Product Name</label>
             <input
@@ -165,7 +168,7 @@ export default function Product() {
               autoComplete="off"
               onChange={handleInputs}
               value={user.name}
-              placeholder="Name"
+              placeholder={data.name}
             />
 
             <label>Product Price</label>
@@ -175,7 +178,7 @@ export default function Product() {
               autoComplete="off"
               onChange={handleInputs}
               value={user.price}
-              placeholder="Price"
+              placeholder={data.price}
             />
 
             <label>Orignal Cost</label>
@@ -185,7 +188,7 @@ export default function Product() {
               autoComplete="off"
               onChange={handleInputs}
               value={user.cost}
-              placeholder="Price"
+              placeholder={data.cost}
             />
 
             <label>Quantity</label>
@@ -195,7 +198,7 @@ export default function Product() {
               autoComplete="off"
               onChange={handleInputs}
               value={user.quantity}
-              placeholder="Quantity"
+              placeholder={data.stock}
             />
 
             <label>Unit</label>
@@ -205,7 +208,7 @@ export default function Product() {
               autoComplete="off"
               onChange={handleInputs}
               value={user.unit}
-              placeholder="Quantity"
+              placeholder={data.unit}
             />
 
             <label>Category</label>
@@ -215,14 +218,18 @@ export default function Product() {
               autoComplete="off"
               onChange={handleInputs}
               value={user.category}
-              placeholder="Quantity"
+              placeholder={data.category}
             />
 
             <label>In Stock</label>
-            <select name="inStock" id="idStock">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
+            <input
+              type="text"
+              name=""
+              autoComplete="off"
+              onChange={handleInputs}
+              // value={user.category}
+              placeholder="Yes"
+            />
           </div>
           <div className="productFormRight">
             <div className="productUpload">
@@ -237,6 +244,7 @@ export default function Product() {
               <input type="file" id="file" style={{ display: "none" }} />
             </div>
             <button
+            // type='submit'
               value="register"
               className="productButton"
               onClick={PostData}
@@ -244,7 +252,8 @@ export default function Product() {
               Update
             </button>
           </div>
-        </form>
+          </div>
+        {/* </form> */}
       </div>
     </div>
   );

@@ -449,6 +449,56 @@ router.post("/employee/printreceipt", async (req, res) => {
         custmerID,
       });
       // console.log(status);
+      cartProducts.forEach(async (element) => {
+        console.log(element);
+        
+        // const prodExist = await PRD.findOne({ _id: element._id });
+        const prodExist = await PRD.findById(element._id)
+        .then((user) => {
+          
+          // console.log('PrdName :' + user);
+         return user;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        
+        
+        // console.log('Prd Name :' + prodExist.name +" " +prodExist.stock );
+        // console.log("Element is " + element.stock);
+       
+        let stockUpdate =(prodExist.stock - element.qty);
+        // console.log("stockUpdate is " + stockUpdate);
+        PRD.findByIdAndUpdate(
+          element._id,
+          {
+            name: prodExist.name,
+            price: prodExist.price,
+            stock: stockUpdate,
+            cost: prodExist.cost,
+            unit: prodExist.unit,
+            category: prodExist.category,
+          },
+          function (err, doc) {
+            if (err) {
+              console.log(err);
+            } else {
+              // console.log("Updated User : ", doc);
+            }
+          }
+          )
+        
+      });
+
+
+
+
+
+
+
+
+
+
 
       const recptReg = await recpts.save();
       // console.log("RECIPT CREATED");
@@ -736,7 +786,7 @@ router.post("/admin/product/update", async (req, res) => {
   if (price<=cost) {
     console.log("Sale Price Must be larger");
     return res.status(422).json({ error: "Sale Price Must be larger" });
-  }t
+  }
 
   try {
     const prodExist = await PRD.findOne({ _id: prodID }); //First from DB and 2nd from IP fields to check if same email exist or not
