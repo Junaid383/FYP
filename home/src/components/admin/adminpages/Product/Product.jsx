@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 export default function Product() {
   const history = useHistory();
   const [data, setData] = useState([]);
+  const [formData , setformData] = useState([]);
 
   const location = useLocation();
   const prodID = location.pathname.substring(
@@ -35,6 +36,8 @@ export default function Product() {
     const data1 = await res.json(); //getting data from backend newEMP line 245
     // console.log(data1);
     setData(data1);
+    setformData(data1);
+
   };
 
   useEffect(() => {
@@ -55,13 +58,14 @@ export default function Product() {
     name = e.target.name;
     value = e.target.value;
 
-    setUser({ ...user, [name]: value });
+    setformData({ ...formData, [name]: value });
+    
   };
 
   const PostData = async () => {
     // e.preventDefault();
 
-    const { name, price, quantity, cost , unit, category } = user;
+    const { name, price, quantity, cost , unit, category } = formData;
     const res = await fetch("/admin/product/update", {
       method: "POST",
       headers: {
@@ -167,7 +171,7 @@ export default function Product() {
               name="name"
               autoComplete="off"
               onChange={handleInputs}
-              value={user.name}
+              value={formData.name}
               placeholder={data.name}
             />
 
@@ -177,7 +181,7 @@ export default function Product() {
               name="price"
               autoComplete="off"
               onChange={handleInputs}
-              value={user.price}
+              value={formData.price}
               placeholder={data.price}
             />
 
@@ -187,7 +191,7 @@ export default function Product() {
               name="cost"
               autoComplete="off"
               onChange={handleInputs}
-              value={user.cost}
+              value={formData.cost}
               placeholder={data.cost}
             />
 
@@ -197,7 +201,7 @@ export default function Product() {
               name="quantity"
               autoComplete="off"
               onChange={handleInputs}
-              value={user.quantity}
+              value={formData.quantity}
               placeholder={data.stock}
             />
 
@@ -207,7 +211,7 @@ export default function Product() {
               name="unit"
               autoComplete="off"
               onChange={handleInputs}
-              value={user.unit}
+              value={formData.unit}
               placeholder={data.unit}
             />
 
@@ -217,7 +221,7 @@ export default function Product() {
               name="category"
               autoComplete="off"
               onChange={handleInputs}
-              value={user.category}
+              value={formData.category}
               placeholder={data.category}
             />
 
@@ -227,7 +231,7 @@ export default function Product() {
               name=""
               autoComplete="off"
               onChange={handleInputs}
-              // value={user.category}
+              // value={formData.category}
               placeholder="Yes"
             />
           </div>

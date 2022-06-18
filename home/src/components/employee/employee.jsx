@@ -15,6 +15,7 @@ function employee() {
   const [discountedAmount, setDiscount] = useState(0); //  discount ki state.
   const [recentOrder, setrecentOrder] = useState([]);
   const [empData, setempData] = useState(userID);
+  const [isClicked, setisClicked] = useState(false);
 
   const [receiptData, setreceiptData] = useState([]);
   const [totalSale, settotalSale] = useState([]);
@@ -541,7 +542,14 @@ function employee() {
               type="submit"
               name="signup"
               value="register"
-              onClick={cartProducts.length === 0 ? () => {} : PostData}
+              onClick={
+                cartProducts.length === 0 || isClicked
+                  ? () => {}
+                  : () => {
+                      setisClicked(true);
+                      PostData();
+                    }
+              }
             >
               Save & Print Receipt
             </button>
