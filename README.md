@@ -6,13 +6,15 @@
 
 ## Welcome! 👋
 
-##Running Frontend       
+
+
+## Running Frontend       
         0. Make sure you have Nodejs Installed on your machine. 
         1. Set Environmnental variables.
         2. Intall all dependencies and node packages using 'npm install'
         3. Go the the directory 'cd /home/' and run 'npm start'
         
-##Running Backend
+## Running Backend
         0. Install MongoDB
         1. Set Environmental Variables
         2. Set database connection string in 'config.env' file
