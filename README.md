@@ -1,7 +1,7 @@
-# FYP
+# Final Year Project
 
-# A POS System (Modern Design) with sales insights
-###### Created as my semester project for WEB course
+# A POS System (Modern Design) with Sales insights
+
 #
 
 ## Welcome! 👋
