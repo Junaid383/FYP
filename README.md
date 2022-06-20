@@ -24,6 +24,16 @@
 
 Thanks for checking out
 
+![1](https://user-images.githubusercontent.com/84534214/174633095-3973385f-4e03-43bf-a649-534e339dc873.jpg)
+
+![EMPLOYEE](https://user-images.githubusercontent.com/84534214/174633162-8b3e240f-9a9d-4419-a480-a24214019941.png)
+
+![Admin](https://user-images.githubusercontent.com/84534214/174633221-0eef0de7-84f4-42ac-a0b4-ebc23fccd295.png)
+
+![Product](https://user-images.githubusercontent.com/84534214/174633267-c316802c-5b0d-4d32-bf1e-e6eff3c6572b.jpg)
+
+
+
 
 # Technologies Used
 ## Frontend
