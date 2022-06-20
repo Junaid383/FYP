@@ -549,6 +549,7 @@ function employee() {
                       setisClicked(true);
                       PostData();
                     }
+                    
               }
             >
               Save & Print Receipt
