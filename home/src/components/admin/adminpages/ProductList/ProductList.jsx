@@ -12,6 +12,7 @@ import Modal from "./Modal";
 
 export default function ProductList() {
   const [data, setData] = useState([]);
+  const [name, setName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState({ status: false, id: null });
 
@@ -70,6 +71,36 @@ export default function ProductList() {
     //populating the table
   }
 
+  const searchHandler = async (event) => {
+    const response = await fetch(`/admin/products`);
+    const getData = await response.json();
+
+    // console.log(getData);
+    // console.log(event.target.value);
+    const keyword = event.target.value;
+    console.log(keyword);
+
+    if (keyword !== "") {
+      const results = getData.filter((user) => {
+        let userPrice = String(user.price);
+        if (
+          user.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          user.category.toLowerCase().includes(keyword.toLowerCase()) ||
+          userPrice.includes(keyword) ||
+          user._id.toLowerCase().includes(keyword.toLowerCase())
+        ) {
+          return user;
+        }
+      });
+      // console.log(results);
+      setData(results);
+    } else {
+      setData(getData);
+    }
+    setName(keyword);
+  };
+
+
   // =================DELete Product===================
   const updateProductsTable = (id) => {
     const updatedArray = data.filter((obj) => obj._id !== id);
@@ -97,9 +128,16 @@ export default function ProductList() {
     <div className="productList">
       <div className="productTitleContainer">
         <h1 className="productTitle">Product</h1>
+        <input
+          onChange={searchHandler}
+          type="text"
+          name="search-products"
+          placeholder="Search for an item"
+        />
         <Link to="/admin/newProduct">
           <button className="productAddButton">Create</button>
         </Link>
+        
       </div>
       {
         // data.map(cell => {

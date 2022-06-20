@@ -11,6 +11,8 @@ import { useState } from "react";
 export default function UserList() {
   const [showModal, setShowModal] = useState({ status: false, id: null });
   const [data, setData] = useState([]);
+  const [name, setName] = useState("");
+
   // const [delUser , setdelUser] = useState([]);
 
   const handleDelete = (id) => {
@@ -85,11 +87,47 @@ export default function UserList() {
       updateProductsTable(deletedEmp.emp._id);
     }
   };
+  const searchHandler = async (event) => {
+    const response = await fetch(`${domainURL}/admin/users`);
+    const getData = await response.json();
+
+    console.log(getData);
+    // console.log(event.target.value);
+    const keyword = event.target.value;
+
+    if (keyword !== "") {
+      const results = getData.filter((user) => {
+        // let userPrice = String(user.price);
+        if (
+          user.name.toLowerCase().includes(keyword.toLowerCase())
+        ) {
+          return user;
+        }
+      });
+      // console.log(results);
+      setData(results);
+    } else {
+      setData(getData);
+    }
+    setName(keyword);
+  };
+
+
+
+
+
+
 
   return (
     <div className="userList">
       <div className="userTitleContainer">
         <h1 className="userTitle"> Employee List</h1>
+        <input
+          onChange={searchHandler}
+          type="text"
+          name="search-products"
+          placeholder="Search for an item"
+        />
         <Link to="/admin/newUser">
           <button className="userAddButton">Create</button>
         </Link>
